@@ -6,7 +6,7 @@ Reset_time = 24*60*60
 Time_to_reset = time.time() + Reset_time
 Init = False
 
-filename = "Test_third_algo.py"
+filename = "Main.py"
 while True:
 
     if Init == False:
