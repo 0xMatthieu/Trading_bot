@@ -1,6 +1,8 @@
 import ccxt
 from streamlit import secrets
 import time
+import pandas as pd
+import math
 
 class Kucoin(object):
 
@@ -19,6 +21,7 @@ class Kucoin(object):
 			'secret': api_secret,
 			'password': api_passphrase,  # KuCoin Futures requires a password (passphrase)
 		})
+		self.adjust_timestamp_to_local_time = 2*60*60*1000	#currently +2hours UTC
 
 	def fetch_balance(self, currency='USDT', account='free', market_type='spot'):
 		# fetching the current balance
@@ -41,11 +44,12 @@ class Kucoin(object):
 			# Fetch current ticker data
 			ticker = exchange.fetch_ticker(symbol)
 			ticker_data = {
-				'timestamp': pd.to_datetime(ticker['timestamp'], unit='ms'),
+				'timestamp': pd.to_datetime(ticker['timestamp']+self.adjust_timestamp_to_local_time, unit='ms'),
 				'open': ticker['open'],
 				'high': ticker['high'],
 				'low': ticker['low'],
 				'close': ticker['close'],
+				'last': ticker['last'],
 				'volume': ticker['baseVolume']
 			}
 			new_df = pd.DataFrame([ticker_data])
@@ -94,7 +98,7 @@ class Kucoin(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
 			df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
-			df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+			df['timestamp'] = pd.to_datetime(df['timestamp']+self.adjust_timestamp_to_local_time, unit='ms')
 			return df
 		except ccxt.BaseError as e:
 			print("An error occurred while fetching klines:", str(e))
@@ -105,45 +109,64 @@ class Kucoin(object):
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 		return exchange.market(symbol)
 
-	def place_market_order(self, symbol='BTC/USDT', quantity=None, order_type='buy', market_type='spot'):
-		base_currency, quote_currency = symbol.split('/')
+	def place_market_order(self, symbol='BTC/USDT', percentage=100, order_type='buy', market_type='spot', leverage=None):
+		#percentage shall be 1 to close futures position
+		
+		if market_type == 'spot':
+			base_currency, quote_currency = symbol.split('/')
+		else:
+			base_currency, quote_currency = symbol[:-5], 'USDT'  # Futures symbols end with 'M' (e.g., ETHUSDTM)
         
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			# Fetch the available balance for the right currency
-			available_balance = self.fetch_balance(quote_currency if order_type == 'buy' else base_currency, 'free')
+			available_balance = self.fetch_balance(base_currency if order_type == 'sell' and market_type == 'spot' else quote_currency, \
+				'used' if order_type == 'sell' and market_type == 'futures' else 'free', market_type)
+
+			if available_balance is None:
+				print("Could not fetch the available balance.")
+				return
 
 			# Fetch market data to get the precision and limits
-			market_data = self.fetch_market_data(symbol)
+			market_data = self.fetch_market_data(symbol, market_type)
 			precision = market_data['precision']['amount']
 			min_order_amount = market_data['limits']['amount']['min']
+			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}")
+
+			# Determine the number of decimal places from the precision value
+			precision_decimal_places = abs(int(math.log10(precision)))
+
+			params = {}
             
 			if order_type == 'buy':
 				# Fetch the ticker price to calculate max quantity
 				ticker = exchange.fetch_ticker(symbol)
 				price = ticker['last']
                 
-				# Calculate maximum quantity if quantity is not specified
-				if quantity is None:
-					quantity = available_balance / price
+				# Calculate quantity based on the percentage of available balance
+				quantity = (available_balance * (percentage / 100)) / price
 
-				# Ensure the quantity is within the allowed precision and limits
-				quantity = max(min_order_amount, round(quantity, precision))
-
-				# Place a market buy order
-				order = exchange.create_market_buy_order(symbol, quantity)
 			elif order_type == 'sell':
-				# Use available balance as quantity if not specified
-				if quantity is None:
-					quantity = available_balance
-
-				# Ensure the quantity is within the allowed precision and limits
-				quantity = max(min_order_amount, round(quantity, precision))
+				# Calculate quantity based on the percentage of available balance
+				quantity = float(available_balance * (percentage / 100))	
 
 				# Place a market sell order
-				order = exchange.create_market_sell_order(symbol, quantity)
+				if market_type == 'futures' and order_type == 'sell':
+					params['reduceOnly'] = True
 			else:
 				raise ValueError("order_type must be 'buy' or 'sell'")
+
+			print("params:", params)
+
+			# Ensure the quantity is within the allowed precision and limits
+			quantity = max(min_order_amount, round(quantity, precision_decimal_places))
+
+			# Set leverage if provided and if market type is futures
+			if leverage is not None and market_type == 'futures':
+				params['leverage'] = leverage
+
+			# Place a market buy order
+			order = exchange.create_order(symbol=symbol, type='market', side=order_type, amount=quantity, params=params)
 
 			print("Order placed:", order)
 		except ccxt.BaseError as e:
@@ -162,3 +185,9 @@ class Kucoin(object):
 
 if __name__ == "__main__":
 	kucoin = Kucoin()
+	#kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
+	#kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
+	#kucoin.fetch_ticker(symbol='XBTUSDTM', market_type='futures')
+	#kucoin.fetch_klines(symbol='XBTUSDTM', limit=200, market_type='futures')
+	#kucoin.place_market_order(symbol='ETH/USDT', percentage=50, order_type='buy', market_type='spot')
+	#kucoin.place_market_order(symbol='ETHUSDTM', percentage=25, order_type='buy', market_type='futures', leverage=None)

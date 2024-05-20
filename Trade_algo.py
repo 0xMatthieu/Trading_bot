@@ -7,83 +7,48 @@ Created on Sun May  3 14:11:22 2020
 """
 
 
-import pandas as pd
-import logging
-import settings_binance as sb 
+import pandas as pd 
 import pandas_ta as ta
-import Binance_trade
-	
-
-def Get_Macd(Currency, slow, fast, signal):
-	#MACD
-	lon = 2
-	mid = lon / 2
-	slow = lon / 4
-	Currency.df_macd_240 = Currency.historical.ta.macd(slow=slow, fast=fast, signal=signal, close = 'price')
-	Currency.df_macd_last_value_240 = Currency.df_macd_240.iloc[-1]
-	Currency.df_macd_60 = Currency.historical.ta.macd(slow=slow/mid, fast=fast/mid, signal=signal/mid, close = 'price')
-	Currency.df_macd_last_value_60 = Currency.df_macd_60.iloc[-1]
-	Currency.df_macd_30 = Currency.historical.ta.macd(slow=slow/slow, fast=fast/slow, signal=signal/slow, close = 'price')
-	Currency.df_macd_last_value_30 = Currency.df_macd_30.iloc[-1]
-
-def update_price_and_macd(Currency, date = 'None'):
-	Init = False
-
-	Currency.macd_status = 'Do nothing'
-	Currency.current_price = Currency.price[Currency.Currency].price.iloc[-1]
-
-	#check if price is the same
-	if Currency.price['price_stuck_algo'] > 5:
-		Currency.price['error'] = True
-		Currency.price['price_stuck_algo'] = 0
-	elif Currency.price['old_price_algo'] == Currency.current_price:
-		Currency.price['price_stuck'] = Currency.price['price_stuck'] + 1
-	else:
-		Currency.price['price_stuck'] = 0
-
-	Currency.price['old_price_algo'] = Currency.current_price
-
-	if date == 'None':
-		index_macd = -1 #Currency.price[Currency.Currency].index[-1]
-		date = pd.Timestamp.now()
-	else:
-		index_macd = Currency.historical.iloc[(Currency.historical['date']-date).abs().argsort()[:1]].index.tolist()[0]
-	Currency.df_macd_last_value = Currency.df_macd.iloc[index_macd]
-
-	#init
-	if Init == False:
-		Init = True
-		Currency.df_macd = Currency.df_macd_240.copy()
-
-	Currency.df_macd.iloc[index_macd][1] = 0
-
-	if Currency.df_macd_240.iloc[index_macd][1] > 0:
-		Currency.df_macd.iloc[index_macd][1] = Currency.df_macd.iloc[index_macd][1] + 1
-	else:
-		Currency.df_macd.iloc[index_macd][1] = Currency.df_macd.iloc[index_macd][1] - 1
-
-	if Currency.df_macd_60.iloc[index_macd][1] > 0:
-		Currency.df_macd.iloc[index_macd][1] = Currency.df_macd.iloc[index_macd][1] + 1
-	else:
-		Currency.df_macd.iloc[index_macd][1] = Currency.df_macd.iloc[index_macd][1] - 1
-
-	if Currency.df_macd_30.iloc[index_macd][1] > 0:
-		Currency.df_macd.iloc[index_macd][1] = Currency.df_macd.iloc[index_macd][1] + 1
-	else:
-		Currency.df_macd.iloc[index_macd][1] = Currency.df_macd.iloc[index_macd][1] - 1
 
 
-	# test if signal has changed
-	# if macd < signal in last cycle and macd > signal in current cycle, buy
-	if Currency.df_macd.iloc[index_macd - 1][1] < 0 and Currency.df_macd.iloc[index_macd][1] > 0 and Currency.macd_status == 'Do nothing':
-		Currency.macd_status = 'Buy now'
-	elif Currency.df_macd.iloc[index_macd - 1][1] > 0 and Currency.df_macd.iloc[index_macd][1] < 0 and Currency.macd_status == 'Do nothing':
-		Currency.macd_status = 'Sell now'
-	else:
-		Currency.macd_status = 'Do nothing'
-	print(f"{date}: current index of {Currency.Currency_crypto} is: {Currency.df_macd.index[index_macd]}, current price is {Currency.current_price} and current MACD status is {Currency.macd_status}")
-	#print(f"{date}: current MACD is: {Currency.df_macd_last_value}")
-		
+def calculate_macd(df, fast=12, slow=26, signal=9):
+   """
+	Calculate MACD and determine buy/sell signals.
+
+	Parameters:
+	- df: DataFrame with OHLCV data, including 'close' column.
+	- fast: Fast EMA period (default is 12).
+	- slow: Slow EMA period (default is 26).
+	- signal: Signal line EMA period (default is 9).
+
+	Returns:
+	- Updated DataFrame with MACD and Signal columns.
+	- Signal ('buy', 'sell', or None).
+	- Current trend ('buy' or 'sell').
+	"""
+	# Ensure the DataFrame has enough data to calculate MACD
+	min_periods = slow + signal
+	if len(df) < min_periods:
+		print(f"Not enough data to calculate MACD. Need at least {min_periods} periods.")
+		return df, None, None
+
+	# Calculate MACD
+	macd = ta.macd(df['close'], fast=fast, slow=slow, signal=signal)
+	df['MACD'] = macd['MACD_12_26_9']
+	df['Signal'] = macd['MACDs_12_26_9']
+
+	# Determine the buy/sell signal
+	signal_value = None
+	if df['MACD'].iloc[-1] > df['Signal'].iloc[-1] and df['MACD'].iloc[-2] <= df['Signal'].iloc[-2]:
+		signal_value = 'buy'
+	elif df['MACD'].iloc[-1] < df['Signal'].iloc[-1] and df['MACD'].iloc[-2] >= df['Signal'].iloc[-2]:
+		signal_value = 'sell'
+
+	# Determine the current trend
+	trend = 'buy' if df['MACD'].iloc[-1] > df['Signal'].iloc[-1] else 'sell'
+
+	return df, signal_value, trend
+
 
 if __name__ == "__main__":
-   main()
+
