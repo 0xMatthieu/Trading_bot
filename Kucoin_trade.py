@@ -109,7 +109,7 @@ class Kucoin(object):
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 		return exchange.market(symbol)
 
-	def place_market_order(self, symbol='BTC/USDT', percentage=100, order_type='buy', market_type='spot', leverage=None):
+	def place_market_order(self, symbol='BTC/USDT', percentage=100, order_type='buy', market_type='spot', leverage=None, reduceOnly=False):
 		#percentage shall be 1 to close futures position
 		
 		if market_type == 'spot':
@@ -136,7 +136,7 @@ class Kucoin(object):
 			# Determine the number of decimal places from the precision value
 			precision_decimal_places = abs(int(math.log10(precision)))
 
-			params = {}
+			params = {'reduceOnly':reduceOnly}
             
 			if order_type == 'buy':
 				# Fetch the ticker price to calculate max quantity
@@ -150,9 +150,6 @@ class Kucoin(object):
 				# Calculate quantity based on the percentage of available balance
 				quantity = float(available_balance * (percentage / 100))	
 
-				# Place a market sell order
-				if market_type == 'futures' and order_type == 'sell':
-					params['reduceOnly'] = True
 			else:
 				raise ValueError("order_type must be 'buy' or 'sell'")
 
@@ -187,7 +184,7 @@ if __name__ == "__main__":
 	kucoin = Kucoin()
 	#kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
-	#kucoin.fetch_ticker(symbol='XBTUSDTM', market_type='futures')
-	#kucoin.fetch_klines(symbol='XBTUSDTM', limit=200, market_type='futures')
+	#kucoin.fetch_ticker(symbol='ETHUSDTM', market_type='futures')
+	#kucoin.fetch_klines(symbol='ETHUSDTM', limit=200, market_type='futures')
 	#kucoin.place_market_order(symbol='ETH/USDT', percentage=50, order_type='buy', market_type='spot')
 	#kucoin.place_market_order(symbol='ETHUSDTM', percentage=25, order_type='buy', market_type='futures', leverage=None)
