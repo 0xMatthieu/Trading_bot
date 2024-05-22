@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import ccxt
 from streamlit import secrets
 import time
@@ -105,7 +108,7 @@ class Kucoin(object):
 			# Get the latest timestamp from the provided DataFrame
 			if signal:		
 				df = pd.concat([df, new_df], ignore_index=True)
-				print(f"Data appended to DataFrame for symbol: {symbol}")
+				#print(f"Data appended to DataFrame for symbol: {symbol}")
 			else:
 				df = new_df
 
@@ -143,7 +146,8 @@ class Kucoin(object):
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			# Fetch the available balance for the right currency
-			available_balance = self.fetch_balance(base_currency if order_type == 'sell' else quote_currency, 'total', market_type)
+			available_balance = self.fetch_balance(base_currency if order_type == 'sell' and market_type == 'spot' else quote_currency, \
+				'total' if market_type == 'futures' else 'free', market_type)
 
 			if available_balance is None:
 				print("Could not fetch the available balance.")
@@ -203,7 +207,7 @@ class Kucoin(object):
 
 	def run_macd_futures_trading_function(self, symbol='ETHUSDTM',df=None, leverage=None, timeframe='1m', percentage = 20):
 		market_type='futures'
-		
+
 		if df.empty:
 			df = self.fetch_klines(symbol=symbol, timeframe=timeframe, since=None, limit=200, market_type=market_type)
 
@@ -214,17 +218,27 @@ class Kucoin(object):
 			df, signal_value, trend = Trading_tools.calculate_macd(df, fast=12, slow=26, signal=9)
 			if signal_value:
 				#close open order order first
-				close = 'sell' if signal == 'buy' else 'buy'
+				close = 'sell' if signal_value == 'buy' else 'buy'
 				self.place_market_order(symbol=symbol, percentage=1, order_type=close, market_type=market_type, leverage=leverage, reduceOnly=True)
-				self.place_market_order(symbol=symbol, percentage=percentage, order_type=signal, market_type=market_type, leverage=leverage, reduceOnly=False)
+				self.place_market_order(symbol=symbol, percentage=percentage, order_type=signal_value, market_type=market_type, leverage=leverage, reduceOnly=False)
 		return df
 
 
 
 if __name__ == "__main__":
 	kucoin = Kucoin()
-	df = pd.DataFrame()
-	df = kucoin.run_macd_futures_trading_function(symbol='ETHUSDTM', df=df, leverage=None, timeframe='1m', percentage = 20)
+	df_eth = pd.DataFrame()
+	df_pyth = pd.DataFrame()
+	df_tao = pd.DataFrame()
+	df_wif = pd.DataFrame()
+	df_merl = pd.DataFrame()
+	while True:
+		df_eth = kucoin.run_macd_futures_trading_function(symbol='ETHUSDTM', df=df_eth, leverage=None, timeframe='1m', percentage = 20)
+		df_pyth = kucoin.run_macd_futures_trading_function(symbol='PYTHUSDTM', df=df_pyth, leverage=None, timeframe='1m', percentage = 20)
+		df_tao = kucoin.run_macd_futures_trading_function(symbol='TAOUSDTM', df=df_tao, leverage=None, timeframe='1m', percentage = 20)
+		df_wif = kucoin.run_macd_futures_trading_function(symbol='WIFUSDTM', df=df_wif, leverage=None, timeframe='1m', percentage = 20)
+		df_merl = kucoin.run_macd_futures_trading_function(symbol='MERLUSDTM', df=df_merl, leverage=None, timeframe='1m', percentage = 20)
+
 	#kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	#kucoin.fetch_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')
