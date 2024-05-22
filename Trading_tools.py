@@ -1,18 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun May  3 14:11:22 2020
-
-@author: matthieu
-"""
-
-
 import pandas as pd 
 import pandas_ta as ta
 
 
 def calculate_macd(df, fast=12, slow=26, signal=9):
-   """
+	"""
 	Calculate MACD and determine buy/sell signals.
 
 	Parameters:
@@ -48,7 +39,3 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 	trend = 'buy' if df['MACD'].iloc[-1] > df['Signal'].iloc[-1] else 'sell'
 
 	return df, signal_value, trend
-
-
-if __name__ == "__main__":
-

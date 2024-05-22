@@ -3,6 +3,7 @@ from streamlit import secrets
 import time
 import pandas as pd
 import math
+import Trading_tools
 
 class Kucoin(object):
 
@@ -23,6 +24,15 @@ class Kucoin(object):
 		})
 		self.adjust_timestamp_to_local_time = 2*60*60*1000	#currently +2hours UTC
 
+	def get_spot_fees(self):
+		try:
+			# Fetch trading fees from KuCoin
+			trading_fees = self.exchange.fetch_trading_fees()
+			return trading_fees
+		except ccxt.BaseError as e:
+			print(f"An error occurred while fetching trading fees: {str(e)}")
+			return None
+
 	def fetch_balance(self, currency='USDT', account='free', market_type='spot'):
 		# fetching the current balance
 		# can be free, used, total
@@ -35,6 +45,42 @@ class Kucoin(object):
 			return balance
 		except ccxt.BaseError as e:
 			print("An error occurred:", str(e))
+
+	def calculate_time_diff_signal(self, interval=None, df=None):
+		# If interval is provided, it must be at least 1 minute and df must be provided
+		unit = interval[-1]
+		if unit == 'm':
+			return int(interval[:-1]) * 60
+		elif unit == 'h':
+			return int(interval[:-1]) * 3600
+		elif unit == 'd':
+			return int(interval[:-1]) * 86400
+		else:
+			raise ValueError("Invalid interval format")
+
+		if interval < 1:
+			print("Error: Interval must be at least 1 minute.")
+			return None
+		if df is None:
+			print("Error: DataFrame must be provided when using an interval.")
+			return None
+
+		# Get the latest timestamp from the provided DataFrame
+		if not df.empty:
+			last_timestamp = df['timestamp'].max()
+			current_timestamp = ticker_data['timestamp']
+
+			# Calculate the time difference
+			time_diff = current_timestamp - last_timestamp
+
+			# If the time difference is greater than or equal to the interval, append the new data
+			if time_diff >= timedelta(minutes=interval):
+				print(f"Time difference ({time_diff}) is equal than the interval ({interval} minutes) !!!!")
+				signal = True
+			else:
+				print(f"Time difference ({time_diff}) is less than the interval ({interval} minutes). No data appended.")
+				signal = False
+			return signal
 
 	def fetch_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
 		"""Fetch ticker information for a specific symbol and append it to the provided DataFrame."""
@@ -54,35 +100,12 @@ class Kucoin(object):
 			}
 			new_df = pd.DataFrame([ticker_data])
 
-			# If interval is None, return the current price (append to df if provided)
-			if interval is None:
-				if df is not None:
-					df = pd.concat([df, new_df], ignore_index=True)
-				return df if df is not None else new_df
-
-			# If interval is provided, it must be at least 1 minute and df must be provided
-			if interval < 1:
-				print("Error: Interval must be at least 1 minute.")
-				return None
-
-			if df is None:
-				print("Error: DataFrame must be provided when using an interval.")
-				return None
+			signal = self.calculate_time_diff_signal(interval=interval, df=df)
 
 			# Get the latest timestamp from the provided DataFrame
-			if not df.empty:
-				last_timestamp = df['timestamp'].max()
-				current_timestamp = ticker_data['timestamp']
-
-				# Calculate the time difference
-				time_diff = current_timestamp - last_timestamp
-
-				# If the time difference is greater than or equal to the interval, append the new data
-				if time_diff >= timedelta(minutes=interval):
-					df = pd.concat([df, new_df], ignore_index=True)
-					print(f"Data appended to DataFrame for symbol: {symbol}")
-				else:
-					print(f"Time difference ({time_diff}) is less than the interval ({interval} minutes). No data appended.")
+			if signal:		
+				df = pd.concat([df, new_df], ignore_index=True)
+				print(f"Data appended to DataFrame for symbol: {symbol}")
 			else:
 				df = new_df
 
@@ -92,7 +115,7 @@ class Kucoin(object):
 			print("An error occurred while fetching the ticker:", str(e))
 			return df
 
-	def fetch_klines(self, symbol='BTC/USDT', timeframe='1m', since=None, limit=100, market_type='spot'):
+	def fetch_klines(self, symbol='BTC/USDT', timeframe='1m', since=None, limit=200, market_type='spot'):
 		"""Fetch klines (candlestick data) for a specific symbol and return a DataFrame."""
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
@@ -120,8 +143,7 @@ class Kucoin(object):
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			# Fetch the available balance for the right currency
-			available_balance = self.fetch_balance(base_currency if order_type == 'sell' and market_type == 'spot' else quote_currency, \
-				'used' if order_type == 'sell' and market_type == 'futures' else 'free', market_type)
+			available_balance = self.fetch_balance(base_currency if order_type == 'sell' else quote_currency, 'total', market_type)
 
 			if available_balance is None:
 				print("Could not fetch the available balance.")
@@ -179,12 +201,33 @@ class Kucoin(object):
 		except ccxt.BaseError as e:
 			print("An error occurred while fetching open orders:", str(e))
 
+	def run_macd_futures_trading_function(self, symbol='ETHUSDTM',df=None, leverage=None, timeframe='1m', percentage = 20):
+		market_type='futures'
+		
+		if df.empty:
+			df = self.fetch_klines(symbol=symbol, timeframe=timeframe, since=None, limit=200, market_type=market_type)
+
+		signal_timedelta = self.calculate_time_diff_signal(interval=timeframe, df=df)
+
+		if signal_timedelta:
+			df = self.fetch_ticker(symbol=symbol, df=df, interval=timeframe, market_type=market_type)
+			df, signal_value, trend = Trading_tools.calculate_macd(df, fast=12, slow=26, signal=9)
+			if signal_value:
+				#close open order order first
+				close = 'sell' if signal == 'buy' else 'buy'
+				self.place_market_order(symbol=symbol, percentage=1, order_type=close, market_type=market_type, leverage=leverage, reduceOnly=True)
+				self.place_market_order(symbol=symbol, percentage=percentage, order_type=signal, market_type=market_type, leverage=leverage, reduceOnly=False)
+		return df
+
+
 
 if __name__ == "__main__":
 	kucoin = Kucoin()
+	df = pd.DataFrame()
+	df = kucoin.run_macd_futures_trading_function(symbol='ETHUSDTM', df=df, leverage=None, timeframe='1m', percentage = 20)
 	#kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
-	#kucoin.fetch_ticker(symbol='ETHUSDTM', market_type='futures')
+	#kucoin.fetch_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')
 	#kucoin.fetch_klines(symbol='ETHUSDTM', limit=200, market_type='futures')
 	#kucoin.place_market_order(symbol='ETH/USDT', percentage=50, order_type='buy', market_type='spot')
-	#kucoin.place_market_order(symbol='ETHUSDTM', percentage=25, order_type='buy', market_type='futures', leverage=None)
+	#kucoin.place_market_order(symbol='ETHUSDTM', percentage=25, order_type='buy', market_type='futures', leverage=None, reduceOnly=False)
