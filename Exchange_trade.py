@@ -97,7 +97,7 @@ class Exchange(object):
 
 		# If the time difference is greater than or equal to the interval, append the new data
 		if time_diff >= timedelta(minutes=interval):
-			print(f"Time difference ({time_diff}) is equal than the interval ({interval} minutes) !!!!, last {last_timestamp}, current {current_timestamp} ")
+			#print(f"Time difference ({time_diff}) is equal than the interval ({interval} minutes) !!!!, last {last_timestamp}, current {current_timestamp} ")
 			signal = True
 		else:
 			#print(f"Time difference ({time_diff}) is less than the interval ({interval} minutes). No data appended.")
