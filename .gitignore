@@ -7,6 +7,8 @@ test.py
 # C extensions
 *.so
 
+.streamlit/secrets.toml
+
 # Distribution / packaging
 .Python
 build/
