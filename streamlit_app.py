@@ -61,6 +61,7 @@ def render_trace(df):
     st.line_chart(
        df, x='timestamp', y=['MACD', 'Signal'], color=["#FF0000", "#0000FF"]  # Optional
     )
+    st.dataframe(df)
 
 # This is the title of the app
 st.title('Crypto trading App')

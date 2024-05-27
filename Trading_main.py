@@ -51,11 +51,12 @@ class Futures_bot(object):
 			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=12, slow=26, signal=9)
 			if signal_value:
+				Crypto.print = f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}"
 				print(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				#close open order order first
 				close = 'sell' if signal_value == 'buy' else 'buy'
-				self.kucoin.place_market_order(symbol=Crypto.symbol, percentage=1, order_type=close, market_type=market_type, leverage=Crypto.leverage, reduceOnly=True)
-				self.kucoin.place_market_order(symbol=Crypto.symbol, percentage=Crypto.percentage, order_type=signal_value, market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
+				self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=1, order_type=close, market_type=market_type, leverage=Crypto.leverage, reduceOnly=True)
+				self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=signal_value, market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
 	def run_main(self):
