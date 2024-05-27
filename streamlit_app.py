@@ -92,6 +92,10 @@ while True:
         if tabs ==crypto.symbol_spot:
             render_trace(crypto.df)
 
+    if st.session_state.futures_bot.kucoin.print is not None:
+        append_to_file(crypto.print)
+        st.session_state.display_data = True
+
     time.sleep(1)
 
    

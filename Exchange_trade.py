@@ -39,7 +39,7 @@ class Exchange(object):
 			})
 			#futures not available for binance
 
-			self.print = None
+		self.print = None
 		
 	def get_spot_fees(self):
 		try:
@@ -47,6 +47,7 @@ class Exchange(object):
 			trading_fees = self.exchange.fetch_trading_fees()
 			return trading_fees
 		except ccxt.BaseError as e:
+			self.print = f"An error occurred while fetching trading fees: {str(e)}"
 			print(f"An error occurred while fetching trading fees: {str(e)}")
 			return None
 
@@ -182,6 +183,7 @@ class Exchange(object):
 			market_data = self.fetch_market_data(symbol, market_type)
 			precision = market_data['precision']['amount']
 			min_order_amount = market_data['limits']['amount']['min']
+			self.print = f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}"
 			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}")
 
 			# Determine the number of decimal places from the precision value
@@ -215,10 +217,11 @@ class Exchange(object):
 
 			# Place a market buy order
 			order = exchange.create_order(symbol=symbol, type='market', side=order_type, amount=quantity, params=params)
-
+			self.print = "Order placed:", order
 			print("Order placed:", order)
 			return order
 		except ccxt.BaseError as e:
+			self.print = "An error occurred while placing the order:", str(e)
 			print("An error occurred while placing the order:", str(e))
 
 	def get_open_orders(self, market_type='spot'):
