@@ -6,7 +6,7 @@ from streamlit import secrets
 import time
 import pandas as pd
 import math
-
+import Trading_tools
 from datetime import timedelta
 
 class Exchange(object):
@@ -39,7 +39,6 @@ class Exchange(object):
 			})
 			#futures not available for binance
 
-		self.print = None
 		
 	def get_spot_fees(self):
 		try:
@@ -47,7 +46,7 @@ class Exchange(object):
 			trading_fees = self.exchange.fetch_trading_fees()
 			return trading_fees
 		except ccxt.BaseError as e:
-			self.print = f"An error occurred while fetching trading fees: {str(e)}"
+			Trading_tools.append_to_file(f"An error occurred while fetching trading fees: {str(e)}")
 			print(f"An error occurred while fetching trading fees: {str(e)}")
 			return None
 
@@ -172,8 +171,9 @@ class Exchange(object):
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			# Fetch the available balance for the right currency
-			available_balance = self.fetch_balance(base_currency if order_type == 'sell' and market_type == 'spot' else quote_currency, \
-				'total' if market_type == 'futures' else 'free', market_type)
+			balance_currency = base_currency if order_type == 'sell' and market_type == 'spot' else quote_currency
+			balance_type = 'total' if market_type == 'futures' else 'free'
+			available_balance = self.fetch_balance(balance_currency, balance_type, market_type)
 
 			if available_balance is None:
 				print("Could not fetch the available balance.")
@@ -183,13 +183,13 @@ class Exchange(object):
 			market_data = self.fetch_market_data(symbol, market_type)
 			precision = market_data['precision']['amount']
 			min_order_amount = market_data['limits']['amount']['min']
-			self.print = f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}"
-			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}")
 
 			# Determine the number of decimal places from the precision value
-			precision_decimal_places = abs(int(math.log10(precision)))
+			precision_decimal_places = max(0, int(-math.log10(precision)))
 
 			params = {'reduceOnly':reduceOnly}
+
+			price = None
             
 			if order_type == 'buy':
 				# Fetch the ticker price to calculate max quantity
@@ -215,13 +215,20 @@ class Exchange(object):
 			if leverage is not None and market_type == 'futures':
 				params['leverage'] = leverage
 
+			Trading_tools.append_to_file(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}") 
+			Trading_tools.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
+			Trading_tools.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
+			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}") 
+			print(f"order is {order_type}, price is {price} and quantity is {quantity}, leverage is {leverage}")
+			print(f"Available balance for {balance_currency}: {available_balance}")
+
 			# Place a market buy order
 			order = exchange.create_order(symbol=symbol, type='market', side=order_type, amount=quantity, params=params)
-			self.print = "Order placed:", order
+			Trading_tools.append_to_file(f"Order placed: {order}")
 			print("Order placed:", order)
 			return order
 		except ccxt.BaseError as e:
-			self.print = "An error occurred while placing the order:", str(e)
+			Trading_tools.append_to_file(f"An error occurred while placing the order: {str(e)}")
 			print("An error occurred while placing the order:", str(e))
 
 	def get_open_orders(self, market_type='spot'):

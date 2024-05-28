@@ -1,6 +1,6 @@
 import pandas as pd 
 import pandas_ta as ta
-
+import streamlit as st
 
 def calculate_macd(df, fast=12, slow=26, signal=9):
 	"""
@@ -39,3 +39,25 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 	trend = 'buy' if df['MACD'].iloc[-1] > df['Signal'].iloc[-1] else 'sell'
 
 	return df, signal_value, trend
+
+# Function to erase content and start with a fresh new file
+def erase_file_data(file_path="data.txt"):
+    with open(file_path, 'w') as file:
+        # Opening the file in write mode will truncate the file
+        pass
+
+# Function to append a string input to a text file if the input is not None
+def append_to_file(input_string, file_path="data.txt"):
+    if input_string:
+        with open(file_path, "a") as file:
+            file.write(input_string + "\n")
+
+# Function to read the file and write content using st.write, one line per sentence
+def read_and_display_file(file_path="data.txt"):
+    try:
+        with open(file_path, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                st.write(line.strip())
+    except FileNotFoundError:
+        st.write("File not found. Please add some content first.")

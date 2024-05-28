@@ -10,8 +10,6 @@ class Crypto(object):
 		self.leverage = leverage
 		self.timeframe = timeframe
 		self.percentage = percentage
-		#log
-		self.print = None
 
 class Futures_bot(object):
 
@@ -34,13 +32,11 @@ class Futures_bot(object):
 		market_type_spot='spot'
 		#print("symbol:", Crypto.symbol_spot)
 		#print(f"df {Crypto.df}")
-		#erase print at the beginning
-		Crypto.print = None
 
 		if Crypto.df.empty:
 			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=200, market_type=market_type_spot)
 			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=12, slow=26, signal=9)
-			Crypto.print = f"Crypto {Crypto.symbol_spot} dataframe created"
+			Trading_tools.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created")
 			print(f"Crypto {Crypto.symbol_spot} dataframe created")
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
@@ -51,7 +47,7 @@ class Futures_bot(object):
 			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=12, slow=26, signal=9)
 			if signal_value:
-				Crypto.print = f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}"
+				Trading_tools.append_to_file(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				print(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				#close open order order first
 				close = 'sell' if signal_value == 'buy' else 'buy'
