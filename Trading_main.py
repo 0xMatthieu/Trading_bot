@@ -60,7 +60,7 @@ class Futures_bot(object):
 				print(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				#close open order order first
 				close = 'sell' if signal_value == 'buy' else 'buy'
-				self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=1, order_type=close, market_type=market_type, leverage=Crypto.leverage, reduceOnly=True)
+				self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=10000, order_type=close, market_type=market_type, leverage=Crypto.leverage, reduceOnly=True)
 				self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=signal_value, market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
@@ -74,8 +74,9 @@ class Futures_bot(object):
 
 if __name__ == "__main__":
 	Bot = Futures_bot()
-	while True:
-		Bot.run_main()
+	Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
+	#while True:
+	#	Bot.run_main()
 	
 	
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')

@@ -191,30 +191,59 @@ class Exchange(object):
 			params = {'reduceOnly':reduceOnly}
 
 			price = None
-            		
-			if order_type == 'buy' and market_type == 'spot':
+           
+			if market_type == 'spot':
+				if order_type == 'buy':
+					# Fetch the ticker price to calculate max quantity
+					ticker = exchange.fetch_ticker(symbol)
+					price = ticker['last']
+	                
+					# Calculate quantity based on the percentage of available balance
+					quantity = (available_balance * (percentage / 100)) / price
+
+				elif order_type == 'sell':
+					# Calculate quantity based on the percentage of available balance
+					quantity = float(available_balance * (percentage / 100))
+
+				else:
+					raise ValueError("order_type must be 'buy' or 'sell'")
+
+				# Ensure the quantity is within the allowed precision and limits
+				quantity = max(min_order_amount, round(quantity, precision_decimal_places))
+
+			elif market_type == 'futures':
+
 				# Fetch the ticker price to calculate max quantity
 				ticker = exchange.fetch_ticker(symbol)
 				price = ticker['last']
-                
-				# Calculate quantity based on the percentage of available balance
-				quantity = (available_balance * (percentage / 100)) / (price * multiplier)
+            
+				if order_type == 'buy' or order_type == 'sell': 
+					# Calculate quantity based on the percentage of available balance
+					min_amount = price * multiplier
+					money_to_use = available_balance * (percentage / 100)
+					money_really_available = self.fetch_balance(balance_currency, 'free', market_type)
+					if money_really_available < money_to_use:
+						money_to_use = money_really_available
+					if leverage == None and min_amount > money_to_use:
+						leverage = math.ceil(min_amount / money_to_use)
+					elif leverage == None:
+						leverage = 1
+						
+					quantity = (money_to_use * leverage) / (min_amount)
 
-			elif order_type == 'sell' or market_type == 'futures':
-				# Calculate quantity based on the percentage of available balance
-				quantity = float(available_balance * (percentage / 100) / multiplier)	
+					# Ensure the quantity is within the allowed precision and limits
+					quantity = max(multiplier, round(quantity, precision_decimal_places))
 
-			else:
-				raise ValueError("order_type must be 'buy' or 'sell'")
+					# Set leverage if provided and if market type is futures
+					if leverage is not None and market_type == 'futures':
+						params['leverage'] = leverage
+
+				else:
+					raise ValueError("order_type must be 'buy' or 'sell'")
 
 			print("params:", params)
 
-			# Ensure the quantity is within the allowed precision and limits
-			quantity = max(min_order_amount, round(quantity, precision_decimal_places))
-
-			# Set leverage if provided and if market type is futures
-			if leverage is not None and market_type == 'futures':
-				params['leverage'] = leverage
+			
 
 			Trading_tools.append_to_file(f"{symbol} precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
 			Trading_tools.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
@@ -242,7 +271,9 @@ class Exchange(object):
 		except ccxt.BaseError as e:
 			print("An error occurred while fetching open orders:", str(e))
 
-
+if __name__ == "__main__":
+	kucoin = Exchange(name='kucoin')
+	kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 
 
 

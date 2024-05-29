@@ -64,8 +64,8 @@ app_init()
 
 tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
 
-Trading_tools.append_to_file(f"Streamlit app init time execution {time.time() - start_time}")
-print(f"Streamlit app init time execution {time.time() - start_time}")
+#Trading_tools.append_to_file(f"Streamlit app init time execution {time.time() - start_time}")
+#print(f"Streamlit app init time execution {time.time() - start_time}")
 
 while True:
     #run functions

@@ -1,4 +1,4 @@
-Streamlit app init time execution 0.18089866638183594
+Streamlit app init time execution 0.1970667839050293
 Crypto ETH/USDT dataframe created
 Crypto PYTH/USDT dataframe created
 Crypto TAO/USDT dataframe created
