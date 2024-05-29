@@ -183,6 +183,7 @@ class Exchange(object):
 			market_data = self.fetch_market_data(symbol, market_type)
 			precision = market_data['precision']['amount']
 			min_order_amount = market_data['limits']['amount']['min']
+			multiplier = market_data['contractSize']	#multiplier in API, https://stackoverflow.com/questions/75522901/issue-with-kucoin-futures-api-to-create-limit-order 
 
 			# Determine the number of decimal places from the precision value
 			precision_decimal_places = max(0, int(-math.log10(precision)))
@@ -190,18 +191,18 @@ class Exchange(object):
 			params = {'reduceOnly':reduceOnly}
 
 			price = None
-            
+            		
 			if order_type == 'buy':
 				# Fetch the ticker price to calculate max quantity
 				ticker = exchange.fetch_ticker(symbol)
 				price = ticker['last']
                 
 				# Calculate quantity based on the percentage of available balance
-				quantity = (available_balance * (percentage / 100)) / price
+				quantity = (available_balance * (percentage / 100)) / (price * multiplier)
 
 			elif order_type == 'sell':
 				# Calculate quantity based on the percentage of available balance
-				quantity = float(available_balance * (percentage / 100))	
+				quantity = float(available_balance * (percentage / 100) / multiplier)	
 
 			else:
 				raise ValueError("order_type must be 'buy' or 'sell'")
