@@ -3,14 +3,15 @@ from Trading_main import Futures_bot
 import time  # to simulate a real time data, time loop
 import extra_streamlit_components as stx
 import Trading_tools
+import time
+
+start_time = time.time()
 
 st.set_page_config(
     page_title="Crypto trading",
     page_icon="✅",
     layout="wide",
 )
-
-
 
 def app_init():
     # Initialize session_state if it doesn't exist
@@ -30,19 +31,29 @@ def app_init():
         #st.session_state["tabs"] = ['Resume']
         #st.session_state["tabs"].append('Help')
         
-        st.rerun()
+        #st.rerun()
 
 def run_algo(futures_bot):
     futures_bot.run_main()
 
-def render_trace(df):
-    st.line_chart(
-       df, x='timestamp', y='close', color=["#FF0000"]  # Optional
-    )
-    st.line_chart(
-       df, x='timestamp', y=['MACD', 'Signal'], color=["#FF0000", "#0000FF"]  # Optional
-    )
-    st.dataframe(df)
+def render_trace(crypto):
+    if crypto.init_render == False:
+        crypto.init_render = True
+        crypto.line_chart_price = st.line_chart(
+           crypto.df, x='timestamp', y='close', color=["#FF0000"]  # Optional
+        )
+        crypto.line_chart_macd = st.line_chart(
+           crypto.df, x='timestamp', y=['MACD', 'Signal'], color=["#FF0000", "#0000FF"]  # Optional
+        )
+        crypto.line_chart_df = st.dataframe(crypto.df)
+    else:
+        crypto.line_chart_price.line_chart(
+           crypto.df, x='timestamp', y='close', color=["#FF0000"]  # Optional
+        )
+        crypto.line_chart_macd.line_chart(
+           crypto.df, x='timestamp', y=['MACD', 'Signal'], color=["#FF0000", "#0000FF"]  # Optional
+        )
+        crypto.line_chart_df.dataframe(crypto.df)
 
 # This is the title of the app
 st.title('Crypto trading App')
@@ -51,9 +62,10 @@ st.title('Crypto trading App')
 app_init()
 
 
-
-#tabs = st.tabs(st.session_state.tabs)
 tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
+
+Trading_tools.append_to_file(f"Streamlit app init time execution {time.time() - start_time}")
+print(f"Streamlit app init time execution {time.time() - start_time}")
 
 while True:
     #run functions
@@ -68,7 +80,7 @@ while True:
 
     for crypto in st.session_state.futures_bot.crypto:
         if tabs ==crypto.symbol_spot:
-            render_trace(crypto.df)
+            render_trace(crypto)
 
 
     time.sleep(1)

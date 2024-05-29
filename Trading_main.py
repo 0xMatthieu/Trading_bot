@@ -1,6 +1,7 @@
 from Exchange_trade import Exchange
 import Trading_tools
 import pandas as pd
+import time
 
 class Crypto(object):
 	def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20):
@@ -10,6 +11,11 @@ class Crypto(object):
 		self.leverage = leverage
 		self.timeframe = timeframe
 		self.percentage = percentage
+		# streamlit app rendering
+		self.init_render = False
+		self.line_chart_price = None
+		self.line_chart_macd = None
+		self.line_chart_df = None
 
 class Futures_bot(object):
 
@@ -28,6 +34,7 @@ class Futures_bot(object):
 		
 
 	def run_macd_futures_trading_function(self, Crypto=None):
+		start_time = time.time()
 		market_type='futures'
 		market_type_spot='spot'
 		#print("symbol:", Crypto.symbol_spot)
@@ -41,6 +48,8 @@ class Futures_bot(object):
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
 		signal_timedelta = self.kucoin.calculate_time_diff_signal(interval=interval, df=Crypto.df, ticker_data=None)
+
+		#print(f"Crypto {Crypto.symbol_spot} time execution {time.time() - start_time}")
 
 		if signal_timedelta:
 			#self.print = f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated"
@@ -56,8 +65,10 @@ class Futures_bot(object):
 		return Crypto
 
 	def run_main(self):
+		start_time = time.time()
 		for crypto in self.crypto:
 			crypto = self.run_macd_futures_trading_function(Crypto=crypto)
+		#print(f"Main crypto algo time execution {time.time() - start_time}")
 
 
 

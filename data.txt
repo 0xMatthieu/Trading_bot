@@ -1,13 +1,6 @@
+Streamlit app init time execution 0.18089866638183594
 Crypto ETH/USDT dataframe created
 Crypto PYTH/USDT dataframe created
 Crypto TAO/USDT dataframe created
 Crypto WIF/USDT dataframe created
 Crypto ONDO/USDT dataframe created
-signal buy on WIF/USDT at time 2024-05-28 22:37:08.669000
-WIFUSDTM precision is 1.0 and min_order_amount is 1.0
-signal sell on ONDO/USDT at time 2024-05-28 22:38:08.655000
-ONDOUSDTM precision is 1.0 and min_order_amount is 1.0
-order is buy, price is 1.2688 and quantity is 1.0
-Available balance for USDT: 80.52399166
-An error occurred while placing the order: kucoinfutures No open positions to close.
-ONDOUSDTM precision is 1.0 and min_order_amount is 1.0
