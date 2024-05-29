@@ -192,7 +192,7 @@ class Exchange(object):
 
 			price = None
             		
-			if order_type == 'buy':
+			if order_type == 'buy' and market_type == 'spot':
 				# Fetch the ticker price to calculate max quantity
 				ticker = exchange.fetch_ticker(symbol)
 				price = ticker['last']
@@ -200,7 +200,7 @@ class Exchange(object):
 				# Calculate quantity based on the percentage of available balance
 				quantity = (available_balance * (percentage / 100)) / (price * multiplier)
 
-			elif order_type == 'sell':
+			elif order_type == 'sell' or market_type == 'futures':
 				# Calculate quantity based on the percentage of available balance
 				quantity = float(available_balance * (percentage / 100) / multiplier)	
 
@@ -216,7 +216,7 @@ class Exchange(object):
 			if leverage is not None and market_type == 'futures':
 				params['leverage'] = leverage
 
-			Trading_tools.append_to_file(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}") 
+			Trading_tools.append_to_file(f"{symbol} precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
 			Trading_tools.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
 			Trading_tools.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
 			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}") 
