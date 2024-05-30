@@ -232,7 +232,7 @@ class Exchange(object):
 					quantity = (money_to_use * leverage) / (min_amount)
 
 					# Ensure the quantity is within the allowed precision and limits
-					quantity = max(multiplier, round(quantity, precision_decimal_places))
+					quantity = max(1, round(quantity, precision_decimal_places))
 
 					# Set leverage if provided and if market type is futures
 					if leverage is not None and market_type == 'futures':
