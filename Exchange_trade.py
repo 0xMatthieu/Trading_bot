@@ -39,6 +39,13 @@ class Exchange(object):
 			})
 			#futures not available for binance
 
+	def load_market(self, market_type='spot'):
+		# solve some connection bug
+		try:
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+			exchange.load_markets()
+		except ccxt.BaseError as e:
+			print("An error occurred:", str(e))
 		
 	def get_spot_fees(self):
 		try:
@@ -271,9 +278,21 @@ class Exchange(object):
 		except ccxt.BaseError as e:
 			print("An error occurred while fetching open orders:", str(e))
 
+	def close_position(self, symbol='BTC/USDT', market_type='spot'):
+		try:
+			# close a positon using only symbol as input, no order id
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+			exchange.close_position(symbol = symbol)
+		except ccxt.BaseError as e:
+			print(f"An error occurred while fetching trading fees: {str(e)}")
+
 if __name__ == "__main__":
 	kucoin = Exchange(name='kucoin')
+	kucoin.load_market(market_type='futures')
 	kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
+
+	order = kucoin.place_market_order(symbol='WIFUSDTM', percentage=10, order_type='buy', market_type='futures', leverage=None, reduceOnly=False)
+
 
 
 

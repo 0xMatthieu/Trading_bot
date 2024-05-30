@@ -40,3 +40,19 @@ PYTHUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 10.0
 order is buy, price is 0.4254 and quantity is 10.0
 Available balance for USDT: 80.19770561
 An error occurred while placing the order: kucoinfutures Insufficient balance. 43.0730922600 is required to place the order.
+WIFUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 10.0
+order is buy, price is 3.4007 and quantity is 1
+Available balance for USDT: 76.56403327
+An error occurred while placing the order: kucoinfutures Insufficient balance. 0.9006202572 is required to place the order.
+WIFUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 10.0
+order is buy, price is 3.4481 and quantity is 1
+Available balance for USDT: 76.37896387
+Order placed: {'id': '185756314553577472', 'clientOrderId': None, 'symbol': 'WIF/USDT:USDT', 'type': None, 'timeInForce': None, 'postOnly': None, 'reduceOnly': None, 'side': None, 'amount': None, 'price': None, 'stopPrice': None, 'triggerPrice': None, 'cost': None, 'filled': None, 'remaining': None, 'timestamp': None, 'datetime': None, 'fee': None, 'status': None, 'info': {'orderId': '185756314553577472'}, 'lastTradeTimestamp': None, 'lastUpdateTimestamp': None, 'average': None, 'trades': [], 'fees': [], 'takeProfitPrice': None, 'stopLossPrice': None}
+WIFUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 10.0
+order is buy, price is 3.4488 and quantity is 1
+Available balance for USDT: 76.35255847
+An error occurred while placing the order: kucoinfutures No open positions to close.
+WIFUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 10.0
+order is sell, price is 3.4163 and quantity is 1
+Available balance for USDT: 76.35255847
+An error occurred while placing the order: kucoinfutures No open positions to close.

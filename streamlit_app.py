@@ -18,7 +18,7 @@ def app_init():
     if 'futures_bot' not in st.session_state:
         st.session_state['futures_bot'] = Futures_bot()
     if 'display_data' not in st.session_state:
-        Trading_tools.erase_file_data()
+        #Trading_tools.erase_file_data()
         st.session_state['display_data'] = False
     if 'tabs' not in st.session_state:
         st.session_state["tabs"] = [
