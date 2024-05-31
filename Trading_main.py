@@ -1,5 +1,6 @@
 from Exchange_trade import Exchange
 import Trading_tools
+import Sharing_data
 import pandas as pd
 import time
 
@@ -11,11 +12,9 @@ class Crypto(object):
 		self.leverage = leverage
 		self.timeframe = timeframe
 		self.percentage = percentage
-		# streamlit app rendering
-		self.init_render = False
-		self.line_chart_price = None
-		self.line_chart_macd = None
-		self.line_chart_df = None
+		# data sharing
+		self.json_file = 'data/' + symbol_spot.replace('/', '_') + '.json'
+
 
 class Futures_bot(object):
 
@@ -41,9 +40,11 @@ class Futures_bot(object):
 		#print(f"df {Crypto.df}")
 
 		if Crypto.df.empty:
+			Sharing_data.erase_json_content(filename=Crypto.json_file)
 			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=200, market_type=market_type_spot)
 			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=12, slow=26, signal=9)
-			Trading_tools.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created")
+			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created")
+			Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 			print(f"Crypto {Crypto.symbol_spot} dataframe created")
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
@@ -55,8 +56,9 @@ class Futures_bot(object):
 			#self.print = f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated"
 			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=12, slow=26, signal=9)
+			Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 			if signal_value:
-				Trading_tools.append_to_file(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
+				Sharing_data.append_to_file(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				print(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				#close open order order first
 				close = 'sell' if signal_value == 'buy' else 'buy'
@@ -74,9 +76,10 @@ class Futures_bot(object):
 
 if __name__ == "__main__":
 	Bot = Futures_bot()
-	Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
-	#while True:
-	#	Bot.run_main()
+	Sharing_data.erase_file_data()
+	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
+	while True:
+		Bot.run_main()
 	
 	
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
