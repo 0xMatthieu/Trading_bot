@@ -6,7 +6,7 @@ from streamlit import secrets
 import time
 import pandas as pd
 import math
-import Trading_tools
+import Sharing_data
 from datetime import timedelta
 
 class Exchange(object):
@@ -53,7 +53,7 @@ class Exchange(object):
 			trading_fees = self.exchange.fetch_trading_fees()
 			return trading_fees
 		except ccxt.BaseError as e:
-			Trading_tools.append_to_file(f"An error occurred while fetching trading fees: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching trading fees: {str(e)}")
 			print(f"An error occurred while fetching trading fees: {str(e)}")
 			return None
 
@@ -252,20 +252,20 @@ class Exchange(object):
 
 			
 
-			Trading_tools.append_to_file(f"{symbol} precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
-			Trading_tools.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
-			Trading_tools.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
+			Sharing_data.append_to_file(f"{symbol} precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
+			Sharing_data.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
+			Sharing_data.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
 			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}") 
 			print(f"order is {order_type}, price is {price} and quantity is {quantity}, leverage is {leverage}")
 			print(f"Available balance for {balance_currency}: {available_balance}")
 
 			# Place a market buy order
 			order = exchange.create_order(symbol=symbol, type='market', side=order_type, amount=quantity, params=params)
-			Trading_tools.append_to_file(f"Order placed: {order}")
+			Sharing_data.append_to_file(f"Order placed: {order}")
 			print("Order placed:", order)
 			return order
 		except ccxt.BaseError as e:
-			Trading_tools.append_to_file(f"An error occurred while placing the order: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
 			print("An error occurred while placing the order:", str(e))
 
 	def get_open_orders(self, market_type='spot'):
