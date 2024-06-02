@@ -1,278 +1,14 @@
 [
     {
-        "timestamp": "2024-06-02T19:20:00",
-        "open": 385.6,
-        "high": 385.9,
-        "low": 385.0,
-        "close": 385.7,
-        "volume": 264.1752,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:21:00",
-        "open": 385.8,
-        "high": 386.5,
-        "low": 385.4,
-        "close": 386.5,
-        "volume": 36.8184,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:22:00",
-        "open": 386.4,
-        "high": 387.0,
-        "low": 386.3,
-        "close": 387.0,
-        "volume": 24.0996,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:23:00",
-        "open": 387.1,
-        "high": 387.6,
-        "low": 387.1,
-        "close": 387.6,
-        "volume": 9.6347,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:24:00",
-        "open": 387.7,
-        "high": 388.7,
-        "low": 387.6,
-        "close": 387.7,
-        "volume": 52.7456,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:25:00",
-        "open": 387.6,
-        "high": 387.6,
-        "low": 386.9,
-        "close": 386.9,
-        "volume": 17.8265,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:26:00",
-        "open": 386.8,
-        "high": 387.5,
-        "low": 386.7,
-        "close": 387.5,
-        "volume": 30.8623,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:27:00",
-        "open": 387.5,
-        "high": 388.3,
-        "low": 386.9,
-        "close": 387.9,
-        "volume": 78.1183,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:28:00",
-        "open": 387.9,
-        "high": 387.9,
-        "low": 387.4,
-        "close": 387.7,
-        "volume": 28.9864,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:29:00",
-        "open": 387.7,
-        "high": 388.6,
-        "low": 387.7,
-        "close": 388.5,
-        "volume": 34.1278,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:30:00",
-        "open": 388.3,
-        "high": 388.6,
-        "low": 387.8,
-        "close": 388.0,
-        "volume": 23.4418,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:31:00",
-        "open": 387.8,
-        "high": 387.9,
-        "low": 385.8,
-        "close": 387.3,
-        "volume": 159.0578,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:32:00",
-        "open": 387.3,
-        "high": 387.6,
-        "low": 387.1,
-        "close": 387.4,
-        "volume": 9.611,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:33:00",
-        "open": 387.4,
-        "high": 387.4,
-        "low": 386.1,
-        "close": 386.7,
-        "volume": 43.3487,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:34:00",
-        "open": 386.4,
-        "high": 386.6,
-        "low": 386.1,
-        "close": 386.5,
-        "volume": 23.8742,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:35:00",
-        "open": 386.4,
-        "high": 386.7,
-        "low": 386.2,
-        "close": 386.2,
-        "volume": 6.8992,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:36:00",
-        "open": 386.2,
-        "high": 386.9,
-        "low": 386.2,
-        "close": 386.9,
-        "volume": 16.195,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:37:00",
-        "open": 386.9,
-        "high": 387.0,
-        "low": 386.4,
-        "close": 387.0,
-        "volume": 5.7162,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:38:00",
-        "open": 387.0,
-        "high": 387.2,
-        "low": 386.8,
-        "close": 387.2,
-        "volume": 13.7647,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:39:00",
-        "open": 387.2,
-        "high": 387.2,
-        "low": 385.8,
-        "close": 386.0,
-        "volume": 155.6389,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:40:00",
-        "open": 386.0,
-        "high": 387.4,
-        "low": 385.5,
-        "close": 387.4,
-        "volume": 135.8429,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:41:00",
-        "open": 387.3,
-        "high": 387.8,
-        "low": 386.8,
-        "close": 387.2,
-        "volume": 87.0238,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:42:00",
-        "open": 387.2,
-        "high": 387.5,
-        "low": 387.1,
-        "close": 387.2,
-        "volume": 13.3397,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
-        "timestamp": "2024-06-02T19:43:00",
-        "open": 387.2,
-        "high": 387.4,
-        "low": 387.0,
-        "close": 387.1,
-        "volume": 49.5365,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
-    },
-    {
         "timestamp": "2024-06-02T19:44:00",
         "open": 387.1,
         "high": 387.7,
         "low": 387.1,
         "close": 387.3,
         "volume": 82.0667,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:45:00",
@@ -281,9 +17,9 @@
         "low": 386.8,
         "close": 388.0,
         "volume": 124.0661,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:46:00",
@@ -292,9 +28,9 @@
         "low": 387.0,
         "close": 387.1,
         "volume": 57.1631,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:47:00",
@@ -303,9 +39,9 @@
         "low": 386.6,
         "close": 387.5,
         "volume": 49.6785,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:48:00",
@@ -314,9 +50,9 @@
         "low": 385.8,
         "close": 386.2,
         "volume": 50.2702,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:49:00",
@@ -325,9 +61,9 @@
         "low": 385.5,
         "close": 385.5,
         "volume": 33.1461,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:50:00",
@@ -336,9 +72,9 @@
         "low": 384.7,
         "close": 385.0,
         "volume": 95.1581,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:51:00",
@@ -347,9 +83,9 @@
         "low": 384.2,
         "close": 384.6,
         "volume": 98.0307,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:52:00",
@@ -358,9 +94,9 @@
         "low": 384.7,
         "close": 384.8,
         "volume": 21.7338,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:53:00",
@@ -369,9 +105,9 @@
         "low": 384.6,
         "close": 385.2,
         "volume": 48.065,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:54:00",
@@ -380,9 +116,9 @@
         "low": 384.7,
         "close": 385.2,
         "volume": 77.7695,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:55:00",
@@ -391,9 +127,9 @@
         "low": 384.9,
         "close": 385.0,
         "volume": 29.4299,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:56:00",
@@ -402,9 +138,9 @@
         "low": 384.3,
         "close": 384.3,
         "volume": 26.5185,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:57:00",
@@ -413,9 +149,9 @@
         "low": 384.0,
         "close": 384.3,
         "volume": 34.7472,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:58:00",
@@ -424,9 +160,9 @@
         "low": 384.1,
         "close": 384.6,
         "volume": 26.3482,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T19:59:00",
@@ -435,9 +171,9 @@
         "low": 383.8,
         "close": 384.0,
         "volume": 88.1277,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:00:00",
@@ -446,9 +182,9 @@
         "low": 381.7,
         "close": 381.7,
         "volume": 183.9955,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:01:00",
@@ -457,9 +193,9 @@
         "low": 378.6,
         "close": 379.5,
         "volume": 703.7339,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:02:00",
@@ -468,9 +204,9 @@
         "low": 379.2,
         "close": 380.8,
         "volume": 140.043,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:03:00",
@@ -479,9 +215,9 @@
         "low": 379.7,
         "close": 379.9,
         "volume": 81.9791,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:04:00",
@@ -490,9 +226,9 @@
         "low": 379.1,
         "close": 379.5,
         "volume": 64.1038,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:05:00",
@@ -501,9 +237,9 @@
         "low": 378.9,
         "close": 380.2,
         "volume": 83.3906,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:06:00",
@@ -512,9 +248,9 @@
         "low": 380.2,
         "close": 381.5,
         "volume": 87.2822,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:07:00",
@@ -523,9 +259,9 @@
         "low": 381.1,
         "close": 381.6,
         "volume": 40.3158,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:08:00",
@@ -534,9 +270,9 @@
         "low": 380.9,
         "close": 381.5,
         "volume": 76.5834,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:09:00",
@@ -545,9 +281,9 @@
         "low": 381.5,
         "close": 382.5,
         "volume": 81.4823,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:10:00",
@@ -556,9 +292,9 @@
         "low": 382.5,
         "close": 383.5,
         "volume": 47.6768,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:11:00",
@@ -567,9 +303,9 @@
         "low": 382.8,
         "close": 383.0,
         "volume": 62.1223,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:12:00",
@@ -578,9 +314,9 @@
         "low": 382.0,
         "close": 382.7,
         "volume": 25.6428,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:13:00",
@@ -589,9 +325,9 @@
         "low": 382.7,
         "close": 383.2,
         "volume": 11.6294,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:14:00",
@@ -600,9 +336,9 @@
         "low": 382.3,
         "close": 382.3,
         "volume": 13.7589,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:15:00",
@@ -611,9 +347,9 @@
         "low": 381.9,
         "close": 383.7,
         "volume": 115.6935,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:16:00",
@@ -622,9 +358,9 @@
         "low": 382.2,
         "close": 383.2,
         "volume": 47.1322,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:17:00",
@@ -633,9 +369,9 @@
         "low": 382.9,
         "close": 383.9,
         "volume": 18.5807,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:18:00",
@@ -644,9 +380,9 @@
         "low": 383.4,
         "close": 383.8,
         "volume": 24.5538,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:19:00",
@@ -655,9 +391,9 @@
         "low": 383.7,
         "close": 383.9,
         "volume": 4.5803,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:20:00",
@@ -666,9 +402,9 @@
         "low": 383.7,
         "close": 383.7,
         "volume": 13.1152,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:21:00",
@@ -677,9 +413,9 @@
         "low": 383.4,
         "close": 384.1,
         "volume": 66.5609,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:22:00",
@@ -688,9 +424,9 @@
         "low": 383.8,
         "close": 384.3,
         "volume": 43.1901,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:23:00",
@@ -699,9 +435,9 @@
         "low": 384.3,
         "close": 384.7,
         "volume": 8.2043,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:24:00",
@@ -710,9 +446,9 @@
         "low": 384.1,
         "close": 384.1,
         "volume": 13.9946,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:25:00",
@@ -721,9 +457,9 @@
         "low": 384.0,
         "close": 384.1,
         "volume": 156.3107,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:26:00",
@@ -732,9 +468,9 @@
         "low": 384.0,
         "close": 384.4,
         "volume": 59.164,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:27:00",
@@ -743,9 +479,9 @@
         "low": 384.6,
         "close": 385.4,
         "volume": 15.1705,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:28:00",
@@ -754,9 +490,9 @@
         "low": 385.1,
         "close": 385.3,
         "volume": 32.1873,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:29:00",
@@ -765,9 +501,9 @@
         "low": 384.2,
         "close": 384.4,
         "volume": 44.4835,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:30:00",
@@ -776,9 +512,9 @@
         "low": 384.3,
         "close": 385.2,
         "volume": 63.185,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:31:00",
@@ -787,9 +523,9 @@
         "low": 384.6,
         "close": 384.6,
         "volume": 28.1926,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:32:00",
@@ -798,9 +534,9 @@
         "low": 384.3,
         "close": 385.2,
         "volume": 21.5027,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:33:00",
@@ -809,9 +545,9 @@
         "low": 385.2,
         "close": 385.4,
         "volume": 33.2046,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:34:00",
@@ -820,9 +556,9 @@
         "low": 385.4,
         "close": 385.7,
         "volume": 25.356,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:35:00",
@@ -831,9 +567,9 @@
         "low": 385.3,
         "close": 385.3,
         "volume": 28.449,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:36:00",
@@ -842,9 +578,9 @@
         "low": 385.0,
         "close": 385.9,
         "volume": 132.7898,
-        "MACD_36_78_27": NaN,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:37:00",
@@ -853,9 +589,9 @@
         "low": 385.3,
         "close": 385.6,
         "volume": 475.8856,
-        "MACD_36_78_27": -0.4486660368236812,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:38:00",
@@ -864,9 +600,9 @@
         "low": 385.1,
         "close": 385.4,
         "volume": 5.5769,
-        "MACD_36_78_27": -0.4125503485257127,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:39:00",
@@ -875,9 +611,9 @@
         "low": 385.2,
         "close": 385.5,
         "volume": 11.3178,
-        "MACD_36_78_27": -0.37581344077432277,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:40:00",
@@ -886,9 +622,9 @@
         "low": 385.3,
         "close": 385.6,
         "volume": 5.3945,
-        "MACD_36_78_27": -0.3385540428431,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:41:00",
@@ -897,9 +633,9 @@
         "low": 385.3,
         "close": 385.6,
         "volume": 11.8171,
-        "MACD_36_78_27": -0.303737657760621,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:42:00",
@@ -908,9 +644,9 @@
         "low": 385.5,
         "close": 385.5,
         "volume": 9.5881,
-        "MACD_36_78_27": -0.27409513007393116,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:43:00",
@@ -919,9 +655,9 @@
         "low": 385.4,
         "close": 386.1,
         "volume": 38.6436,
-        "MACD_36_78_27": -0.22914713396164643,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:44:00",
@@ -930,9 +666,9 @@
         "low": 386.1,
         "close": 386.2,
         "volume": 45.5336,
-        "MACD_36_78_27": -0.18451783596015048,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:45:00",
@@ -941,9 +677,9 @@
         "low": 385.7,
         "close": 385.8,
         "volume": 15.8764,
-        "MACD_36_78_27": -0.15461224941964247,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:46:00",
@@ -952,9 +688,9 @@
         "low": 385.7,
         "close": 385.7,
         "volume": 9.7028,
-        "MACD_36_78_27": -0.12970153962692166,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:47:00",
@@ -963,9 +699,9 @@
         "low": 385.7,
         "close": 385.7,
         "volume": 4.8971,
-        "MACD_36_78_27": -0.10655642534368326,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:48:00",
@@ -974,9 +710,9 @@
         "low": 385.0,
         "close": 385.3,
         "volume": 35.2226,
-        "MACD_36_78_27": -0.09656589893427281,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:49:00",
@@ -985,9 +721,9 @@
         "low": 385.2,
         "close": 385.4,
         "volume": 12.2734,
-        "MACD_36_78_27": -0.0843487479697842,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:50:00",
@@ -996,9 +732,9 @@
         "low": 385.3,
         "close": 386.1,
         "volume": 27.3197,
-        "MACD_36_78_27": -0.05285281336790604,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:51:00",
@@ -1007,9 +743,9 @@
         "low": 385.5,
         "close": 385.5,
         "volume": 18.0809,
-        "MACD_36_78_27": -0.04098385852512365,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:52:00",
@@ -1018,9 +754,9 @@
         "low": 385.5,
         "close": 385.5,
         "volume": 10.7681,
-        "MACD_36_78_27": -0.029984621872642947,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:53:00",
@@ -1029,9 +765,9 @@
         "low": 385.6,
         "close": 385.7,
         "volume": 0.6419,
-        "MACD_36_78_27": -0.014054795917786578,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:54:00",
@@ -1040,9 +776,9 @@
         "low": 385.4,
         "close": 385.4,
         "volume": 12.308,
-        "MACD_36_78_27": -0.007969575208903734,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:55:00",
@@ -1051,9 +787,9 @@
         "low": 385.0,
         "close": 385.2,
         "volume": 14.6059,
-        "MACD_36_78_27": -0.00809562785639173,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:56:00",
@@ -1062,9 +798,9 @@
         "low": 385.2,
         "close": 385.3,
         "volume": 1.2916,
-        "MACD_36_78_27": -0.005327009783741232,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:57:00",
@@ -1073,9 +809,9 @@
         "low": 385.4,
         "close": 385.9,
         "volume": 1.8857,
-        "MACD_36_78_27": 0.01447549919504354,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:58:00",
@@ -1084,9 +820,9 @@
         "low": 385.3,
         "close": 385.3,
         "volume": 19.8062,
-        "MACD_36_78_27": 0.015471003711297726,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T20:59:00",
@@ -1095,9 +831,9 @@
         "low": 385.6,
         "close": 386.0,
         "volume": 8.3465,
-        "MACD_36_78_27": 0.036484004277951954,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:00:00",
@@ -1106,9 +842,9 @@
         "low": 386.1,
         "close": 386.1,
         "volume": 27.3456,
-        "MACD_36_78_27": 0.05868178070977592,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": NaN,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:01:00",
@@ -1117,9 +853,9 @@
         "low": 386.0,
         "close": 386.1,
         "volume": 16.7807,
-        "MACD_36_78_27": 0.07906778151743765,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": 0.8341887115234385,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:02:00",
@@ -1128,9 +864,9 @@
         "low": 386.3,
         "close": 386.8,
         "volume": 8.6744,
-        "MACD_36_78_27": 0.11787175040240072,
-        "MACDs_36_78_27": NaN,
-        "MACDh_36_78_27": NaN
+        "MACD": 0.8541622999476317,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:03:00",
@@ -1139,9 +875,9 @@
         "low": 386.8,
         "close": 386.8,
         "volume": 14.7712,
-        "MACD_36_78_27": 0.1534876276323871,
-        "MACDs_36_78_27": -0.10454056826309895,
-        "MACDh_36_78_27": 0.25802819589548603
+        "MACD": 0.8714090230415081,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:04:00",
@@ -1150,9 +886,9 @@
         "low": 386.9,
         "close": 387.5,
         "volume": 15.1262,
-        "MACD_36_78_27": 0.20623167095237704,
-        "MACDs_36_78_27": -0.08234255117627924,
-        "MACDh_36_78_27": 0.2885742221286563
+        "MACD": 0.9062342993486823,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:05:00",
@@ -1161,9 +897,9 @@
         "low": 387.2,
         "close": 387.3,
         "volume": 7.8112,
-        "MACD_36_78_27": 0.24883183176780221,
-        "MACDs_36_78_27": -0.05868723810884486,
-        "MACDh_36_78_27": 0.30751906987664707
+        "MACD": 0.9313554702177953,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:06:00",
@@ -1172,9 +908,9 @@
         "low": 387.0,
         "close": 387.1,
         "volume": 15.8632,
-        "MACD_36_78_27": 0.2820210572452311,
-        "MACDs_36_78_27": -0.034350931297839435,
-        "MACDh_36_78_27": 0.3163719885430705
+        "MACD": 0.9474950985487567,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:07:00",
@@ -1183,9 +919,9 @@
         "low": 386.0,
         "close": 386.0,
         "volume": 14.2443,
-        "MACD_36_78_27": 0.28062416310649496,
-        "MACDs_36_78_27": -0.011852710268958407,
-        "MACDh_36_78_27": 0.29247687337545336
+        "MACD": 0.9294678381853032,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:08:00",
@@ -1194,9 +930,9 @@
         "low": 385.5,
         "close": 385.9,
         "volume": 8.9268,
-        "MACD_36_78_27": 0.27607844762377454,
-        "MACDs_36_78_27": 0.008713801009093945,
-        "MACDh_36_78_27": 0.26736464661468057
+        "MACD": 0.9087010444692396,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:09:00",
@@ -1205,9 +941,9 @@
         "low": 385.6,
         "close": 385.8,
         "volume": 11.7729,
-        "MACD_36_78_27": 0.268635745941765,
-        "MACDs_36_78_27": 0.027279654218570447,
-        "MACDh_36_78_27": 0.24135609172319453
+        "MACD": 0.8854368250910056,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:10:00",
@@ -1216,9 +952,9 @@
         "low": 385.5,
         "close": 385.6,
         "volume": 25.2942,
-        "MACD_36_78_27": 0.2556584541125062,
-        "MACDs_36_78_27": 0.04359242563956586,
-        "MACDh_36_78_27": 0.21206602847294034
+        "MACD": 0.8570280606281244,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:11:00",
@@ -1227,9 +963,9 @@
         "low": 385.1,
         "close": 385.4,
         "volume": 26.7838,
-        "MACD_36_78_27": 0.23759604039503301,
-        "MACDs_36_78_27": 0.0574498266935278,
-        "MACDh_36_78_27": 0.18014621370150521
+        "MACD": 0.8239149123318725,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:12:00",
@@ -1238,9 +974,9 @@
         "low": 385.4,
         "close": 385.8,
         "volume": 38.1767,
-        "MACD_36_78_27": 0.23211243138712234,
-        "MACDs_36_78_27": 0.06992572702878455,
-        "MACDh_36_78_27": 0.1621867043583378
+        "MACD": 0.8037522047343373,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:13:00",
@@ -1249,9 +985,9 @@
         "low": 385.6,
         "close": 385.8,
         "volume": 6.9231,
-        "MACD_36_78_27": 0.22673891924142708,
-        "MACDs_36_78_27": 0.08112666932968758,
-        "MACDh_36_78_27": 0.1456122499117395
+        "MACD": 0.7840623293342901,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:14:00",
@@ -1260,9 +996,9 @@
         "low": 385.9,
         "close": 385.9,
         "volume": 11.939,
-        "MACD_36_78_27": 0.2243480294331448,
-        "MACDs_36_78_27": 0.09135676647993451,
-        "MACDh_36_78_27": 0.1329912629532103
+        "MACD": 0.7677091088346515,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:15:00",
@@ -1271,9 +1007,9 @@
         "low": 385.3,
         "close": 385.8,
         "volume": 15.0338,
-        "MACD_36_78_27": 0.2189628634560563,
-        "MACDs_36_78_27": 0.10047148769251464,
-        "MACDh_36_78_27": 0.11849137576354167
+        "MACD": 0.7487071363126461,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:16:00",
@@ -1282,9 +1018,9 @@
         "low": 385.7,
         "close": 386.0,
         "volume": 6.1204,
-        "MACD_36_78_27": 0.21944562987329164,
-        "MACDs_36_78_27": 0.10896964070542728,
-        "MACDh_36_78_27": 0.11047598916786436
+        "MACD": 0.7359103027538936,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:17:00",
@@ -1293,9 +1029,9 @@
         "low": 384.3,
         "close": 384.6,
         "volume": 32.8838,
-        "MACD_36_78_27": 0.1793577998956266,
-        "MACDs_36_78_27": 0.11399736636187009,
-        "MACDh_36_78_27": 0.06536043353375652
+        "MACD": 0.6828719491268771,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:18:00",
@@ -1304,9 +1040,9 @@
         "low": 383.9,
         "close": 384.5,
         "volume": 74.7605,
-        "MACD_36_78_27": 0.13927769965977177,
-        "MACDs_36_78_27": 0.11580310445457737,
-        "MACDh_36_78_27": 0.023474595205194404
+        "MACD": 0.630162455175082,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:19:00",
@@ -1315,9 +1051,9 @@
         "low": 383.9,
         "close": 384.9,
         "volume": 34.3203,
-        "MACD_36_78_27": 0.1136283733051755,
-        "MACDs_36_78_27": 0.11564776651533437,
-        "MACDh_36_78_27": -0.0020193932101588707
+        "MACD": 0.5921970990269187,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:20:00",
@@ -1326,9 +1062,9 @@
         "low": 384.8,
         "close": 384.9,
         "volume": 14.4161,
-        "MACD_36_78_27": 0.08982425150605877,
-        "MACDs_36_78_27": 0.11380322972895754,
-        "MACDh_36_78_27": -0.023978978222898767
+        "MACD": 0.5563827222854343,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:21:00",
@@ -1337,9 +1073,9 @@
         "low": 384.0,
         "close": 384.3,
         "volume": 39.1087,
-        "MACD_36_78_27": 0.05051142042339052,
-        "MACDs_36_78_27": 0.10928238620713132,
-        "MACDh_36_78_27": -0.0587709657837408
+        "MACD": 0.5053579955637701,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:22:00",
@@ -1348,9 +1084,9 @@
         "low": 384.1,
         "close": 384.1,
         "volume": 9.5872,
-        "MACD_36_78_27": 0.008448428480392067,
-        "MACDs_36_78_27": 0.10207996065522137,
-        "MACDh_36_78_27": -0.09363153217482931
+        "MACD": 0.4518742218733678,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:23:00",
@@ -1359,9 +1095,9 @@
         "low": 383.6,
         "close": 383.6,
         "volume": 31.4115,
-        "MACD_36_78_27": -0.04471392423954512,
-        "MACDs_36_78_27": 0.09159468316273806,
-        "MACDh_36_78_27": -0.13630860740228318
+        "MACD": 0.3875751226659645,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:24:00",
@@ -1370,9 +1106,9 @@
         "low": 383.2,
         "close": 383.6,
         "volume": 15.3749,
-        "MACD_36_78_27": -0.09366831523618657,
-        "MACDs_36_78_27": 0.07836161184852915,
-        "MACDh_36_78_27": -0.1720299270847157
+        "MACD": 0.32776110526788216,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:25:00",
@@ -1381,9 +1117,9 @@
         "low": 382.6,
         "close": 382.7,
         "volume": 13.1216,
-        "MACD_36_78_27": -0.16453982070146367,
-        "MACDs_36_78_27": 0.06101150952352967,
-        "MACDh_36_78_27": -0.22555133022499335
+        "MACD": 0.24630033848421817,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:26:00",
@@ -1392,9 +1128,9 @@
         "low": 382.5,
         "close": 383.3,
         "volume": 47.6629,
-        "MACD_36_78_27": -0.2124154785688006,
-        "MACDs_36_78_27": 0.04148101037407751,
-        "MACDh_36_78_27": -0.25389648894287814
+        "MACD": 0.18809918629949607,
+        "MACDs": NaN,
+        "MACDh": NaN
     },
     {
         "timestamp": "2024-06-02T21:27:00",
@@ -1403,9 +1139,9 @@
         "low": 383.3,
         "close": 383.7,
         "volume": 7.9142,
-        "MACD_36_78_27": -0.2447710160433303,
-        "MACDs_36_78_27": 0.02103443705854838,
-        "MACDh_36_78_27": -0.2658054531018787
+        "MACD": 0.14567547713664908,
+        "MACDs": 0.6779182347484755,
+        "MACDh": -0.5322427576118264
     },
     {
         "timestamp": "2024-06-02T21:28:00",
@@ -1414,9 +1150,9 @@
         "low": 383.6,
         "close": 383.9,
         "volume": 11.7518,
-        "MACD_36_78_27": -0.2685202768814179,
-        "MACDs_36_78_27": 0.00035195749140793514,
-        "MACDh_36_78_27": -0.2688722343728258
+        "MACD": 0.11210907340671383,
+        "MACDs": 0.6375032946526353,
+        "MACDh": -0.5253942212459215
     },
     {
         "timestamp": "2024-06-02T21:29:00",
@@ -1425,9 +1161,9 @@
         "low": 383.8,
         "close": 384.0,
         "volume": 9.894,
-        "MACD_36_78_27": -0.2871758283186523,
-        "MACDs_36_78_27": -0.020185741495024938,
-        "MACDh_36_78_27": -0.26699008682362735
+        "MACD": 0.08388126145132446,
+        "MACDs": 0.5979588637096845,
+        "MACDh": -0.5140776022583601
     },
     {
         "timestamp": "2024-06-02T21:30:00",
@@ -1436,9 +1172,9 @@
         "low": 383.5,
         "close": 383.9,
         "volume": 17.255,
-        "MACD_36_78_27": -0.3068569804946151,
-        "MACDs_36_78_27": -0.040662258566424234,
-        "MACDh_36_78_27": -0.2661947219281908
+        "MACD": 0.05486672903055023,
+        "MACDs": 0.5591665683754607,
+        "MACDh": -0.5042998393449105
     },
     {
         "timestamp": "2024-06-02T21:31:00",
@@ -1447,9 +1183,9 @@
         "low": 383.5,
         "close": 384.3,
         "volume": 10.0278,
-        "MACD_36_78_27": -0.31308800245562907,
-        "MACDs_36_78_27": -0.060121240272796014,
-        "MACDh_36_78_27": -0.25296676218283304
+        "MACD": 0.03953534627652289,
+        "MACDs": 0.5220500525112509,
+        "MACDh": -0.48251470623472803
     },
     {
         "timestamp": "2024-06-02T21:32:00",
@@ -1458,9 +1194,9 @@
         "low": 384.3,
         "close": 384.9,
         "volume": 20.1845,
-        "MACD_36_78_27": -0.3011619854098626,
-        "MACDs_36_78_27": -0.07733843635401505,
-        "MACDh_36_78_27": -0.22382354905584756
+        "MACD": 0.04258829943864839,
+        "MACDs": 0.4878027844346364,
+        "MACDh": -0.44521448499598804
     },
     {
         "timestamp": "2024-06-02T21:33:00",
@@ -1469,9 +1205,9 @@
         "low": 384.4,
         "close": 384.7,
         "volume": 11.3685,
-        "MACD_36_78_27": -0.29550161459900437,
-        "MACDs_36_78_27": -0.09292152051437143,
-        "MACDh_36_78_27": -0.20258009408463296
+        "MACD": 0.039597316056585896,
+        "MACDs": 0.45578810812191856,
+        "MACDh": -0.41619079206533266
     },
     {
         "timestamp": "2024-06-02T21:34:00",
@@ -1480,9 +1216,9 @@
         "low": 384.7,
         "close": 385.0,
         "volume": 15.0602,
-        "MACD_36_78_27": -0.2812571035508995,
-        "MACDs_36_78_27": -0.10637406215983772,
-        "MACDh_36_78_27": -0.17488304139106178
+        "MACD": 0.04540672779836541,
+        "MACDs": 0.4264751523845219,
+        "MACDh": -0.3810684245861565
     },
     {
         "timestamp": "2024-06-02T21:35:00",
@@ -1491,9 +1227,9 @@
         "low": 384.6,
         "close": 384.9,
         "volume": 6.9779,
-        "MACD_36_78_27": -0.2706125651695288,
-        "MACDs_36_78_27": -0.11810538380338709,
-        "MACDh_36_78_27": -0.15250718136614172
+        "MACD": 0.047827096506068756,
+        "MACDs": 0.3994288626789181,
+        "MACDh": -0.35160176617284933
     },
     {
         "timestamp": "2024-06-02T21:36:00",
@@ -1502,9 +1238,9 @@
         "low": 384.7,
         "close": 384.7,
         "volume": 5.7155,
-        "MACD_36_78_27": -0.26617552062674577,
-        "MACDs_36_78_27": -0.1286818221479127,
-        "MACDh_36_78_27": -0.13749369847883305
+        "MACD": 0.0442457024866485,
+        "MACDs": 0.37405863695089886,
+        "MACDh": -0.32981293446425036
     },
     {
         "timestamp": "2024-06-02T21:37:00",
@@ -1513,9 +1249,9 @@
         "low": 384.6,
         "close": 385.0,
         "volume": 6.2325,
-        "MACD_36_78_27": -0.25309904538715955,
-        "MACDs_36_78_27": -0.13756876666500178,
-        "MACDh_36_78_27": -0.11553027872215776
+        "MACD": 0.04950439571547349,
+        "MACDs": 0.3508761911483685,
+        "MACDh": -0.301371795432895
     },
     {
         "timestamp": "2024-06-02T21:38:00",
@@ -1524,9 +1260,9 @@
         "low": 384.0,
         "close": 384.6,
         "volume": 102.7077,
-        "MACD_36_78_27": -0.25219124622458367,
-        "MACDs_36_78_27": -0.14575608663354334,
-        "MACDh_36_78_27": -0.10643515959104033
+        "MACD": 0.04279011609480676,
+        "MACDs": 0.32887004293025696,
+        "MACDh": -0.2860799268354502
     },
     {
         "timestamp": "2024-06-02T21:39:00",
@@ -1535,9 +1271,9 @@
         "low": 384.6,
         "close": 385.2,
         "volume": 11.2906,
-        "MACD_36_78_27": -0.23376658535283923,
-        "MACDs_36_78_27": -0.15204255082777876,
-        "MACDh_36_78_27": -0.08172403452506047
+        "MACD": 0.053783566644881375,
+        "MACDs": 0.30922100890987303,
+        "MACDh": -0.25543744226499165
     },
     {
         "timestamp": "2024-06-02T21:40:00",
@@ -1546,9 +1282,9 @@
         "low": 385.1,
         "close": 385.4,
         "volume": 7.3802,
-        "MACD_36_78_27": -0.21071166664233942,
-        "MACDs_36_78_27": -0.15623320195739024,
-        "MACDh_36_78_27": -0.054478464684949185
+        "MACD": 0.06959342465580676,
+        "MACDs": 0.29210475289172544,
+        "MACDh": -0.22251132823591868
     },
     {
         "timestamp": "2024-06-02T21:41:00",
@@ -1557,9 +1293,9 @@
         "low": 385.1,
         "close": 385.2,
         "volume": 7.1566,
-        "MACD_36_78_27": -0.1949142487185327,
-        "MACDs_36_78_27": -0.1589961338689004,
-        "MACDh_36_78_27": -0.03591811484963228
+        "MACD": 0.07832732600405734,
+        "MACDs": 0.27683493668546344,
+        "MACDh": -0.1985076106814061
     },
     {
         "timestamp": "2024-06-02T21:42:00",
@@ -1568,9 +1304,9 @@
         "low": 383.6,
         "close": 384.3,
         "volume": 298.4626,
-        "MACD_36_78_27": -0.20594616856135417,
-        "MACDs_36_78_27": -0.16234970777550425,
-        "MACDh_36_78_27": -0.043596460785849916
+        "MACD": 0.06040893901445088,
+        "MACDs": 0.2613759368518197,
+        "MACDh": -0.20096699783736882
     },
     {
         "timestamp": "2024-06-02T21:43:00",
@@ -1579,9 +1315,9 @@
         "low": 384.5,
         "close": 385.0,
         "volume": 4.4051,
-        "MACD_36_78_27": -0.19571942867150938,
-        "MACDs_36_78_27": -0.16473325926807605,
-        "MACDh_36_78_27": -0.030986169403433322
+        "MACD": 0.06392187480201983,
+        "MACDs": 0.247272075276834,
+        "MACDh": -0.18335020047481418
     },
     {
         "timestamp": "2024-06-02T21:44:00",
@@ -1590,9 +1326,9 @@
         "low": 385.0,
         "close": 385.3,
         "volume": 18.8,
-        "MACD_36_78_27": -0.177401282343169,
-        "MACDs_36_78_27": -0.16563811805915413,
-        "MACDh_36_78_27": -0.01176316428401486
+        "MACD": 0.07569459955340108,
+        "MACDs": 0.2350165412965888,
+        "MACDh": -0.15932194174318773
     },
     {
         "timestamp": "2024-06-02T21:45:00",
@@ -1601,9 +1337,9 @@
         "low": 385.1,
         "close": 385.2,
         "volume": 11.3482,
-        "MACD_36_78_27": -0.16314298282753725,
-        "MACDs_36_78_27": -0.16545989411403866,
-        "MACDh_36_78_27": 0.0023169112865014108
+        "MACD": 0.08357168296316786,
+        "MACDs": 0.22419905141563018,
+        "MACDh": -0.14062736845246232
     },
     {
         "timestamp": "2024-06-02T21:46:00",
@@ -1612,9 +1348,9 @@
         "low": 385.2,
         "close": 385.4,
         "volume": 7.3217,
-        "MACD_36_78_27": -0.1440260861029401,
-        "MACDs_36_78_27": -0.1639289078275316,
-        "MACDh_36_78_27": 0.019902821724591513
+        "MACD": 0.09646749310940095,
+        "MACDs": 0.21507536867947094,
+        "MACDh": -0.11860787557006999
     },
     {
         "timestamp": "2024-06-02T21:47:00",
@@ -1623,9 +1359,9 @@
         "low": 385.3,
         "close": 385.4,
         "volume": 11.4546,
-        "MACD_36_78_27": -0.12620325304879998,
-        "MACDs_36_78_27": -0.16123421820047937,
-        "MACDh_36_78_27": 0.03503096515167939
+        "MACD": 0.10822539197067726,
+        "MACDs": 0.20744322748598568,
+        "MACDh": -0.09921783551530841
     },
     {
         "timestamp": "2024-06-02T21:48:00",
@@ -1634,9 +1370,9 @@
         "low": 385.2,
         "close": 385.3,
         "volume": 52.1421,
-        "MACD_36_78_27": -0.11247169366015441,
-        "MACDs_36_78_27": -0.15775118073331332,
-        "MACDh_36_78_27": 0.0452794870731589
+        "MACD": 0.11604428894759167,
+        "MACDs": 0.20091473187610037,
+        "MACDh": -0.0848704429285087
     },
     {
         "timestamp": "2024-06-02T21:49:00",
@@ -1645,9 +1381,9 @@
         "low": 385.1,
         "close": 385.3,
         "volume": 21.4636,
-        "MACD_36_78_27": -0.09965731140658818,
-        "MACDs_36_78_27": -0.15360161863854724,
-        "MACDh_36_78_27": 0.05394430723195906
+        "MACD": 0.12309449428352082,
+        "MACDs": 0.1953561434766304,
+        "MACDh": -0.0722616491931096
     },
     {
         "timestamp": "2024-06-02T21:50:00",
@@ -1656,9 +1392,9 @@
         "low": 385.3,
         "close": 385.6,
         "volume": 9.2249,
-        "MACD_36_78_27": -0.0790848210135664,
-        "MACDs_36_78_27": -0.1482789902367629,
-        "MACDh_36_78_27": 0.06919416922319649
+        "MACD": 0.13804759910834719,
+        "MACDs": 0.19126267602175304,
+        "MACDh": -0.05321507691340585
     },
     {
         "timestamp": "2024-06-02T21:51:00",
@@ -1667,9 +1403,9 @@
         "low": 385.5,
         "close": 386.0,
         "volume": 50.3645,
-        "MACD_36_78_27": -0.04851376357493109,
-        "MACDs_36_78_27": -0.14115290261806063,
-        "MACDh_36_78_27": 0.09263913904312954
+        "MACD": 0.16314045819370904,
+        "MACDs": 0.18925394617689276,
+        "MACDh": -0.02611348798318372
     },
     {
         "timestamp": "2024-06-02T21:52:00",
@@ -1678,9 +1414,9 @@
         "low": 385.9,
         "close": 386.4,
         "volume": 15.1608,
-        "MACD_36_78_27": -0.008765883023613696,
-        "MACDs_36_78_27": -0.131696686932743,
-        "MACDh_36_78_27": 0.1229308039091293
+        "MACD": 0.19754781139329225,
+        "MACDs": 0.18984636512092132,
+        "MACDh": 0.007701446272370932
     },
     {
         "timestamp": "2024-06-02T21:53:00",
@@ -1689,9 +1425,9 @@
         "low": 386.2,
         "close": 386.3,
         "volume": 6.1813,
-        "MACD_36_78_27": 0.025019817153633994,
-        "MACDs_36_78_27": -0.12050265092657322,
-        "MACDh_36_78_27": 0.14552246808020722
+        "MACD": 0.22612722488190684,
+        "MACDs": 0.19243785510384884,
+        "MACDh": 0.033689369778058004
     },
     {
         "timestamp": "2024-06-02T21:54:00",
@@ -1700,9 +1436,9 @@
         "low": 386.0,
         "close": 386.4,
         "volume": 13.8776,
-        "MACD_36_78_27": 0.059009684655848105,
-        "MACDs_36_78_27": -0.10768034124211455,
-        "MACDh_36_78_27": 0.16669002589796267
+        "MACD": 0.25504169989125103,
+        "MACDs": 0.196909558302949,
+        "MACDh": 0.058132141588302016
     },
     {
         "timestamp": "2024-06-02T21:55:00",
@@ -1711,9 +1447,9 @@
         "low": 386.0,
         "close": 386.2,
         "volume": 12.1532,
-        "MACD_36_78_27": 0.08452000083099165,
-        "MACDs_36_78_27": -0.09395174537974983,
-        "MACDh_36_78_27": 0.17847174621074147
+        "MACD": 0.27560425320996274,
+        "MACDs": 0.20253060793916428,
+        "MACDh": 0.07307364527079846
     },
     {
         "timestamp": "2024-06-02T21:56:00",
@@ -1722,9 +1458,9 @@
         "low": 386.2,
         "close": 387.0,
         "volume": 11.9048,
-        "MACD_36_78_27": 0.13091487667378487,
-        "MACDs_36_78_27": -0.07788984380449736,
-        "MACDh_36_78_27": 0.20880472047828225
+        "MACD": 0.31717581126025607,
+        "MACDs": 0.21071955103352796,
+        "MACDh": 0.1064562602267281
     },
     {
         "timestamp": "2024-06-02T21:57:00",
@@ -1733,9 +1469,9 @@
         "low": 386.6,
         "close": 386.6,
         "volume": 7.9853,
-        "MACD_36_78_27": 0.16201666623584288,
-        "MACDs_36_78_27": -0.060753664515901626,
-        "MACDh_36_78_27": 0.22277033075174452
+        "MACD": 0.34357562162654176,
+        "MACDs": 0.22020927036160037,
+        "MACDh": 0.12336635126494139
     },
     {
         "timestamp": "2024-06-02T21:58:00",
@@ -1744,9 +1480,9 @@
         "low": 386.4,
         "close": 386.5,
         "volume": 10.8001,
-        "MACD_36_78_27": 0.18759697968255296,
-        "MACDs_36_78_27": -0.04301433278744059,
-        "MACDh_36_78_27": 0.23061131246999356
+        "MACD": 0.3645722642712599,
+        "MACDs": 0.23052091278371892,
+        "MACDh": 0.13405135148754097
     },
     {
         "timestamp": "2024-06-02T21:59:00",
@@ -1755,9 +1491,9 @@
         "low": 386.5,
         "close": 386.5,
         "volume": 4.0165,
-        "MACD_36_78_27": 0.21092525775986815,
-        "MACDs_36_78_27": -0.024875790605489966,
-        "MACDh_36_78_27": 0.23580104836535812
+        "MACD": 0.3834322241996233,
+        "MACDs": 0.24144314931342636,
+        "MACDh": 0.14198907488619694
     },
     {
         "timestamp": "2024-06-02T22:00:00",
@@ -1766,9 +1502,9 @@
         "low": 386.4,
         "close": 387.0,
         "volume": 20.9622,
-        "MACD_36_78_27": 0.24651403928135096,
-        "MACDs_36_78_27": -0.005490802756429901,
-        "MACDh_36_78_27": 0.25200484203778084
+        "MACD": 0.414665157182867,
+        "MACDs": 0.25381614987552925,
+        "MACDh": 0.16084900730733775
     },
     {
         "timestamp": "2024-06-02T22:01:00",
@@ -1777,9 +1513,9 @@
         "low": 386.4,
         "close": 386.6,
         "volume": 7.3566,
-        "MACD_36_78_27": 0.2674944395699299,
-        "MACDs_36_78_27": 0.01400814312402437,
-        "MACDh_36_78_27": 0.25348629644590553
+        "MACD": 0.43139936647514787,
+        "MACDs": 0.26650066534693057,
+        "MACDh": 0.1648987011282173
     },
     {
         "timestamp": "2024-06-02T22:02:00",
@@ -1788,9 +1524,9 @@
         "low": 386.6,
         "close": 386.6,
         "volume": 4.1988,
-        "MACD_36_78_27": 0.28647227091425975,
-        "MACDs_36_78_27": 0.03346986653761261,
-        "MACDh_36_78_27": 0.2530024043766471
+        "MACD": 0.44623792158182596,
+        "MACDs": 0.2793390407922802,
+        "MACDh": 0.16689888078954573
     },
     {
         "timestamp": "2024-06-02T22:03:00",
@@ -1799,9 +1535,9 @@
         "low": 385.4,
         "close": 385.4,
         "volume": 12.0985,
-        "MACD_36_78_27": 0.2690926494257724,
-        "MACDs_36_78_27": 0.0503000653153383,
-        "MACDh_36_78_27": 0.21879258411043406
+        "MACD": 0.42482326346549826,
+        "MACDs": 0.28973077098322436,
+        "MACDh": 0.1350924924822739
     },
     {
         "timestamp": "2024-06-02T22:04:00",
@@ -1810,9 +1546,9 @@
         "low": 385.0,
         "close": 385.0,
         "volume": 6.5118,
-        "MACD_36_78_27": 0.24120539300804467,
-        "MACDs_36_78_27": 0.0639361601505316,
-        "MACDh_36_78_27": 0.17726923285751306
+        "MACD": 0.3930026009005587,
+        "MACDs": 0.297107330263034,
+        "MACDh": 0.09589527063752473
     },
     {
         "timestamp": "2024-06-02T22:05:00",
@@ -1821,9 +1557,9 @@
         "low": 384.5,
         "close": 384.5,
         "volume": 13.0781,
-        "MACD_36_78_27": 0.20079452143164644,
-        "MACDs_36_78_27": 0.07371175738489695,
-        "MACDh_36_78_27": 0.1270827640467495
+        "MACD": 0.34875740896893603,
+        "MACDs": 0.3007966215991698,
+        "MACDh": 0.04796078736976622
     },
     {
         "timestamp": "2024-06-02T22:06:00",
@@ -1832,9 +1568,9 @@
         "low": 384.4,
         "close": 384.9,
         "volume": 18.3298,
-        "MACD_36_78_27": 0.1747560414506779,
-        "MACDs_36_78_27": 0.08092920624673844,
-        "MACDh_36_78_27": 0.09382683520393947
+        "MACD": 0.31898121263242274,
+        "MACDs": 0.30209552095868786,
+        "MACDh": 0.01688569167373488
     },
     {
         "timestamp": "2024-06-02T22:07:00",
@@ -1843,9 +1579,9 @@
         "low": 385.1,
         "close": 385.2,
         "volume": 7.5528,
-        "MACD_36_78_27": 0.15913074972490904,
-        "MACDs_36_78_27": 0.08651503078089348,
-        "MACDh_36_78_27": 0.07261571894401556
+        "MACD": 0.2997123881447692,
+        "MACDs": 0.3019252971862651,
+        "MACDh": -0.002212909041495903
     },
     {
         "timestamp": "2024-06-02T22:08:00",
@@ -1854,9 +1590,9 @@
         "low": 384.9,
         "close": 385.2,
         "volume": 8.6725,
-        "MACD_36_78_27": 0.14450649922889625,
-        "MACDs_36_78_27": 0.09065727852717939,
-        "MACDh_36_78_27": 0.053849220701716854
+        "MACD": 0.28153642798508827,
+        "MACDs": 0.3004689493861811,
+        "MACDh": -0.018932521401092806
     },
     {
         "timestamp": "2024-06-02T22:09:00",
@@ -1865,9 +1601,9 @@
         "low": 384.0,
         "close": 384.4,
         "volume": 89.6645,
-        "MACD_36_78_27": 0.10783514066451971,
-        "MACDs_36_78_27": 0.09188426867984656,
-        "MACDh_36_78_27": 0.015950871984673154
+        "MACD": 0.24140288082730876,
+        "MACDs": 0.2962499444891188,
+        "MACDh": -0.054847063661810025
     },
     {
         "timestamp": "2024-06-02T22:10:00",
@@ -1876,9 +1612,9 @@
         "low": 384.3,
         "close": 384.5,
         "volume": 13.0058,
-        "MACD_36_78_27": 0.07675041541870087,
-        "MACDs_36_78_27": 0.0908032791611933,
-        "MACDh_36_78_27": -0.014052863742492427
+        "MACD": 0.20694324308743717,
+        "MACDs": 0.2898708943889987,
+        "MACDh": -0.08292765130156154
     },
     {
         "timestamp": "2024-06-02T22:11:00",
@@ -1887,9 +1623,9 @@
         "low": 384.2,
         "close": 384.4,
         "volume": 1.3619,
-        "MACD_36_78_27": 0.045111573065184984,
-        "MACDs_36_78_27": 0.08753958586862128,
-        "MACDh_36_78_27": -0.04242801280343629
+        "MACD": 0.17201457504734208,
+        "MACDs": 0.28145258586459465,
+        "MACDh": -0.10943801081725257
     },
     {
         "timestamp": "2024-06-02T22:12:00",
@@ -1898,9 +1634,9 @@
         "low": 384.0,
         "close": 384.3,
         "volume": 26.5966,
-        "MACD_36_78_27": 0.013005132273235631,
-        "MACDs_36_78_27": 0.08221569632609374,
-        "MACDh_36_78_27": -0.06921056405285811
+        "MACD": 0.1367012604156912,
+        "MACDs": 0.27111320547538725,
+        "MACDh": -0.13441194505969606
     },
     {
         "timestamp": "2024-06-02T22:13:00",
@@ -1909,9 +1645,9 @@
         "low": 383.7,
         "close": 383.7,
         "volume": 13.3695,
-        "MACD_36_78_27": -0.03385729621231803,
-        "MACDs_36_78_27": 0.07392476828763575,
-        "MACDh_36_78_27": -0.10778206449995378
+        "MACD": 0.08671282799218716,
+        "MACDs": 0.257941749940873,
+        "MACDh": -0.17122892194868583
     },
     {
         "timestamp": "2024-06-02T22:14:00",
@@ -1920,9 +1656,9 @@
         "low": 383.2,
         "close": 383.2,
         "volume": 19.0819,
-        "MACD_36_78_27": -0.09138682600496395,
-        "MACDs_36_78_27": 0.062116797266735774,
-        "MACDh_36_78_27": -0.15350362327169972
+        "MACD": 0.026136133947261442,
+        "MACDs": 0.2413842059413293,
+        "MACDh": -0.21524807199406787
     },
     {
         "timestamp": "2024-06-02T22:15:00",
@@ -1931,9 +1667,9 @@
         "low": 382.3,
         "close": 382.4,
         "volume": 15.4314,
-        "MACD_36_78_27": -0.16729395412238546,
-        "MACDs_36_78_27": 0.04573031502465569,
-        "MACDh_36_78_27": -0.21302426914704115
+        "MACD": -0.052741298480668775,
+        "MACDs": 0.22037524133975803,
+        "MACDh": -0.27311653982042683
     },
     {
         "timestamp": "2024-06-02T22:16:00",
@@ -1942,9 +1678,9 @@
         "low": 382.3,
         "close": 382.3,
         "volume": 56.0792,
-        "MACD_36_78_27": -0.23992499567555114,
-        "MACDs_36_78_27": 0.0253263642603552,
-        "MACDh_36_78_27": -0.2652513599359063
+        "MACD": -0.12826771490193778,
+        "MACDs": 0.19547217303677977,
+        "MACDh": -0.32373988793871755
     },
     {
         "timestamp": "2024-06-02T22:17:00",
@@ -1953,9 +1689,9 @@
         "low": 381.0,
         "close": 381.4,
         "volume": 57.1939,
-        "MACD_36_78_27": -0.3324261783656084,
-        "MACDs_36_78_27": -0.00022738878435648452,
-        "MACDh_36_78_27": -0.33219878958125193
+        "MACD": -0.22359122547186416,
+        "MACDs": 0.1655390731433052,
+        "MACDh": -0.38913029861516935
     },
     {
         "timestamp": "2024-06-02T22:18:00",
@@ -1964,9 +1700,9 @@
         "low": 381.5,
         "close": 381.7,
         "volume": 16.5687,
-        "MACD_36_78_27": -0.40863588847037136,
-        "MACDs_36_78_27": -0.02939942447621469,
-        "MACDh_36_78_27": -0.37923646399415667
+        "MACD": -0.302552052048668,
+        "MACDs": 0.13210399277245,
+        "MACDh": -0.43465604482111797
     },
     {
         "timestamp": "2024-06-02T22:19:00",
@@ -1975,9 +1711,9 @@
         "low": 381.6,
         "close": 381.7,
         "volume": 15.6704,
-        "MACD_36_78_27": -0.47834188408393175,
-        "MACDs_36_78_27": -0.06146674301962305,
-        "MACDh_36_78_27": -0.4168751410643087
+        "MACD": -0.37493974257762375,
+        "MACDs": 0.0958865831045876,
+        "MACDh": -0.47082632568221133
     },
     {
         "timestamp": "2024-06-02T22:20:00",
@@ -1986,9 +1722,9 @@
         "low": 381.1,
         "close": 381.2,
         "volume": 25.675,
-        "MACD_36_78_27": -0.5563248778034904,
-        "MACDs_36_78_27": -0.09681375264704215,
-        "MACDh_36_78_27": -0.4595111251564482
+        "MACD": -0.45553675489554735,
+        "MACDs": 0.056499201818863684,
+        "MACDh": -0.512035956714411
     },
     {
         "timestamp": "2024-06-02T22:21:00",
@@ -1997,9 +1733,9 @@
         "low": 381.1,
         "close": 381.3,
         "volume": 20.0201,
-        "MACD_36_78_27": -0.6245899713932772,
-        "MACDs_36_78_27": -0.13451205398605892,
-        "MACDh_36_78_27": -0.4900779174072183
+        "MACD": -0.5263498924861096,
+        "MACDs": 0.014867123654222741,
+        "MACDh": -0.5412170161403324
     },
     {
         "timestamp": "2024-06-02T22:22:00",
@@ -2008,9 +1744,9 @@
         "low": 381.3,
         "close": 381.6,
         "volume": 23.7408,
-        "MACD_36_78_27": -0.6780542434900099,
-        "MACDs_36_78_27": -0.173336496093484,
-        "MACDh_36_78_27": -0.5047177473965259
+        "MACD": -0.5822978932512797,
+        "MACDs": -0.027787520410456,
+        "MACDh": -0.5545103728408237
     },
     {
         "timestamp": "2024-06-02T22:23:00",
@@ -2019,9 +1755,9 @@
         "low": 381.6,
         "close": 381.9,
         "volume": 6.7193,
-        "MACD_36_78_27": -0.717799024990768,
-        "MACDs_36_78_27": -0.21222667672900428,
-        "MACDh_36_78_27": -0.5055723482617637
+        "MACD": -0.624463705940002,
+        "MACDs": -0.07040724794828071,
+        "MACDh": -0.5540564579917213
     },
     {
         "timestamp": "2024-06-02T22:24:00",
@@ -2030,9 +1766,9 @@
         "low": 381.7,
         "close": 382.0,
         "volume": 9.8927,
-        "MACD_36_78_27": -0.7505875949684082,
-        "MACDs_36_78_27": -0.25068102803181885,
-        "MACDh_36_78_27": -0.49990656693658936
+        "MACD": -0.6596121870800857,
+        "MACDs": -0.11249331502912394,
+        "MACDh": -0.5471188720509618
     },
     {
         "timestamp": "2024-06-02T22:25:00",
@@ -2041,9 +1777,9 @@
         "low": 382.0,
         "close": 382.3,
         "volume": 11.0648,
-        "MACD_36_78_27": -0.7711701627788443,
-        "MACDs_36_78_27": -0.2878588233708921,
-        "MACDh_36_78_27": -0.48331133940795223
+        "MACD": -0.6824950840777433,
+        "MACDs": -0.1532077271040253,
+        "MACDh": -0.529287356973718
     },
     {
         "timestamp": "2024-06-02T22:26:00",
@@ -2052,9 +1788,9 @@
         "low": 382.3,
         "close": 382.9,
         "volume": 6.4247,
-        "MACD_36_78_27": -0.7718493757785154,
-        "MACDs_36_78_27": -0.32242957711429376,
-        "MACDh_36_78_27": -0.44941979866422166
+        "MACD": -0.6854165439041253,
+        "MACDs": -0.19122264258974675,
+        "MACDh": -0.49419390131437857
     },
     {
         "timestamp": "2024-06-02T22:27:00",
@@ -2063,9 +1799,9 @@
         "low": 382.6,
         "close": 382.6,
         "volume": 8.1994,
-        "MACD_36_78_27": -0.7800406455462507,
-        "MACDs_36_78_27": -0.35511608200229067,
-        "MACDh_36_78_27": -0.4249245635439601
+        "MACD": -0.6957934402627757,
+        "MACDs": -0.22726341385210597,
+        "MACDh": -0.4685300264106697
     },
     {
         "timestamp": "2024-06-02T22:28:00",
@@ -2074,9 +1810,9 @@
         "low": 382.3,
         "close": 382.7,
         "volume": 117.168,
-        "MACD_36_78_27": -0.7836517674900279,
-        "MACDs_36_78_27": -0.38572577382284334,
-        "MACDh_36_78_27": -0.3979259936671845
+        "MACD": -0.7015349941202089,
+        "MACDs": -0.2611399552998276,
+        "MACDh": -0.44039503882038133
     },
     {
         "timestamp": "2024-06-02T22:29:00",
@@ -2085,9 +1821,9 @@
         "low": 382.6,
         "close": 382.8,
         "volume": 12.0899,
-        "MACD_36_78_27": -0.7830350608765002,
-        "MACDs_36_78_27": -0.4141050086123903,
-        "MACDh_36_78_27": -0.3689300522641099
+        "MACD": -0.7029949146366903,
+        "MACDs": -0.29270102382388924,
+        "MACDh": -0.41029389081280104
     },
     {
         "timestamp": "2024-06-02T22:30:00",
@@ -2096,9 +1832,9 @@
         "low": 382.3,
         "close": 383.3,
         "volume": 45.1455,
-        "MACD_36_78_27": -0.7670261096048989,
-        "MACDs_36_78_27": -0.4393136586832838,
-        "MACDh_36_78_27": -0.3277124509216151
+        "MACD": -0.6890101408197893,
+        "MACDs": -0.321008817895025,
+        "MACDh": -0.3680013229247643
     },
     {
         "timestamp": "2024-06-02T22:31:00",
@@ -2107,9 +1843,9 @@
         "low": 382.8,
         "close": 382.9,
         "volume": 59.9247,
-        "MACD_36_78_27": -0.7627112864385026,
-        "MACDs_36_78_27": -0.462413489237228,
-        "MACDh_36_78_27": -0.3002977972012746
+        "MACD": -0.6866683666152653,
+        "MACDs": -0.34712735708932785,
+        "MACDh": -0.33954100952593746
     },
     {
         "timestamp": "2024-06-02T22:32:00",
@@ -2118,9 +1854,9 @@
         "low": 383.1,
         "close": 383.5,
         "volume": 4.3761,
-        "MACD_36_78_27": -0.7404467316731029,
-        "MACDs_36_78_27": -0.4822730065540763,
-        "MACDh_36_78_27": -0.25817372511902664
+        "MACD": -0.6663270204135756,
+        "MACDs": -0.3699273330410598,
+        "MACDh": -0.2963996873725158
     },
     {
         "timestamp": "2024-06-02T22:33:00",
@@ -2129,9 +1865,9 @@
         "low": 383.2,
         "close": 383.6,
         "volume": 9.1555,
-        "MACD_36_78_27": -0.7160318284848017,
-        "MACDs_36_78_27": -0.4989700652634138,
-        "MACDh_36_78_27": -0.21706176322138793
+        "MACD": -0.643786741215763,
+        "MACDs": -0.3894887193392529,
+        "MACDh": -0.25429802187651007
     },
     {
         "timestamp": "2024-06-02T22:34:00",
@@ -2140,9 +1876,9 @@
         "low": 383.4,
         "close": 383.4,
         "volume": 7.9761,
-        "MACD_36_78_27": -0.698288998718624,
-        "MACDs_36_78_27": -0.513207131938786,
-        "MACDh_36_78_27": -0.18508186677983807
+        "MACD": -0.6278711752208892,
+        "MACDs": -0.4065160376165126,
+        "MACDh": -0.22135513760437658
     },
     {
         "timestamp": "2024-06-02T22:35:00",
@@ -2151,9 +1887,9 @@
         "low": 383.3,
         "close": 383.6,
         "volume": 6.0496,
-        "MACD_36_78_27": -0.6752270479096296,
-        "MACDs_36_78_27": -0.5247799830795605,
-        "MACDh_36_78_27": -0.1504470648300691
+        "MACD": -0.6065903216262996,
+        "MACDs": -0.42080705790292594,
+        "MACDh": -0.18578326372337362
     },
     {
         "timestamp": "2024-06-02T22:36:00",
@@ -2162,9 +1898,9 @@
         "low": 383.4,
         "close": 383.4,
         "volume": 15.9458,
-        "MACD_36_78_27": -0.6587874770502822,
-        "MACDs_36_78_27": -0.5343519469346121,
-        "MACDh_36_78_27": -0.1244355301156701
+        "MACD": -0.5918868451554999,
+        "MACDs": -0.43302704270668124,
+        "MACDh": -0.1588598024488187
     },
     {
         "timestamp": "2024-06-02T22:37:00",
@@ -2173,9 +1909,9 @@
         "low": 383.6,
         "close": 383.7,
         "volume": 19.1917,
-        "MACD_36_78_27": -0.634107424578815,
-        "MACDs_36_78_27": -0.5414773381949123,
-        "MACDh_36_78_27": -0.09263008638390269
+        "MACD": -0.5688990187889544,
+        "MACDs": -0.442732183855415,
+        "MACDh": -0.12616683493353942
     },
     {
         "timestamp": "2024-06-02T22:38:00",
@@ -2184,9 +1920,9 @@
         "low": 383.5,
         "close": 383.7,
         "volume": 7.1063,
-        "MACD_36_78_27": -0.6104847180755542,
-        "MACDs_36_78_27": -0.5464064367578153,
-        "MACDh_36_78_27": -0.06407828131773885
+        "MACD": -0.5469257761844233,
+        "MACDs": -0.45017458330748705,
+        "MACDh": -0.09675119287693623
     },
     {
         "timestamp": "2024-06-02T22:39:00",
@@ -2195,8 +1931,272 @@
         "low": 383.1,
         "close": 383.1,
         "volume": 13.5343,
-        "MACD_36_78_27": -0.6051117680590323,
-        "MACDs_36_78_27": -0.5505996747079023,
-        "MACDh_36_78_27": -0.05451209335113005
+        "MACD": -0.543160606179697,
+        "MACDs": -0.45681644208407346,
+        "MACDh": -0.08634416409562351
+    },
+    {
+        "timestamp": "2024-06-02T22:40:00",
+        "open": 383.2,
+        "high": 383.7,
+        "low": 383.2,
+        "close": 383.5,
+        "volume": 6.4761,
+        "MACD": -0.5274507958521326,
+        "MACDs": -0.46186175306750626,
+        "MACDh": -0.06558904278462635
+    },
+    {
+        "timestamp": "2024-06-02T22:41:00",
+        "open": 383.7,
+        "high": 383.7,
+        "low": 383.1,
+        "close": 383.5,
+        "volume": 42.0327,
+        "MACD": -0.5122445892095584,
+        "MACDs": -0.46546052707765284,
+        "MACDh": -0.04678406213190556
+    },
+    {
+        "timestamp": "2024-06-02T22:42:00",
+        "open": 383.5,
+        "high": 383.6,
+        "low": 383.5,
+        "close": 383.6,
+        "volume": 2.8527,
+        "MACD": -0.4946497533359775,
+        "MACDs": -0.46754547181039036,
+        "MACDh": -0.027104281525587137
+    },
+    {
+        "timestamp": "2024-06-02T22:43:00",
+        "open": 383.6,
+        "high": 384.3,
+        "low": 383.6,
+        "close": 384.1,
+        "volume": 28.7104,
+        "MACD": -0.46338164464873444,
+        "MACDs": -0.46724805558455784,
+        "MACDh": 0.0038664109358234056
+    },
+    {
+        "timestamp": "2024-06-02T22:44:00",
+        "open": 384.2,
+        "high": 384.4,
+        "low": 384.2,
+        "close": 384.4,
+        "volume": 5.0672,
+        "MACD": -0.425297115230137,
+        "MACDs": -0.4642515598449564,
+        "MACDh": 0.038954444614819395
+    },
+    {
+        "timestamp": "2024-06-02T22:45:00",
+        "open": 384.3,
+        "high": 384.3,
+        "low": 383.8,
+        "close": 384.1,
+        "volume": 26.0592,
+        "MACD": -0.39822253594718404,
+        "MACDs": -0.4595352009951155,
+        "MACDh": 0.06131266504793148
+    },
+    {
+        "timestamp": "2024-06-02T22:46:00",
+        "open": 384.0,
+        "high": 384.3,
+        "low": 384.0,
+        "close": 384.3,
+        "volume": 4.8313,
+        "MACD": -0.36696735930968316,
+        "MACDs": -0.4529232123032989,
+        "MACDh": 0.08595585299361574
+    },
+    {
+        "timestamp": "2024-06-02T22:47:00",
+        "open": 384.1,
+        "high": 384.3,
+        "low": 384.1,
+        "close": 384.3,
+        "volume": 2.1707,
+        "MACD": -0.3376479715316236,
+        "MACDs": -0.44468926653389357,
+        "MACDh": 0.10704129500226994
+    },
+    {
+        "timestamp": "2024-06-02T22:48:00",
+        "open": 384.3,
+        "high": 384.3,
+        "low": 384.1,
+        "close": 384.1,
+        "volume": 0.3091,
+        "MACD": -0.3159010191033076,
+        "MACDs": -0.4354901060031374,
+        "MACDh": 0.11958908689982983
+    },
+    {
+        "timestamp": "2024-06-02T22:49:00",
+        "open": 384.3,
+        "high": 384.4,
+        "low": 384.2,
+        "close": 384.3,
+        "volume": 1.3333,
+        "MACD": -0.28967055695113686,
+        "MACDs": -0.42507442392799455,
+        "MACDh": 0.1354038669768577
+    },
+    {
+        "timestamp": "2024-06-02T22:50:00",
+        "open": 384.4,
+        "high": 384.9,
+        "low": 384.4,
+        "close": 384.8,
+        "volume": 7.3798,
+        "MACD": -0.25072092379065225,
+        "MACDs": -0.41262060248961296,
+        "MACDh": 0.16189967869896071
+    },
+    {
+        "timestamp": "2024-06-02T22:51:00",
+        "open": 384.8,
+        "high": 385.1,
+        "low": 384.8,
+        "close": 384.9,
+        "volume": 16.435,
+        "MACD": -0.2115925813129138,
+        "MACDs": -0.39826145811984875,
+        "MACDh": 0.18666887680693495
+    },
+    {
+        "timestamp": "2024-06-02T22:52:00",
+        "open": 385.0,
+        "high": 385.1,
+        "low": 384.7,
+        "close": 384.8,
+        "volume": 5.4295,
+        "MACD": -0.17810053433964868,
+        "MACDs": -0.3825356778498345,
+        "MACDh": 0.20443514351018582
+    },
+    {
+        "timestamp": "2024-06-02T22:53:00",
+        "open": 384.9,
+        "high": 385.0,
+        "low": 384.5,
+        "close": 385.0,
+        "volume": 16.446,
+        "MACD": -0.14122969317293155,
+        "MACDs": -0.3652995360871986,
+        "MACDh": 0.22406984291426707
+    },
+    {
+        "timestamp": "2024-06-02T22:54:00",
+        "open": 384.9,
+        "high": 384.9,
+        "low": 384.7,
+        "close": 384.7,
+        "volume": 6.1115,
+        "MACD": -0.11566286603749631,
+        "MACDs": -0.3474683453693627,
+        "MACDh": 0.2318054793318664
+    },
+    {
+        "timestamp": "2024-06-02T22:55:00",
+        "open": 384.7,
+        "high": 384.8,
+        "low": 384.7,
+        "close": 384.8,
+        "volume": 1.4822,
+        "MACD": -0.0890582643972948,
+        "MACDs": -0.32901048244278647,
+        "MACDh": 0.23995221804549166
+    },
+    {
+        "timestamp": "2024-06-02T22:56:00",
+        "open": 384.9,
+        "high": 385.1,
+        "low": 384.6,
+        "close": 384.6,
+        "volume": 14.8605,
+        "MACD": -0.07015452355648222,
+        "MACDs": -0.31052077109376475,
+        "MACDh": 0.24036624753728253
+    },
+    {
+        "timestamp": "2024-06-02T22:57:00",
+        "open": 384.6,
+        "high": 384.6,
+        "low": 384.1,
+        "close": 384.2,
+        "volume": 61.8177,
+        "MACD": -0.06412434919440102,
+        "MACDs": -0.2929210266723816,
+        "MACDh": 0.2287966774779806
+    },
+    {
+        "timestamp": "2024-06-02T22:58:00",
+        "open": 384.3,
+        "high": 384.5,
+        "low": 384.0,
+        "close": 384.1,
+        "volume": 3.9358,
+        "MACD": -0.061350549227711326,
+        "MACDs": -0.2763802782834766,
+        "MACDh": 0.21502972905576528
+    },
+    {
+        "timestamp": "2024-06-02T22:59:00",
+        "open": 384.1,
+        "high": 384.1,
+        "low": 383.7,
+        "close": 384.1,
+        "volume": 18.6547,
+        "MACD": -0.05870915575968638,
+        "MACDs": -0.26083234096034874,
+        "MACDh": 0.20212318520066236
+    },
+    {
+        "timestamp": "2024-06-02T23:00:00",
+        "open": 384.0,
+        "high": 384.0,
+        "low": 383.4,
+        "close": 383.8,
+        "volume": 18.9578,
+        "MACD": -0.06481473495256296,
+        "MACDs": -0.24683108338836404,
+        "MACDh": 0.18201634843580108
+    },
+    {
+        "timestamp": "2024-06-02T23:01:00",
+        "open": 383.7,
+        "high": 383.8,
+        "low": 383.3,
+        "close": 383.3,
+        "volume": 4.3157,
+        "MACD": -0.08472416943249073,
+        "MACDs": -0.23525201810580168,
+        "MACDh": 0.15052784867331095
+    },
+    {
+        "timestamp": "2024-06-02T23:02:00",
+        "open": 383.2,
+        "high": 383.3,
+        "low": 382.9,
+        "close": 383.3,
+        "volume": 4.3804,
+        "MACD": -0.10296468576694906,
+        "MACDs": -0.2258029229387408,
+        "MACDh": 0.12283823717179174
+    },
+    {
+        "timestamp": "2024-06-02T23:03:00",
+        "open": 383.5,
+        "high": 383.5,
+        "low": 383.1,
+        "close": 383.1,
+        "volume": 4.3683,
+        "MACD": -0.12538902130523866,
+        "MACDs": -0.21863050139349066,
+        "MACDh": 0.093241480088252
     }
 ]
