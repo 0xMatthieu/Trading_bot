@@ -13,7 +13,8 @@ class Crypto(object):
 		self.timeframe = timeframe
 		self.percentage = percentage
 		# data sharing
-		self.json_file = 'data/' + symbol_spot.replace('/', '_') + '.json'
+		self.folder_path = 'data/'
+		self.json_file = self.folder_path + symbol_spot.replace('/', '_') + '.json'
 
 
 class Futures_bot(object):
@@ -79,7 +80,7 @@ class Futures_bot(object):
 
 if __name__ == "__main__":
 	Bot = Futures_bot()
-	Sharing_data.erase_file_data()
+	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	while True:
 		Bot.run_main()

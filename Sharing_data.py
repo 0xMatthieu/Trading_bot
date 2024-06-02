@@ -1,6 +1,7 @@
 import pandas as pd 
 import streamlit as st
 import json
+import os
 
 # Function to erase content and start with a fresh new file
 def erase_file_data(file_path="data/data.txt"):
@@ -73,3 +74,24 @@ def read_json(filename):
 					pass
 
 	return pd.DataFrame(data)
+
+def erase_folder_content(folder_path='data/'):
+	"""
+	Erase all content within the specified folder.
+
+	Parameters:
+	- folder_path: Path to the folder whose content is to be erased.
+	"""
+	if not os.path.isdir(folder_path):
+		raise ValueError(f"The path {folder_path} is not a directory.")
+
+	# Loop through the folder and delete all files and subdirectories
+	for filename in os.listdir(folder_path):
+		file_path = os.path.join(folder_path, filename)
+		try:
+			if os.path.isfile(file_path) or os.path.islink(file_path):
+				os.unlink(file_path)  # Remove the file or link
+			elif os.path.isdir(file_path):
+				shutil.rmtree(file_path)  # Remove the directory and its contents
+		except Exception as e:
+			print(f"Failed to delete {file_path}. Reason: {e}")
