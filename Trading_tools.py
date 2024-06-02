@@ -25,9 +25,9 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 	# Calculate MACD
 	macd = ta.macd(df['close'], fast=fast, slow=slow, signal=signal)
     
-	macd_column_name = f'MACD_{fast}_{slow}_{signal}'
-	signal_column_name = f'MACDs_{fast}_{slow}_{signal}'
-	hist_column_name = f'MACDh_{fast}_{slow}_{signal}'
+	macd_column_name = f'MACD'			#f'MACD_{fast}_{slow}_{signal}'
+	signal_column_name = f'MACDs'		#f'MACDs_{fast}_{slow}_{signal}'
+	hist_column_name = f'MACDh'		#f'MACDh_{fast}_{slow}_{signal}'
     
 	df[macd_column_name] = macd[f'MACD_{fast}_{slow}_{signal}']
 	df[signal_column_name] = macd[f'MACDs_{fast}_{slow}_{signal}']
