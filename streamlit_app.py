@@ -47,7 +47,7 @@ def render_trace(crypto):
            df, x='timestamp', y='close', color=["#FF0000"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_macd"] = st.line_chart(
-           df, x='timestamp', y=['MACD', 'Signal'], color=["#FF0000", "#0000FF"]  # Optional
+           df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_df"] = st.dataframe(df)
     else:
@@ -55,7 +55,7 @@ def render_trace(crypto):
            df, x='timestamp', y='close', color=["#FF0000"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_macd"].line_chart(
-           df, x='timestamp', y=['MACD', 'Signal'], color=["#FF0000", "#0000FF"]  # Optional
+           df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_df"].dataframe(df)
 
