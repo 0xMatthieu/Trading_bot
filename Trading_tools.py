@@ -24,18 +24,33 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 
 	# Calculate MACD
 	macd = ta.macd(df['close'], fast=fast, slow=slow, signal=signal)
-	df['MACD'] = macd['MACD_12_26_9']
-	df['Signal'] = macd['MACDs_12_26_9']
+    
+	macd_column_name = f'MACD_{fast}_{slow}_{signal}'
+	signal_column_name = f'MACDs_{fast}_{slow}_{signal}'
+	hist_column_name = f'MACDh_{fast}_{slow}_{signal}'
+    
+	df[macd_column_name] = macd[f'MACD_{fast}_{slow}_{signal}']
+	df[signal_column_name] = macd[f'MACDs_{fast}_{slow}_{signal}']
+	df[hist_column_name] = macd[f'MACDh_{fast}_{slow}_{signal}']
 
-	# Determine the buy/sell signal
-	signal_value = None
-	if df['MACD'].iloc[-1] > df['Signal'].iloc[-1] and df['MACD'].iloc[-2] <= df['Signal'].iloc[-2]:
-		signal_value = 'buy'
-	elif df['MACD'].iloc[-1] < df['Signal'].iloc[-1] and df['MACD'].iloc[-2] >= df['Signal'].iloc[-2]:
-		signal_value = 'sell'
+	# Determine buy/sell signals
+	signal = None
+	trend = None
+	if df[macd_column_name].iloc[-1] > df[signal_column_name].iloc[-1]:
+		signal = 'buy'
+		trend = 'buy'
+	elif df[macd_column_name].iloc[-1] < df[signal_column_name].iloc[-1]:
+		signal = 'sell'
+		trend = 'sell'
 
-	# Determine the current trend
-	trend = 'buy' if df['MACD'].iloc[-1] > df['Signal'].iloc[-1] else 'sell'
+	# Find the most recent crossover point to determine the current trend
+	for i in range(len(df) - 1, 0, -1):
+		if df[macd_column_name].iloc[i] > df[signal_column_name].iloc[i] and df[macd_column_name].iloc[i - 1] <= df[signal_column_name].iloc[i - 1]:
+			trend = 'buy'
+			break
+		elif df[macd_column_name].iloc[i] < df[signal_column_name].iloc[i] and df[macd_column_name].iloc[i - 1] >= df[signal_column_name].iloc[i - 1]:
+			trend = 'sell'
+			break
 
-	return df, signal_value, trend
+	return df, signal, trend
 
