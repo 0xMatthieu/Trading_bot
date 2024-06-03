@@ -33,6 +33,7 @@ def erase_json_content(filename):
 
 # Function to append DataFrame to JSON
 def append_to_json(df, filename):
+	erase_json_content(filename)	#test to be improved
 	# Convert DataFrame to list of dictionaries with Timestamps as strings
 	records = df.to_dict(orient='records')
 	for record in records:
