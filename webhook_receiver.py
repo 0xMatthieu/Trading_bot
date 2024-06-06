@@ -1,19 +1,16 @@
 from flask import Flask, request, abort
 import subprocess
 import os
-import psutil
 
 app = Flask(__name__)
 
 def is_process_running(process_name):
     """Check if there is any running process that contains the given name."""
-    for proc in psutil.process_iter(['name']):
-        try:
-            if process_name.lower() in proc.info['name'].lower():
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-    return False
+    try:
+        subprocess.check_output(['pgrep', '-f', process_name])
+        return True
+    except subprocess.CalledProcessError:
+        return False
 
 def start_processes():
     """Start streamlit and main_threading.py if they are not running."""

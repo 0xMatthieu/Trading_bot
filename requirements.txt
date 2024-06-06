@@ -4,3 +4,5 @@ pandas
 ccxt
 numpy
 pandas_ta
+flask
+
