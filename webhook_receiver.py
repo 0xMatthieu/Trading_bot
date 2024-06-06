@@ -13,15 +13,15 @@ def is_process_running(process_name):
         return False
 
 def start_processes():
-    """Start streamlit and main_threading.py if they are not running."""
+    """Start streamlit and Trading_main.py if they are not running."""
     repo_dir = os.path.dirname(os.path.realpath(__file__))
 
     if not is_process_running('streamlit'):
         streamlit_command = ['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8501']
         subprocess.Popen(streamlit_command, cwd=repo_dir)
 
-    if not is_process_running('main_threading.py'):
-        main_threading_command = ['python3.8', 'main_threading.py']
+    if not is_process_running('Trading_main.py'):
+        main_threading_command = ['python3.8', 'Trading_main.py']
         subprocess.Popen(main_threading_command, cwd=repo_dir)
 
 @app.route('/github-webhook/', methods=['POST'])
@@ -38,11 +38,11 @@ def github_webhook():
                 
                 # Restart the streamlit app
                 subprocess.call(['pkill', '-f', 'streamlit'])
-                subprocess.Popen(['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8601'], cwd=repo_dir)
+                subprocess.Popen(['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py'], cwd=repo_dir)
                 
                 # Restart the main_threading.py
-                subprocess.call(['pkill', '-f', 'main_threading.py'])
-                subprocess.Popen(['python3.8', 'main_threading.py'], cwd=repo_dir)
+                subprocess.call(['pkill', '-f', 'Trading_main.py'])
+                subprocess.Popen(['python3.8', 'Trading_main.py'], cwd=repo_dir)
                 
                 return 'Success', 200
             return 'Branch not main', 200
