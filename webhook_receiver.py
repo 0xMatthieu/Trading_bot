@@ -1,8 +1,31 @@
 from flask import Flask, request, abort
 import subprocess
 import os
+import psutil
 
 app = Flask(__name__)
+
+def is_process_running(process_name):
+    """Check if there is any running process that contains the given name."""
+    for proc in psutil.process_iter(['name']):
+        try:
+            if process_name.lower() in proc.info['name'].lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
+
+def start_processes():
+    """Start streamlit and main_threading.py if they are not running."""
+    repo_dir = os.path.dirname(os.path.realpath(__file__))
+
+    if not is_process_running('streamlit'):
+        streamlit_command = ['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8501']
+        subprocess.Popen(streamlit_command, cwd=repo_dir)
+
+    if not is_process_running('main_threading.py'):
+        main_threading_command = ['python3.8', 'main_threading.py']
+        subprocess.Popen(main_threading_command, cwd=repo_dir)
 
 @app.route('/github-webhook/', methods=['POST'])
 def github_webhook():
@@ -10,13 +33,20 @@ def github_webhook():
         if request.headers['Content-Type'] == 'application/json':
             payload = request.json
             if payload.get('ref') == 'refs/heads/main':
+                # Define the repo directory
+                repo_dir = os.path.dirname(os.path.realpath(__file__))
+                
                 # Pull the latest changes
-                subprocess.call(['git', 'pull'], cwd=os.path.dirname(os.path.realpath(__file__)))
-                # Restart the streamlit app and main_threading.py
+                subprocess.call(['git', 'pull'], cwd=repo_dir)
+                
+                # Restart the streamlit app
                 subprocess.call(['pkill', '-f', 'streamlit'])
-                subprocess.call(['python3.8 -m streamlit', 'run', 'streamlit_app.py'])
+                subprocess.Popen(['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8501'], cwd=repo_dir)
+                
+                # Restart the main_threading.py
                 subprocess.call(['pkill', '-f', 'main_threading.py'])
-                subprocess.Popen(['python3.8', 'main_threading.py'])
+                subprocess.Popen(['python3.8', 'main_threading.py'], cwd=repo_dir)
+                
                 return 'Success', 200
             return 'Branch not main', 200
         else:
@@ -25,4 +55,5 @@ def github_webhook():
         abort(400)
 
 if __name__ == '__main__':
+    start_processes()
     app.run(host='0.0.0.0', port=8701)
