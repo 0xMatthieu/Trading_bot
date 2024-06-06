@@ -16,7 +16,7 @@ def github_webhook():
                 subprocess.call(['pkill', '-f', 'streamlit'])
                 subprocess.call(['streamlit', 'run', 'streamlit_app.py'])
                 subprocess.call(['pkill', '-f', 'main_threading.py'])
-                subprocess.Popen(['python3', 'main_threading.py'])
+                subprocess.Popen(['python3.8', 'main_threading.py'])
                 return 'Success', 200
             return 'Branch not main', 200
         else:
