@@ -14,7 +14,7 @@ def github_webhook():
                 subprocess.call(['git', 'pull'], cwd=os.path.dirname(os.path.realpath(__file__)))
                 # Restart the streamlit app and main_threading.py
                 subprocess.call(['pkill', '-f', 'streamlit'])
-                subprocess.call(['streamlit', 'run', 'streamlit_app.py'])
+                subprocess.call(['python3.8 -m streamlit', 'run', 'streamlit_app.py'])
                 subprocess.call(['pkill', '-f', 'main_threading.py'])
                 subprocess.Popen(['python3.8', 'main_threading.py'])
                 return 'Success', 200
