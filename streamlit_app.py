@@ -9,7 +9,7 @@ import os
 start_time = time.time()
 
 st.set_page_config(
-    page_title="Crypto trading / v1.1",
+    page_title="Crypto trading / v1.2",
     page_icon="✅",
     layout="wide",
 )
