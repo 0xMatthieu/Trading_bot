@@ -38,7 +38,7 @@ def github_webhook():
                 
                 # Restart the streamlit app
                 subprocess.call(['pkill', '-f', 'streamlit'])
-                subprocess.Popen(['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8501'], cwd=repo_dir)
+                subprocess.Popen(['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8601'], cwd=repo_dir)
                 
                 # Restart the main_threading.py
                 subprocess.call(['pkill', '-f', 'main_threading.py'])
