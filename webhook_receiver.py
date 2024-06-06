@@ -17,7 +17,7 @@ def start_processes():
     repo_dir = os.path.dirname(os.path.realpath(__file__))
 
     if not is_process_running('streamlit'):
-        streamlit_command = ['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py', '--server.port=8501']
+        streamlit_command = ['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py']
         subprocess.Popen(streamlit_command, cwd=repo_dir)
 
     if not is_process_running('Trading_main.py'):
