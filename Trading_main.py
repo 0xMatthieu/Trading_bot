@@ -34,9 +34,16 @@ class Futures_bot(object):
 		self.macd_fast = 12*3 #standart 12
 		self.macd_slow = 26*3 #standart 26
 		self.macd_signal = 9*3 #standart 9
-		
 
-	def run_macd_futures_trading_function(self, Crypto=None):
+	def update_crypto_dataframe(self, Crypto=None, function=None):
+		if function == "MACD":
+			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
+		elif function == "Heikin"
+			Crypto.df, signal_value = Trading_tools.calculate_heikin_ashi(Crypto.df)
+		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
+		Return Crypto, signal_value
+
+	def run_futures_trading_function(self, Crypto=None, function=None):
 		start_time = time.time()
 		market_type='futures'
 		market_type_spot='spot'
@@ -46,9 +53,8 @@ class Futures_bot(object):
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
 			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=200, market_type=market_type_spot)
-			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
+			Crypto = self.update_crypto_dataframe(self, Crypto=Crypto, function=function)
 			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created")
-			Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 			print(f"Crypto {Crypto.symbol_spot} dataframe created")
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
@@ -59,8 +65,7 @@ class Futures_bot(object):
 		if signal_timedelta:
 			#self.print = f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated"
 			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
-			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
-			Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
+			Crypto = self.update_crypto_dataframe(self, Crypto=Crypto, function=function)
 			if signal_value:
 				Sharing_data.append_to_file(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				print(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
@@ -73,7 +78,7 @@ class Futures_bot(object):
 	def run_main(self):
 		start_time = time.time()
 		for crypto in self.crypto:
-			crypto = self.run_macd_futures_trading_function(Crypto=crypto)
+			crypto = self.run_futures_trading_function(Crypto=crypto, function="MACD")
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
 
 
