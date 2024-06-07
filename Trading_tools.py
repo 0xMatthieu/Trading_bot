@@ -90,4 +90,4 @@ def calculate_heikin_ashi(df):
 
 	signal = ha_df['Signal'].iloc[0]
     
-    return ha_df, signal
+	return ha_df, signal
