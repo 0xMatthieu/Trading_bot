@@ -9,10 +9,13 @@ import os
 start_time = time.time()
 
 st.set_page_config(
-    page_title="Crypto trading / v1.3",
+    page_title="Crypto trading",
     page_icon="✅",
     layout="wide",
 )
+
+# This is the title of the app
+st.title('Crypto trading App / v1.3')
 
 folder_path = 'data/'
 
@@ -58,9 +61,6 @@ def render_trace(crypto):
            df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_df"].dataframe(df)
-
-# This is the title of the app
-st.title('Crypto trading App')
 
 # layout and param
 app_init()
