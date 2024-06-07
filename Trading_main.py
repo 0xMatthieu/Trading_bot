@@ -41,7 +41,7 @@ class Futures_bot(object):
 		elif function == "Heikin":
 			Crypto.df, signal_value = Trading_tools.calculate_heikin_ashi(Crypto.df)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
-		Return Crypto, signal_value
+		return Crypto, signal_value
 
 	def run_futures_trading_function(self, Crypto=None, function=None):
 		start_time = time.time()
