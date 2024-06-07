@@ -47,3 +47,47 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 
 	return df, signal, trend
 
+def calculate_heikin_ashi(df):
+	ha_df = df.copy()
+	ha_df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
+    
+	ha_open = [df['Open'][0]]
+	for i in range(1, len(df)):
+		ha_open.append((ha_open[-1] + ha_df['HA_Close'][i-1]) / 2)
+	ha_df['HA_Open'] = ha_open
+    
+	ha_df['HA_High'] = ha_df[['HA_Open', 'HA_Close', 'High']].max(axis=1)
+	ha_df['HA_Low'] = ha_df[['HA_Open', 'HA_Close', 'Low']].min(axis=1)
+    
+	ha_df['HA_Color'] = np.where(ha_df['HA_Close'] >= ha_df['HA_Open'], 'green', 'red')
+    
+	ha_df['Up_Count'] = (ha_df['HA_Color'] == 'green').astype(int).groupby((ha_df['HA_Color'] != 'green').cumsum()).cumsum()
+	ha_df['Down_Count'] = (ha_df['HA_Color'] == 'red').astype(int).groupby((ha_df['HA_Color'] != 'red').cumsum()).cumsum()
+    
+	ha_df['Swing_High'] = ha_df['HA_High'].rolling(window=5, center=False).max()
+	ha_df['Swing_Low'] = ha_df['HA_Low'].rolling(window=5, center=False).min()
+    
+	ha_df['Long_Condition'] = (ha_df['Down_Count'] >= 4) & (ha_df['HA_Color'] == 'green')
+	ha_df['Short_Condition'] = (ha_df['Up_Count'] >= 4) & (ha_df['HA_Color'] == 'red')
+    
+	ha_df['Stop_Loss_Long'] = ha_df['Swing_Low'].shift(1)
+	ha_df['Stop_Loss_Short'] = ha_df['Swing_High'].shift(1)
+    
+	ha_df['Take_Profit_Long'] = ha_df['HA_Close'] + 2 * (ha_df['HA_Close'] - ha_df['Stop_Loss_Long'])
+	ha_df['Take_Profit_Short'] = ha_df['HA_Close'] - 2 * (ha_df['Stop_Loss_Short'] - ha_df['HA_Close'])
+    
+	ha_df['Signal'] = np.nan
+    
+	for i in range(1, len(ha_df)):
+		if ha_df['Long_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Long'][i]):
+			ha_df['Signal'][i] = 'buy'
+		elif ha_df['Short_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Short'][i]):
+			ha_df['Signal'][i] = 'sell'
+		elif ha_df['Signal'][i-1] == 'buy' and (ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1] or ha_df['HA_Close'][i] >= ha_df['Take_Profit_Long'][i-1]):
+			ha_df['Signal'][i] = 'sell'  # Close long position
+		elif ha_df['Signal'][i-1] == 'sell' and (ha_df['HA_High'][i] >= ha_df['Stop_Loss_Short'][i-1] or ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]):
+			ha_df['Signal'][i] = 'buy'  # Close short position
+
+	signal = ha_df['Signal'].iloc[0]
+    
+    return ha_df, signal
