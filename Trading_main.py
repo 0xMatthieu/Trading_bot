@@ -38,7 +38,7 @@ class Futures_bot(object):
 	def update_crypto_dataframe(self, Crypto=None, function=None):
 		if function == "MACD":
 			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
-		elif function == "Heikin"
+		elif function == "Heikin":
 			Crypto.df, signal_value = Trading_tools.calculate_heikin_ashi(Crypto.df)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 		Return Crypto, signal_value
