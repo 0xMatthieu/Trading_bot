@@ -32,9 +32,9 @@ class Futures_bot(object):
 		self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20))
 		self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='1m', percentage = 20))
 
-		self.macd_fast = 12*3 #standart 12
-		self.macd_slow = 26*3 #standart 26
-		self.macd_signal = 9*3 #standart 9
+		self.macd_fast = 180 #standart 12
+		self.macd_slow = 390 #standart 26
+		self.macd_signal = 135 #standart 9
 
 	def update_crypto_dataframe(self, Crypto=None, function=None):
 		if function == "MACD":
@@ -64,8 +64,8 @@ class Futures_bot(object):
 		#print(f"Crypto {Crypto.symbol_spot} time execution {time.time() - start_time}")
 
 		if signal_timedelta:
-			#print("symbol:", Crypto.symbol_spot)
-			#self.print = f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated"
+			print("symbol:", Crypto.symbol_spot)
+			print(f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated")
 			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
 			if Crypto.df['Signal'].iloc[-1]:
@@ -73,14 +73,14 @@ class Futures_bot(object):
 				#close open order order first (needed for buy, sell, stop loss or take profit)
 				self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
 				if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
-					#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-					self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
+					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+					#self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
 	def run_main(self):
 		start_time = time.time()
 		for crypto in self.crypto:
-			crypto = self.run_futures_trading_function(Crypto=crypto, function="Heikin")
+			crypto = self.run_futures_trading_function(Crypto=crypto, function="MACD")
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
 
 
@@ -88,7 +88,7 @@ class Futures_bot(object):
 if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
-	Sharing_data.append_to_file(f"Function Heikin, timeframe 1m, with stop loss no take profit")
+	Sharing_data.append_to_file(f"Function MACD, timeframe 1m, old binance 390 180 135")
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	while True:
 		Bot.run_main()

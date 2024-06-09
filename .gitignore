@@ -8,7 +8,7 @@ test.py
 *.so
 
 .streamlit/secrets.toml
-_debug.txt
+#_debug.txt
 
 # Distribution / packaging
 .Python
