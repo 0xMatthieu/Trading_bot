@@ -88,7 +88,7 @@ class Futures_bot(object):
 if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
-	Sharing_data.append_to_file(f"Function Heikin, timeframe 1m, no stop loss no take profit")
+	Sharing_data.append_to_file(f"Function Heikin, timeframe 1m, with stop loss no take profit")
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	while True:
 		Bot.run_main()
