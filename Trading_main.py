@@ -56,8 +56,7 @@ class Futures_bot(object):
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
 			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=200, market_type=market_type_spot)
 			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
-			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function} ")
-			print(f"Crypto {Crypto.symbol_spot} dataframe created")
+			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function}")
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
 		signal_timedelta = self.kucoin.calculate_time_diff_signal(interval=interval, df=Crypto.df, ticker_data=None)
@@ -71,10 +70,10 @@ class Futures_bot(object):
 			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
 			if Crypto.df['Signal'].iloc[-1]:
 				Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
-				print(f"signal {Crypto.df['Signal'].iloc[0]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				#close open order order first (needed for buy, sell, stop loss or take profit)
-				self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+				#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
 				if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
+					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
 					self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 

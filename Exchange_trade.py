@@ -45,7 +45,7 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			exchange.load_markets()
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file("An error occurred:", str(e))
+			Sharing_data.append_to_file(f"An error occurred: {str(e)}")
 		
 	def get_spot_fees(self):
 		try:
@@ -64,10 +64,10 @@ class Exchange(object):
 			balance_all = exchange.fetch_balance()
 			balance = balance_all[account].get(currency, None)
 
-			Sharing_data.append_to_file("Balance:", balance, currency)
+			Sharing_data.append_to_file(f"Balance: {balance} {currency}")
 			return balance
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file("An error occurred:", str(e))
+			Sharing_data.append_to_file(f"An error occurred: {str(e)}")
 
 	def timeframe_to_int(self, interval=None):
 		# If interval is provided, it must be at least 1 minute and df must be provided
@@ -141,7 +141,7 @@ class Exchange(object):
 			return df
 
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file("An error occurred while fetching the ticker:", str(e))
+			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}")
 			return df
 
 	def fetch_klines(self, symbol='BTC/USDT', timeframe='1m', since=None, limit=200, market_type='spot'):
@@ -157,7 +157,7 @@ class Exchange(object):
 				Sharing_data.append_to_file(f"not able to fetch all klines, timestamp gap last {df['timestamp'].max()}, current {pd.Timestamp.now()}")
 			return df
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file("An error occurred while fetching klines:", str(e))
+			Sharing_data.append_to_file(f"An error occurred while fetching klines: {str(e)}")
 			return None
 
 	def fetch_market_data(self, symbol, market_type='spot'):
@@ -264,10 +264,10 @@ class Exchange(object):
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			open_orders = self.exchange.fetch_open_orders('BTC/USDT')
-			Sharing_data.append_to_file("Open orders:", open_orders)
+			Sharing_data.append_to_file(f"Open orders: {open_orders}")
 			return open_orders
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file("An error occurred while fetching open orders:", str(e))
+			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}")
 
 	def close_position(self, symbol='BTC/USDT', market_type='spot'):
 		try:
