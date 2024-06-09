@@ -34,6 +34,7 @@ def github_webhook():
                 repo_dir = os.path.dirname(os.path.realpath(__file__))
                 
                 # Pull the latest changes
+                subprocess.call(['git', 'reset', '--hard', 'HEAD'], cwd=repo_dir)
                 subprocess.call(['git', 'pull'], cwd=repo_dir)
                 
                 # Restart the streamlit app
