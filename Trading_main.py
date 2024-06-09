@@ -54,7 +54,7 @@ class Futures_bot(object):
 
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
-			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=200, market_type=market_type_spot)
+			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=600, market_type=market_type_spot)
 			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
 			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function}")
 
