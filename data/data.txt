@@ -1,20 +1,6 @@
-Function Heikin, timeframe 1m, with stop loss no take profit
-Crypto ETH/USDT dataframe created for function Heikin
-Crypto PYTH/USDT dataframe created for function Heikin
-Crypto TAO/USDT dataframe created for function Heikin
-Crypto WIF/USDT dataframe created for function Heikin
-Crypto ONDO/USDT dataframe created for function Heikin
-signal close short on ONDO/USDT at time 2024-06-09 23:29:00.660000
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-signal sell on ETH/USDT at time 2024-06-09 23:29:02.094000
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-signal sell on PYTH/USDT at time 2024-06-09 23:29:02.595000
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-signal sell on TAO/USDT at time 2024-06-09 23:29:06.021000
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-signal sell on WIF/USDT at time 2024-06-09 23:29:06.636000
-An error occurred while trying to close order: kucoinfutures No open positions to close.
-An error occurred while trying to close order: kucoinfutures No open positions to close.
+Function MACD, timeframe 1m, old binance 390 180 135
+Crypto ETH/USDT dataframe created for function MACD
+Crypto PYTH/USDT dataframe created for function MACD
+Crypto TAO/USDT dataframe created for function MACD
+Crypto WIF/USDT dataframe created for function MACD
+Crypto ONDO/USDT dataframe created for function MACD
