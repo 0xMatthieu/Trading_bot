@@ -1,5 +1,5 @@
-Crypto ETH/USDT dataframe created
-Crypto PYTH/USDT dataframe created
-Crypto TAO/USDT dataframe created
-Crypto WIF/USDT dataframe created
-Crypto ONDO/USDT dataframe created
+Crypto ETH/USDT dataframe created for function Heikin 
+Crypto PYTH/USDT dataframe created for function Heikin 
+Crypto TAO/USDT dataframe created for function Heikin 
+Crypto WIF/USDT dataframe created for function Heikin 
+Crypto ONDO/USDT dataframe created for function Heikin 

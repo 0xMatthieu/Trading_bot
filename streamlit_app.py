@@ -5,6 +5,7 @@ import extra_streamlit_components as stx
 import Sharing_data
 import time
 import os
+import altair as alt
 
 start_time = time.time()
 
@@ -45,21 +46,27 @@ def render_trace(crypto):
     df = Sharing_data.read_json(filename=folder_path + crypto['symbol']+'.json')
 
     if f"{crypto['symbol']}" not in st.session_state:
-        st.session_state[f"{crypto['symbol']}"] = 'init done'
+        #st.session_state[f"{crypto['symbol']}"] = 'init done'
+        #if crypto.function == 'MACD':
+        """
         st.session_state[f"{crypto['symbol']}_line_chart_price"] = st.line_chart(
            df, x='timestamp', y='close', color=["#FF0000"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_macd"] = st.line_chart(
            df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
         )
+        """
         st.session_state[f"{crypto['symbol']}_line_chart_df"] = st.dataframe(df)
     else:
+        #if crypto.function == 'MACD':
+        """
         st.session_state[f"{crypto['symbol']}_line_chart_price"].line_chart(
            df, x='timestamp', y='close', color=["#FF0000"]  # Optional
         )
         st.session_state[f"{crypto['symbol']}_line_chart_macd"].line_chart(
            df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
         )
+        """
         st.session_state[f"{crypto['symbol']}_line_chart_df"].dataframe(df)
 
 # layout and param

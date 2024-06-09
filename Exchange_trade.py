@@ -45,7 +45,7 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			exchange.load_markets()
 		except ccxt.BaseError as e:
-			print("An error occurred:", str(e))
+			Sharing_data.append_to_file("An error occurred:", str(e))
 		
 	def get_spot_fees(self):
 		try:
@@ -54,7 +54,6 @@ class Exchange(object):
 			return trading_fees
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while fetching trading fees: {str(e)}")
-			print(f"An error occurred while fetching trading fees: {str(e)}")
 			return None
 
 	def fetch_balance(self, currency='USDT', account='free', market_type='spot'):
@@ -65,10 +64,10 @@ class Exchange(object):
 			balance_all = exchange.fetch_balance()
 			balance = balance_all[account].get(currency, None)
 
-			print("Balance:", balance, currency)
+			Sharing_data.append_to_file("Balance:", balance, currency)
 			return balance
 		except ccxt.BaseError as e:
-			print("An error occurred:", str(e))
+			Sharing_data.append_to_file("An error occurred:", str(e))
 
 	def timeframe_to_int(self, interval=None):
 		# If interval is provided, it must be at least 1 minute and df must be provided
@@ -83,18 +82,18 @@ class Exchange(object):
 			raise ValueError("Invalid interval format")
 
 		if interval < 1:
-			print("Error: Interval must be at least 1 minute.")
+			Sharing_data.append_to_file("Error: Interval must be at least 1 minute.")
 			return None
 
 		return interval
 
 	def calculate_time_diff_signal(self, interval=None, df=None, ticker_data=None):
 		if df is None:
-			print("Error: DataFrame must be provided when using an interval.")
+			Sharing_data.append_to_file("Error: DataFrame must be provided when using an interval.")
 			return None
 
 		# Get the latest timestamp from the provided DataFrame
-		last_timestamp = df['timestamp'].max()
+		last_timestamp = df['timestamp'].iloc[-1]
 		if ticker_data is None:
 			current_timestamp = pd.Timestamp.now()
 		else:
@@ -137,13 +136,12 @@ class Exchange(object):
 				# Get the latest timestamp from the provided DataFrame
 				if signal:		
 					df = pd.concat([df, new_df], ignore_index=True)
-					#print(f"Data appended to DataFrame for symbol: {symbol}")
-
+					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
 			return df
 
 		except ccxt.BaseError as e:
-			print("An error occurred while fetching the ticker:", str(e))
+			Sharing_data.append_to_file("An error occurred while fetching the ticker:", str(e))
 			return df
 
 	def fetch_klines(self, symbol='BTC/USDT', timeframe='1m', since=None, limit=200, market_type='spot'):
@@ -156,10 +154,10 @@ class Exchange(object):
 			interval = self.timeframe_to_int(interval=timeframe) * 2 #needed cause it happens that it take it little more than interval to update klines
 			signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=None)
 			if signal:
-				raise ValueError(f"not able to fetch all klines, timestamp gap last {df['timestamp'].max()}, current {pd.Timestamp.now()}")
+				Sharing_data.append_to_file(f"not able to fetch all klines, timestamp gap last {df['timestamp'].max()}, current {pd.Timestamp.now()}")
 			return df
 		except ccxt.BaseError as e:
-			print("An error occurred while fetching klines:", str(e))
+			Sharing_data.append_to_file("An error occurred while fetching klines:", str(e))
 			return None
 
 	def fetch_market_data(self, symbol, market_type='spot'):
@@ -183,7 +181,7 @@ class Exchange(object):
 			available_balance = self.fetch_balance(balance_currency, balance_type, market_type)
 
 			if available_balance is None:
-				print("Could not fetch the available balance.")
+				Sharing_data.append_to_file("Could not fetch the available balance.")
 				return
 
 			# Fetch market data to get the precision and limits
@@ -213,7 +211,7 @@ class Exchange(object):
 					quantity = float(available_balance * (percentage / 100))
 
 				else:
-					raise ValueError("order_type must be 'buy' or 'sell'")
+					Sharing_data.append_to_file("order_type must be 'buy' or 'sell'")
 
 				# Ensure the quantity is within the allowed precision and limits
 				quantity = max(min_order_amount, round(quantity, precision_decimal_places))
@@ -246,37 +244,30 @@ class Exchange(object):
 						params['leverage'] = leverage
 
 				else:
-					raise ValueError("order_type must be 'buy' or 'sell'")
-
-			print("params:", params)
+					Sharing_data.append_to_file("order_type must be 'buy' or 'sell'")
 
 			
 
 			Sharing_data.append_to_file(f"{symbol} precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
 			Sharing_data.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
 			Sharing_data.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
-			print(f"{symbol} precision is {precision} and min_order_amount is {min_order_amount}") 
-			print(f"order is {order_type}, price is {price} and quantity is {quantity}, leverage is {leverage}")
-			print(f"Available balance for {balance_currency}: {available_balance}")
 
 			# Place a market buy order
 			order = exchange.create_order(symbol=symbol, type='market', side=order_type, amount=quantity, params=params)
 			Sharing_data.append_to_file(f"Order placed: {order}")
-			print("Order placed:", order)
 			return order
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
-			print("An error occurred while placing the order:", str(e))
 
 	def get_open_orders(self, market_type='spot'):
 		# Check open orders
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			open_orders = self.exchange.fetch_open_orders('BTC/USDT')
-			print("Open orders:", open_orders)
+			Sharing_data.append_to_file("Open orders:", open_orders)
 			return open_orders
 		except ccxt.BaseError as e:
-			print("An error occurred while fetching open orders:", str(e))
+			Sharing_data.append_to_file("An error occurred while fetching open orders:", str(e))
 
 	def close_position(self, symbol='BTC/USDT', market_type='spot'):
 		try:
@@ -284,7 +275,7 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			exchange.close_position(symbol = symbol)
 		except ccxt.BaseError as e:
-			print(f"An error occurred while fetching trading fees: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while trying to close order: {str(e)}")
 
 if __name__ == "__main__":
 	kucoin = Exchange(name='kucoin')

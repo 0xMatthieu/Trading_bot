@@ -15,6 +15,7 @@ class Crypto(object):
 		# data sharing
 		self.folder_path = 'data/'
 		self.json_file = self.folder_path + symbol_spot.replace('/', '_') + '.json'
+		self.function = None
 
 
 class Futures_bot(object):
@@ -37,24 +38,25 @@ class Futures_bot(object):
 
 	def update_crypto_dataframe(self, Crypto=None, function=None):
 		if function == "MACD":
-			Crypto.df, signal_value, trend = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
+			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
 		elif function == "Heikin":
-			Crypto.df, signal_value = Trading_tools.calculate_heikin_ashi(Crypto.df)
+			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
-		return Crypto, signal_value
+		return Crypto
 
 	def run_futures_trading_function(self, Crypto=None, function=None):
 		start_time = time.time()
 		market_type='futures'
 		market_type_spot='spot'
+		Crypto.function=function #for streamlit app
 		#print("symbol:", Crypto.symbol_spot)
 		#print(f"df {Crypto.df}")
 
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
 			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=200, market_type=market_type_spot)
-			Crypto = self.update_crypto_dataframe(self, Crypto=Crypto, function=function)
-			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created")
+			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
+			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function} ")
 			print(f"Crypto {Crypto.symbol_spot} dataframe created")
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
@@ -63,22 +65,23 @@ class Futures_bot(object):
 		#print(f"Crypto {Crypto.symbol_spot} time execution {time.time() - start_time}")
 
 		if signal_timedelta:
+			#print("symbol:", Crypto.symbol_spot)
 			#self.print = f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated"
 			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
-			Crypto = self.update_crypto_dataframe(self, Crypto=Crypto, function=function)
-			if signal_value:
-				Sharing_data.append_to_file(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
-				print(f"signal {signal_value} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
-				#close open order order first
-				close = 'sell' if signal_value == 'buy' else 'buy'
+			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
+			if Crypto.df['Signal'].iloc[-1]:
+				Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
+				print(f"signal {Crypto.df['Signal'].iloc[0]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
+				#close open order order first (needed for buy, sell, stop loss or take profit)
 				self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-				self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=signal_value, market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
+				if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
+					self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
 	def run_main(self):
 		start_time = time.time()
 		for crypto in self.crypto:
-			crypto = self.run_futures_trading_function(Crypto=crypto, function="MACD")
+			crypto = self.run_futures_trading_function(Crypto=crypto, function="Heikin")
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
 
 

@@ -5,4 +5,5 @@ ccxt
 numpy
 pandas_ta
 flask
-
+numpy
+altair

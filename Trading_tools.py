@@ -1,5 +1,6 @@
 import pandas as pd 
 import pandas_ta as ta
+import numpy as np
 
 def calculate_macd(df, fast=12, slow=26, signal=9):
 	"""
@@ -33,42 +34,44 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 	df[signal_column_name] = macd[f'MACDs_{fast}_{slow}_{signal}']
 	df[hist_column_name] = macd[f'MACDh_{fast}_{slow}_{signal}']
 
-	# Determine buy/sell signals
-	signal = None
-	trend = None
+	df['Signal'] = None
 
-	if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] and df[macd_column_name].iloc[-1] <= df[signal_column_name].iloc[-1]:
-		signal_value = 'buy'
-	elif df[macd_column_name].iloc[0] < df[signal_column_name].iloc[0] and df[macd_column_name].iloc[-1] >= df[signal_column_name].iloc[-1]:
-		signal_value = 'sell'
+	for i in range(0, len(df)-1):
+		if df[hist_column_name].iloc[i] > 0 and df[hist_column_name].iloc[i-1] <= 0:
+			df.iloc[i, df.columns.get_loc('Signal')] = 'buy'
+		elif df[hist_column_name].iloc[i] < 0 and df[hist_column_name].iloc[i-1] >= 0:
+			df.iloc[i, df.columns.get_loc('Signal')] = 'sell'
 
 	# Determine the current trend
-	trend = 'buy' if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] else 'sell'
+	#trend = 'buy' if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] else 'sell'
 
-	return df, signal, trend
+	return df
 
 def calculate_heikin_ashi(df):
 	ha_df = df.copy()
-	ha_df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
+	ha_df['HA_Close'] = (df['open'] + df['high'] + df['low'] + df['close']) / 4
     
-	ha_open = [df['Open'][0]]
+	ha_open = [df['open'][0]]
 	for i in range(1, len(df)):
 		ha_open.append((ha_open[-1] + ha_df['HA_Close'][i-1]) / 2)
 	ha_df['HA_Open'] = ha_open
     
-	ha_df['HA_High'] = ha_df[['HA_Open', 'HA_Close', 'High']].max(axis=1)
-	ha_df['HA_Low'] = ha_df[['HA_Open', 'HA_Close', 'Low']].min(axis=1)
+	ha_df['HA_High'] = ha_df[['HA_Open', 'HA_Close', 'high']].max(axis=1)
+	ha_df['HA_Low'] = ha_df[['HA_Open', 'HA_Close', 'low']].min(axis=1)
     
 	ha_df['HA_Color'] = np.where(ha_df['HA_Close'] >= ha_df['HA_Open'], 'green', 'red')
     
 	ha_df['Up_Count'] = (ha_df['HA_Color'] == 'green').astype(int).groupby((ha_df['HA_Color'] != 'green').cumsum()).cumsum()
 	ha_df['Down_Count'] = (ha_df['HA_Color'] == 'red').astype(int).groupby((ha_df['HA_Color'] != 'red').cumsum()).cumsum()
+
+	ha_df['Long_Condition'] = False
+	ha_df['Short_Condition'] = False
+
+	# Debugging: Print to ensure correct calculation
+	#print(ha_df.tail(20))
     
 	ha_df['Swing_High'] = ha_df['HA_High'].rolling(window=5, center=False).max()
 	ha_df['Swing_Low'] = ha_df['HA_Low'].rolling(window=5, center=False).min()
-    
-	ha_df['Long_Condition'] = (ha_df['Down_Count'] >= 4) & (ha_df['HA_Color'] == 'green')
-	ha_df['Short_Condition'] = (ha_df['Up_Count'] >= 4) & (ha_df['HA_Color'] == 'red')
     
 	ha_df['Stop_Loss_Long'] = ha_df['Swing_Low'].shift(1)
 	ha_df['Stop_Loss_Short'] = ha_df['Swing_High'].shift(1)
@@ -76,18 +79,22 @@ def calculate_heikin_ashi(df):
 	ha_df['Take_Profit_Long'] = ha_df['HA_Close'] + 2 * (ha_df['HA_Close'] - ha_df['Stop_Loss_Long'])
 	ha_df['Take_Profit_Short'] = ha_df['HA_Close'] - 2 * (ha_df['Stop_Loss_Short'] - ha_df['HA_Close'])
     
-	ha_df['Signal'] = np.nan
+	ha_df['Signal'] = None
+	
     
 	for i in range(1, len(ha_df)):
-		if ha_df['Long_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Long'][i]):
-			ha_df['Signal'][i] = 'buy'
-		elif ha_df['Short_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Short'][i]):
-			ha_df['Signal'][i] = 'sell'
-		elif ha_df['Signal'][i-1] == 'buy' and (ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1] or ha_df['HA_Close'][i] >= ha_df['Take_Profit_Long'][i-1]):
-			ha_df['Signal'][i] = 'sell'  # Close long position
-		elif ha_df['Signal'][i-1] == 'sell' and (ha_df['HA_High'][i] >= ha_df['Stop_Loss_Short'][i-1] or ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]):
-			ha_df['Signal'][i] = 'buy'  # Close short position
+		if ha_df['Down_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'green':
+			ha_df.iloc[i, ha_df.columns.get_loc('Long_Condition')] = True
+		if ha_df['Up_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'red':
+			ha_df.iloc[i, ha_df.columns.get_loc('Short_Condition')] = True
 
-	signal = ha_df['Signal'].iloc[0]
+		if ha_df['Long_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Long'][i]):
+			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'buy'
+		elif ha_df['Short_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Short'][i]):
+			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'sell'
+		elif ha_df['Signal'][i-1] == 'buy' and (ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1] or ha_df['HA_Close'][i] >= ha_df['Take_Profit_Long'][i-1]):
+			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'close long'	# Close long position
+		elif ha_df['Signal'][i-1] == 'sell' and (ha_df['HA_High'][i] >= ha_df['Stop_Loss_Short'][i-1] or ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]):
+			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'close short'	# Close short position
     
-	return ha_df, signal
+	return ha_df
