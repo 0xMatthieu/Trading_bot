@@ -41,14 +41,14 @@ def append_to_json(df, filename):
 		for key, value in record.items():
 			if isinstance(value, pd.Timestamp):
 				record[key] = value.isoformat()
-	"""
+	
 	# Load existing data
 	try:
 		with open(filename, 'r') as f:
 			data = json.load(f)
 	except FileNotFoundError:
 		data = []
-	"""
+	
 	# Append new records
 	data.extend(records)
 
