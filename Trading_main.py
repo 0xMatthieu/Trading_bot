@@ -74,7 +74,7 @@ class Futures_bot(object):
 				self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
 				if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
 					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-					#self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
+					self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
 	def run_main(self):
