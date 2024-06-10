@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # This is the title of the app
-st.title('Crypto trading App / v1.4')
+st.title('Crypto trading App / v1.5')
 
 folder_path = 'data/'
 
