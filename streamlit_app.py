@@ -46,7 +46,7 @@ def render_trace(crypto):
     df = Sharing_data.read_json(filename=folder_path + crypto['symbol']+'.json')
 
     if f"{crypto['symbol']}" not in st.session_state:
-        #st.session_state[f"{crypto['symbol']}"] = 'init done'
+        st.session_state[f"{crypto['symbol']}"] = 'init done'
         #if crypto.function == 'MACD':
         
         st.session_state[f"{crypto['symbol']}_line_chart_price"] = st.line_chart(

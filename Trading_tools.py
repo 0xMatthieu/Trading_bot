@@ -36,20 +36,12 @@ def calculate_macd(df, fast=12, slow=26, signal=9):
 
 	df['Signal'] = None
 	
-	for i in range(0, len(df)-1):
+	for i in range(1, len(df)):
 		if df[hist_column_name].iloc[i] > 0 and df[hist_column_name].iloc[i-1] <= 0:
 			df.iloc[i, df.columns.get_loc('Signal')] = 'buy'
 		elif df[hist_column_name].iloc[i] < 0 and df[hist_column_name].iloc[i-1] >= 0:
 			df.iloc[i, df.columns.get_loc('Signal')] = 'sell'
-	"""
-	# Identify buy signals
-	buy_signals = (df[hist_column_name] > 0) & (df[hist_column_name].shift(1) <= 0)
-	df.loc[buy_signals, 'Signal'] = 'buy'
 
-	# Identify sell signals
-	sell_signals = (df[hist_column_name] < 0) & (df[hist_column_name].shift(1) >= 0)
-	df.loc[sell_signals, 'Signal'] = 'sell'
-	"""
 	# Determine the current trend
 	#trend = 'buy' if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] else 'sell'
 
