@@ -49,7 +49,7 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close'):
 	
 def calculate_heikin_ashi(df):
     ha_df = df.copy()
-    ha_df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
+    ha_df['HA_Close'] = (df['open'] + df['high'] + df['low'] + df['close']) / 4
     
     ha_open = [df['Open'][0]]
     for i in range(1, len(df)):
