@@ -38,9 +38,11 @@ class Futures_bot(object):
 
 	def update_crypto_dataframe(self, Crypto=None, function=None):
 		if function == "MACD":
-			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
+			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
+			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close')
 		elif function == "Heikin":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
+			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 		return Crypto
 
@@ -88,7 +90,7 @@ class Futures_bot(object):
 if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
-	Sharing_data.append_to_file(f"Function MACD, timeframe 1m, old binance 390 180 135")
+	Sharing_data.append_to_file(f"Function MACD, timeframe 1m, old binance 390 180 135 + Heikin Ashi")
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	while True:
 		Bot.run_main()
