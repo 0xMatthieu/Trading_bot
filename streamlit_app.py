@@ -87,9 +87,9 @@ while True:
     else:
         st.session_state.display_data = True
     
-    #for crypto in st.session_state.crypto_list:
-    #    if tabs ==crypto['symbol']:
-    #        render_trace(crypto)
+    for crypto in st.session_state.crypto_list:
+        if tabs ==crypto['symbol']:
+            render_trace(crypto)
     
 
     time.sleep(1)

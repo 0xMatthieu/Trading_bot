@@ -1,6 +1,0 @@
-Function MACD, timeframe 1m, old binance 390 180 135
-Crypto ETH/USDT dataframe created for function MACD
-Crypto PYTH/USDT dataframe created for function MACD
-Crypto TAO/USDT dataframe created for function MACD
-Crypto WIF/USDT dataframe created for function MACD
-Crypto ONDO/USDT dataframe created for function MACD
