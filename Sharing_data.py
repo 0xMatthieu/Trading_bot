@@ -63,6 +63,10 @@ def read_json(filename):
 			data = json.load(f)
 	except FileNotFoundError:
 		data = []
+	except json.JSONDecodeError as e:
+		print(f"Error reading JSON file {filename}: {e}")
+		# Handle the error or return an empty dictionary
+		return {}
 
 	# Convert timestamp strings back to Timestamps
 	for record in data:
