@@ -3,3 +3,11 @@ Crypto ETH/USDT dataframe created for function MACD
 Crypto PYTH/USDT dataframe created for function MACD
 Crypto TAO/USDT dataframe created for function MACD
 Crypto WIF/USDT dataframe created for function MACD
+Crypto ONDO/USDT dataframe created for function MACD
+signal buy on ETH/USDT at time 2024-06-13 07:09:02.038000
+Balance: 40.79905873 USDT
+Balance: 13.66620193 USDT
+ETHUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 0.01
+order is buy, price is 3509.9 and quantity is 1
+Available balance for USDT: 40.79905873
+Order placed: {'id': '190598169141211136', 'clientOrderId': None, 'symbol': 'ETH/USDT:USDT', 'type': None, 'timeInForce': None, 'postOnly': None, 'reduceOnly': None, 'side': None, 'amount': None, 'price': None, 'stopPrice': None, 'triggerPrice': None, 'cost': None, 'filled': None, 'remaining': None, 'timestamp': None, 'datetime': None, 'fee': None, 'status': None, 'info': {'orderId': '190598169141211136'}, 'lastTradeTimestamp': None, 'lastUpdateTimestamp': None, 'average': None, 'trades': [], 'fees': [], 'takeProfitPrice': None, 'stopLossPrice': None}

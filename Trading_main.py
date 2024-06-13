@@ -36,6 +36,8 @@ class Futures_bot(object):
 		self.macd_slow = 390 #standart 26
 		self.macd_signal = 135 #standart 9
 
+		self.life_data = pd.Timestamp.now()
+
 	def update_crypto_dataframe(self, Crypto=None, function=None):
 		if function == "MACD":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
@@ -84,6 +86,7 @@ class Futures_bot(object):
 		for crypto in self.crypto:
 			crypto = self.run_futures_trading_function(Crypto=crypto, function="MACD")
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
+		self.life_data = Sharing_data.life_data(life_data=self.life_data)
 
 
 
