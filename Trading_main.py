@@ -75,16 +75,16 @@ class Futures_bot(object):
 			if Crypto.df['Signal'].iloc[-1]:
 				Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 				#close open order order first (needed for buy, sell, stop loss or take profit)
-				#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+				self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
 				if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
-					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+					#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
 					self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
 	def run_main(self):
 		start_time = time.time()
 		for crypto in self.crypto:
-			crypto = self.run_futures_trading_function(Crypto=crypto, function="MACD")
+			crypto = self.run_futures_trading_function(Crypto=crypto, function="Heikin")
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
 		self.life_data = Sharing_data.life_data(life_data=self.life_data)
 
@@ -93,7 +93,7 @@ class Futures_bot(object):
 if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
-	Sharing_data.append_to_file(f"Function MACD, timeframe 1m, old binance 390 180 135 + Heikin Ashi")
+	Sharing_data.append_to_file(f"Function Heikin Ashi price color change")
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	while True:
 		Bot.run_main()

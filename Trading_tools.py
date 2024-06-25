@@ -81,25 +81,45 @@ def heikin_ashi_strategy(df):
 	ha_df['Stop_Loss_Long'] = ha_df['Swing_Low'].shift(1)
 	ha_df['Stop_Loss_Short'] = ha_df['Swing_High'].shift(1)
     
-	ha_df['Take_Profit_Long'] = ha_df['HA_Close'] + 2 * (ha_df['HA_Close'] - ha_df['Stop_Loss_Long'])
-	ha_df['Take_Profit_Short'] = ha_df['HA_Close'] - 2 * (ha_df['Stop_Loss_Short'] - ha_df['HA_Close'])
+	ha_df['Take_Profit_Long'] = 0
+	ha_df['Take_Profit_Short'] = 0
+	#ha_df['Take_Profit_Long'] = ha_df['HA_Close'] + 2 * (ha_df['HA_Close'] - ha_df['Stop_Loss_Long'])
+	#ha_df['Take_Profit_Short'] = ha_df['HA_Close'] - 2 * (ha_df['Stop_Loss_Short'] - ha_df['HA_Close'])
     
 	ha_df['Signal'] = None
+	ha_df['Trend'] = None
 	
     
 	for i in range(1, len(ha_df)):
 		if ha_df['Down_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'green':
 			ha_df.iloc[i, ha_df.columns.get_loc('Long_Condition')] = True
+			ha_df.iloc[i, ha_df.columns.get_loc('Take_Profit_Long')] = ha_df['HA_Close'][i] + 2 * (ha_df['HA_Close'][i] - ha_df['Stop_Loss_Long'][i])
 		if ha_df['Up_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'red':
 			ha_df.iloc[i, ha_df.columns.get_loc('Short_Condition')] = True
+			ha_df.iloc[i, ha_df.columns.get_loc('Take_Profit_Long')] = ha_df['HA_Close'][i] - 2 * (ha_df['Stop_Loss_Short'][i] - ha_df['HA_Close'][i])
+
 
 		if ha_df['Long_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Long'][i]):
 			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'buy'
 		elif ha_df['Short_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Short'][i]):
 			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'sell'
-		elif ha_df['Signal'][i-1] == 'buy' and (ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1] or ha_df['HA_Close'][i] >= ha_df['Take_Profit_Long'][i-1]):
-			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'close long'	# Close long position
-		elif ha_df['Signal'][i-1] == 'sell' and (ha_df['HA_High'][i] >= ha_df['Stop_Loss_Short'][i-1] or ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]):
-			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'close short'	# Close short position
+
+		#trend
+		if ha_df['Signal'][i] == None:
+			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Trend'][i-1]
+		elif ha_df['Signal'][i] == 'buy' or ha_df['Signal'][i] == 'sell':
+			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Signal'][i]
+
+		if ha_df['Trend'][i] == 'buy': 
+			if ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1]:
+				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'stop loss long'	# Close long position
+			elif ha_df['HA_Close'][i] >= ha_df['Take_Profit_Long'][i-1]:
+				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'take profit long'	# Close long position
+		elif ha_df['Trend'][i] == 'sell': 
+			if ha_df['HA_High'][i] >= ha_df['Stop_Loss_Short'][i-1]:
+				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'stop loss short'	# Close short position
+			elif ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]:
+				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'take profit short'	# Close short position
+
     
 	return ha_df
