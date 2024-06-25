@@ -158,9 +158,7 @@ class Exchange(object):
 				# Get the latest timestamp from the provided DataFrame
 				if signal:
 					updated = True
-					print(type(df))
 					df = pd.concat([df, new_df], ignore_index=True)
-					print(type(df))
 					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
 			return df, updated
