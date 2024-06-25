@@ -74,6 +74,7 @@ class Futures_bot(object):
 			if updated:
 				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
 				if Crypto.df['Signal'].iloc[-1]:
+					Sharing_data.append_to_file(f"-----------------------------------------------")
 					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 					#close open order order first (needed for buy, sell, stop loss or take profit)
 					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)

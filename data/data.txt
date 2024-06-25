@@ -1,4 +1,2 @@
 Function Heikin Ashi price color change
 Crypto ETH/USDT dataframe created for function Heikin
-Crypto PYTH/USDT dataframe created for function Heikin
-Crypto TAO/USDT dataframe created for function Heikin

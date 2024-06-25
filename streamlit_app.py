@@ -49,23 +49,23 @@ def render_trace(crypto):
         st.session_state[f"{crypto['symbol']}"] = 'init done'
         #if crypto.function == 'MACD':
         
-        st.session_state[f"{crypto['symbol']}_line_chart_price"] = st.line_chart(
-           df, x='timestamp', y='close', color=["#FF0000"]  # Optional
-        )
-        st.session_state[f"{crypto['symbol']}_line_chart_macd"] = st.line_chart(
-           df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
-        )
+        #st.session_state[f"{crypto['symbol']}_line_chart_price"] = st.line_chart(
+        #   df, x='timestamp', y='close', color=["#FF0000"]  # Optional
+        #)
+        #st.session_state[f"{crypto['symbol']}_line_chart_macd"] = st.line_chart(
+        #   df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
+        #)
         
         st.session_state[f"{crypto['symbol']}_line_chart_df"] = st.dataframe(df)
     else:
         #if crypto.function == 'MACD':
         
-        st.session_state[f"{crypto['symbol']}_line_chart_price"].line_chart(
-           df, x='timestamp', y='close', color=["#FF0000"]  # Optional
-        )
-        st.session_state[f"{crypto['symbol']}_line_chart_macd"].line_chart(
-           df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
-        )
+        #st.session_state[f"{crypto['symbol']}_line_chart_price"].line_chart(
+        #   df, x='timestamp', y='close', color=["#FF0000"]  # Optional
+        #)
+        #st.session_state[f"{crypto['symbol']}_line_chart_macd"].line_chart(
+        #   df, x='timestamp', y=['MACD', 'MACDs'], color=["#FF0000", "#0000FF"]  # Optional
+        #)
         
         st.session_state[f"{crypto['symbol']}_line_chart_df"].dataframe(df)
 
