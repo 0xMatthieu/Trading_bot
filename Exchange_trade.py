@@ -168,6 +168,7 @@ class Exchange(object):
 
 		except Exception as e:
 				Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}")
+				Sharing_data.append_to_file(f"debug, df is : {new_df}")
 				return df, updated
 
 
