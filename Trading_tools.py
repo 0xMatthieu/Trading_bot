@@ -95,10 +95,10 @@ def heikin_ashi_strategy(df):
 			ha_df.iloc[i, ha_df.columns.get_loc('Short_Condition')] = True
 
 		#trend
-		if ha_df['Signal'][i] == None:
+		if ha_df['Signal'][i-1] == 'buy' or ha_df['Signal'][i-1] == 'sell':
+			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Signal'][i-1]
+		elif ha_df['Signal'][i-1] == None:
 			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Trend'][i-1]
-		elif ha_df['Signal'][i] == 'buy' or ha_df['Signal'][i] == 'sell':
-			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Signal'][i]
 
 		if ha_df['Trend'][i] == 'buy': 
 			if ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1]:
