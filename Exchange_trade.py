@@ -147,9 +147,8 @@ class Exchange(object):
 			}
 			new_df = pd.DataFrame([ticker_data])
 			"""
-			if new_df is None:
-				Sharing_data.append_to_file(f"An error occurred while fetching ticker, df is None")
-			elif interval == None:
+
+			if interval == None:
 				df = new_df
 				updated = True
 			else:
@@ -165,7 +164,12 @@ class Exchange(object):
 
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}")
-			return df
+			return df, updated
+
+		except Exception as e:
+				Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}")
+				return df, updated
+
 
 	def fetch_market_data(self, symbol, market_type='spot'):
 		"""Fetch market data for the given symbol."""
