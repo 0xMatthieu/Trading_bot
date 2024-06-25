@@ -38,13 +38,13 @@ class Futures_bot(object):
 
 		self.life_data = pd.Timestamp.now()
 
-	def update_crypto_dataframe(self, Crypto=None, function=None):
+	def update_crypto_dataframe(self, Crypto=None, function=None, start=1):
 		if function == "MACD":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close')
+			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close', start=start)
 		elif function == "Heikin":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df)
+			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 		return Crypto
 
@@ -72,7 +72,7 @@ class Futures_bot(object):
 			#print(f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated")
 			Crypto.df, updated = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			if updated:
-				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
+				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
 				if Crypto.df['Signal'].iloc[-1]:
 					Sharing_data.append_to_file(f"-----------------------------------------------")
 					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")

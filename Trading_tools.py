@@ -2,7 +2,7 @@ import pandas as pd
 import pandas_ta as ta
 import numpy as np
 
-def calculate_macd(df, fast=12, slow=26, signal=9, column='close'):
+def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1):
 	"""
 	Calculate MACD and determine buy/sell signals.
 
@@ -36,7 +36,7 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close'):
 
 	df['Signal'] = None
 	
-	for i in range(1, len(df)):
+	for i in range(start, len(df)):
 		if df[hist_column_name].iloc[i] > 0 and df[hist_column_name].iloc[i-1] <= 0:
 			df.iloc[i, df.columns.get_loc('Signal')] = 'buy'
 		elif df[hist_column_name].iloc[i] < 0 and df[hist_column_name].iloc[i-1] >= 0:
@@ -61,7 +61,7 @@ def calculate_heikin_ashi(df):
     
     return ha_df
 	
-def heikin_ashi_strategy(df):
+def heikin_ashi_strategy(df, start=1):
 	#need Heilin Ashi df as input
 	ha_df = df.copy()
 	ha_df['HA_Color'] = np.where(ha_df['HA_Close'] >= ha_df['HA_Open'], 'green', 'red')
@@ -88,7 +88,7 @@ def heikin_ashi_strategy(df):
 	ha_df['Trend'] = None
 	
     
-	for i in range(1, len(ha_df)):
+	for i in range(start, len(ha_df)):
 		if ha_df['Down_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'green':
 			ha_df.iloc[i, ha_df.columns.get_loc('Long_Condition')] = True
 		if ha_df['Up_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'red':

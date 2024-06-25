@@ -8,6 +8,7 @@ import pandas as pd
 import math
 import Sharing_data
 from datetime import timedelta
+import asyncio
 
 class Exchange(object):
 
@@ -110,44 +111,6 @@ class Exchange(object):
 			signal = False
 		return signal
 
-	def fetch_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
-		"""Fetch ticker information for a specific symbol and append it to the provided DataFrame."""
-		try:
-			updated = False
-			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
-
-			# Fetch current ticker data
-			ticker = exchange.fetch_ohlcv(symbol=symbol, timeframe=interval, limit=1)
-			ticker = ticker[-1]	#get last value
-			ticker_data = {
-				'timestamp': pd.to_datetime(ticker[0]+self.adjust_timestamp_to_local_time, unit='ms'),
-				'open': ticker[1],
-				'high': ticker[2],
-				'low': ticker[3],
-				'close': ticker[4],
-				'last': ticker[4],
-				'volume': ticker[5]
-			}
-			new_df = pd.DataFrame([ticker_data])
-
-			if interval == None:
-				df = new_df
-				updated = True
-			else:
-				interval = self.timeframe_to_int(interval=interval)
-				signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=ticker_data)
-				# Get the latest timestamp from the provided DataFrame
-				if signal:
-					updated = True
-					df = pd.concat([df, new_df], ignore_index=True)
-					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
-
-			return df, updated
-
-		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}")
-			return df
-
 	def fetch_klines(self, symbol='BTC/USDT', timeframe='1m', since=None, limit=200, market_type='spot'):
 		"""Fetch klines (candlestick data) for a specific symbol and return a DataFrame."""
 		try:
@@ -155,14 +118,56 @@ class Exchange(object):
 			ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
 			df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
 			df['timestamp'] = pd.to_datetime(df['timestamp']+self.adjust_timestamp_to_local_time, unit='ms')
-			interval = self.timeframe_to_int(interval=timeframe) * 2 #needed cause it happens that it take it little more than interval to update klines
-			signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=None)
-			if signal:
-				Sharing_data.append_to_file(f"not able to fetch all klines, timestamp gap last {df['timestamp'].max()}, current {pd.Timestamp.now()}")
 			return df
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while fetching klines: {str(e)}")
 			return None
+		except Exception as e:
+			Sharing_data.append_to_file(f"An error occurred after fetching klines: {str(e)}")
+
+
+	def fetch_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
+		"""Fetch ticker information for a specific symbol and append it to the provided DataFrame."""
+		try:
+			updated = False
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+
+			new_df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=1, market_type=market_type)
+			"""
+			# Fetch current ticker data
+			ticker = exchange.fetch_ticker(symbol)
+			ticker_data = {
+				'timestamp': pd.to_datetime(ticker['timestamp']+self.adjust_timestamp_to_local_time, unit='ms'),
+				'open': ticker['open'],
+				'high': ticker['high'],
+				'low': ticker['low'],
+				'close': ticker['close'],
+				'last': ticker['last'],
+				'volume': ticker['baseVolume']
+			}
+			new_df = pd.DataFrame([ticker_data])
+			"""
+			if new_df is None:
+				Sharing_data.append_to_file(f"An error occurred while fetching ticker, df is None")
+			elif interval == None:
+				df = new_df
+				updated = True
+			else:
+				interval = self.timeframe_to_int(interval=interval)
+				signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
+				# Get the latest timestamp from the provided DataFrame
+				if signal:
+					updated = True
+					print(type(df))
+					df = pd.concat([df, new_df], ignore_index=True)
+					print(type(df))
+					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
+
+			return df, updated
+
+		except ccxt.BaseError as e:
+			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}")
+			return df
 
 	def fetch_market_data(self, symbol, market_type='spot'):
 		"""Fetch market data for the given symbol."""
