@@ -113,13 +113,17 @@ def heikin_ashi_strategy(df):
 		if ha_df['Trend'][i] == 'buy': 
 			if ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1]:
 				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'stop loss long'	# Close long position
+				ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = None
 			elif ha_df['HA_Close'][i] >= ha_df['Take_Profit_Long'][i-1]:
 				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'take profit long'	# Close long position
+				ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = None
 		elif ha_df['Trend'][i] == 'sell': 
 			if ha_df['HA_High'][i] >= ha_df['Stop_Loss_Short'][i-1]:
 				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'stop loss short'	# Close short position
+				ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = None
 			elif ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]:
 				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'take profit short'	# Close short position
+				ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = None
 
     
 	return ha_df
