@@ -167,7 +167,7 @@ class Exchange(object):
 			return df, updated
 
 		except Exception as e:
-				if not new_df.empty():	#known issue when using ohlcv, no need to provide feedback
+				if not new_df.empty:	#known issue when using ohlcv, no need to provide feedback
 					Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}")
 				return df, updated
 
