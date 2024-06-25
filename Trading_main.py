@@ -70,15 +70,16 @@ class Futures_bot(object):
 		if signal_timedelta:
 			#print("symbol:", Crypto.symbol_spot)
 			#print(f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated")
-			Crypto.df = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
-			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
-			if Crypto.df['Signal'].iloc[-1]:
-				Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
-				#close open order order first (needed for buy, sell, stop loss or take profit)
-				self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-				if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
-					#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-					self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
+			Crypto.df, updated = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
+			if updated:
+				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
+				if Crypto.df['Signal'].iloc[-1]:
+					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
+					#close open order order first (needed for buy, sell, stop loss or take profit)
+					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+					if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
+						#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+						self.kucoin.place_market_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_type=Crypto.df['Signal'].iloc[-1], market_type=market_type, leverage=Crypto.leverage, reduceOnly=False)
 		return Crypto
 
 	def run_main(self):

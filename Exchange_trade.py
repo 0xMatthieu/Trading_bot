@@ -113,6 +113,7 @@ class Exchange(object):
 	def fetch_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
 		"""Fetch ticker information for a specific symbol and append it to the provided DataFrame."""
 		try:
+			updated = False
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			# Fetch current ticker data
@@ -130,15 +131,17 @@ class Exchange(object):
 
 			if interval == None:
 				df = new_df
+				updated = True
 			else:
 				interval = self.timeframe_to_int(interval=interval)
 				signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=ticker_data)
 				# Get the latest timestamp from the provided DataFrame
-				if signal:		
+				if signal:
+					updated = True
 					df = pd.concat([df, new_df], ignore_index=True)
 					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
-			return df
+			return df, updated
 
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}")

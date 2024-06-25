@@ -81,10 +81,8 @@ def heikin_ashi_strategy(df):
 	ha_df['Stop_Loss_Long'] = ha_df['Swing_Low'].shift(1)
 	ha_df['Stop_Loss_Short'] = ha_df['Swing_High'].shift(1)
     
-	ha_df['Take_Profit_Long'] = 0
-	ha_df['Take_Profit_Short'] = 0
-	#ha_df['Take_Profit_Long'] = ha_df['HA_Close'] + 2 * (ha_df['HA_Close'] - ha_df['Stop_Loss_Long'])
-	#ha_df['Take_Profit_Short'] = ha_df['HA_Close'] - 2 * (ha_df['Stop_Loss_Short'] - ha_df['HA_Close'])
+	ha_df['Take_Profit_Long'] = ha_df['Swing_High'] + 2 * (ha_df['Swing_High'] - ha_df['Stop_Loss_Long'])
+	ha_df['Take_Profit_Short'] = ha_df['Swing_Low'] - 2 * (ha_df['Stop_Loss_Short'] - ha_df['Swing_Low'])
     
 	ha_df['Signal'] = None
 	ha_df['Trend'] = None
@@ -93,10 +91,8 @@ def heikin_ashi_strategy(df):
 	for i in range(1, len(ha_df)):
 		if ha_df['Down_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'green':
 			ha_df.iloc[i, ha_df.columns.get_loc('Long_Condition')] = True
-			ha_df.iloc[i, ha_df.columns.get_loc('Take_Profit_Long')] = ha_df['HA_Close'][i] + 2 * (ha_df['HA_Close'][i] - ha_df['Stop_Loss_Long'][i])
 		if ha_df['Up_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'red':
 			ha_df.iloc[i, ha_df.columns.get_loc('Short_Condition')] = True
-			ha_df.iloc[i, ha_df.columns.get_loc('Take_Profit_Long')] = ha_df['HA_Close'][i] - 2 * (ha_df['Stop_Loss_Short'][i] - ha_df['HA_Close'][i])
 
 		#trend
 		if ha_df['Signal'][i] == None:
