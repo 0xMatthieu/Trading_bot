@@ -117,15 +117,16 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			# Fetch current ticker data
-			ticker = exchange.fetch_ticker(symbol)
+			ticker = exchange.fetch_ohlcv(symbol=symbol, timeframe=interval, limit=1)
+			ticker = ticker[-1]	#get last value
 			ticker_data = {
-				'timestamp': pd.to_datetime(ticker['timestamp']+self.adjust_timestamp_to_local_time, unit='ms'),
-				'open': ticker['open'],
-				'high': ticker['high'],
-				'low': ticker['low'],
-				'close': ticker['close'],
-				'last': ticker['last'],
-				'volume': ticker['baseVolume']
+				'timestamp': pd.to_datetime(ticker[0]+self.adjust_timestamp_to_local_time, unit='ms'),
+				'open': ticker[1],
+				'high': ticker[2],
+				'low': ticker[3],
+				'close': ticker[4],
+				'last': ticker[4],
+				'volume': ticker[5]
 			}
 			new_df = pd.DataFrame([ticker_data])
 
