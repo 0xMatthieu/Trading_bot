@@ -1,14 +1,14 @@
 Function Heikin Ashi price color change
 Crypto ETH/USDT dataframe created for function Heikin
-Balance: 22.00932938 USDT
-Balance: 22.00932938 USDT
+Balance: 21.75787036 USDT
+Balance: 21.75787036 USDT
 ETHUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 0.01
-order is limit, price is 3385.1400000000003 and quantity is 1
-Available balance for USDT: 22.00932938
-An error occurred while placing the order: kucoinfutures Insufficient balance. 33.9123325200 is required to place the order.
-Balance: 22.00932938 USDT
-Balance: 22.00932938 USDT
+order is limit, price is 3390.9100000000003 and quantity is 1
+Available balance for USDT: 21.75787036
+Order placed: {'id': '195567437809274880', 'clientOrderId': None, 'symbol': 'ETH/USDT:USDT', 'type': None, 'timeInForce': None, 'postOnly': None, 'reduceOnly': None, 'side': None, 'amount': None, 'price': None, 'stopPrice': None, 'triggerPrice': None, 'cost': None, 'filled': None, 'remaining': None, 'timestamp': None, 'datetime': None, 'fee': None, 'status': None, 'info': {'orderId': '195567437809274880'}, 'lastTradeTimestamp': None, 'lastUpdateTimestamp': None, 'average': None, 'trades': [], 'fees': [], 'takeProfitPrice': None, 'stopLossPrice': None}
+Balance: 21.7554249 USDT
+Balance: 4.75245671 USDT
 ETHUSDTM precision is 1.0, min_order_amount is 1.0 and multiplier is 0.01
-order is limit, price is 3383.9 and quantity is 1
-Available balance for USDT: 22.00932938
-Order placed: {'id': '195455987598049282', 'clientOrderId': None, 'symbol': 'ETH/USDT:USDT', 'type': None, 'timeInForce': None, 'postOnly': None, 'reduceOnly': None, 'side': None, 'amount': None, 'price': None, 'stopPrice': None, 'triggerPrice': None, 'cost': None, 'filled': None, 'remaining': None, 'timestamp': None, 'datetime': None, 'fee': None, 'status': None, 'info': {'orderId': '195455987598049282'}, 'lastTradeTimestamp': None, 'lastUpdateTimestamp': None, 'average': None, 'trades': [], 'fees': [], 'takeProfitPrice': None, 'stopLossPrice': None}
+order is limit, price is 3392.99 and quantity is 1
+Available balance for USDT: 21.7554249
+Order placed: {'id': '195567584005951488', 'clientOrderId': None, 'symbol': 'ETH/USDT:USDT', 'type': None, 'timeInForce': None, 'postOnly': None, 'reduceOnly': None, 'side': None, 'amount': None, 'price': None, 'stopPrice': None, 'triggerPrice': None, 'cost': None, 'filled': None, 'remaining': None, 'timestamp': None, 'datetime': None, 'fee': None, 'status': None, 'info': {'orderId': '195567584005951488'}, 'lastTradeTimestamp': None, 'lastUpdateTimestamp': None, 'average': None, 'trades': [], 'fees': [], 'takeProfitPrice': None, 'stopLossPrice': None}

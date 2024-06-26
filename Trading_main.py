@@ -78,10 +78,12 @@ class Futures_bot(object):
 					Sharing_data.append_to_file(f"-----------------------------------------------")
 					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 					#close open order order first (needed for buy, sell, stop loss or take profit)
-					self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+					#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
+					side = 'sell' if Crypto.df['Signal'].iloc[-1] == 'buy' else 'sell'
+					self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=side, market_type=market_type, order_type=order_type, leverage=Crypto.leverage, reduceOnly=False, closeOrder=True)
 					if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
 						#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-						self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage, reduceOnly=False)
+						self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage, reduceOnly=False, closeOrder=False)
 		return Crypto
 
 	def run_main(self):

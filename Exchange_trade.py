@@ -177,7 +177,7 @@ class Exchange(object):
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 		return exchange.market(symbol)
 
-	def place_order(self, symbol='BTC/USDT', percentage=100, order_side='buy', market_type='spot', order_type='market', leverage=None, reduceOnly=False):
+	def place_order(self, symbol='BTC/USDT', percentage=100, order_side='buy', market_type='spot', order_type='market', leverage=None, reduceOnly=False, closeOrder=False):
 		#percentage shall be 1 to close futures position
 		
 		if market_type == 'spot':
@@ -200,6 +200,7 @@ class Exchange(object):
 			market_data = self.fetch_market_data(symbol, market_type)
 			precision = market_data['precision']['amount']
 			min_order_amount = market_data['limits']['amount']['min']
+			max_order_amount = market_data['limits']['amount']['max']
 			multiplier = market_data['contractSize']	#multiplier in API, https://stackoverflow.com/questions/75522901/issue-with-kucoin-futures-api-to-create-limit-order 
 			price_adjustment = market_data['precision']['price']	#needed for order limit
 
@@ -267,6 +268,8 @@ class Exchange(object):
 					# Set leverage if provided and if market type is futures
 					if leverage is not None and market_type == 'futures':
 						params['leverage'] = leverage
+
+					params['closeOrder'] = closeOrder
 
 				else:
 					Sharing_data.append_to_file("order_side must be 'buy' or 'sell'")
