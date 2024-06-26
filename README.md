@@ -1,7 +1,7 @@
 # Trading_bot
 
-how to start
-run python Main*.py
+simple bot using ccxt livbrary to trade on CEX, currently working on binance and kucoin
+aim is to test different strategies automatically
 
-# what should it do ?
+
 
