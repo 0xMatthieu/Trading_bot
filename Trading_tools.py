@@ -2,6 +2,11 @@ import pandas as pd
 import pandas_ta as ta
 import numpy as np
 
+def round_down(value, decimals):
+	#https://stackoverflow.com/questions/41383787/round-down-to-2-decimal-in-python
+    factor = 1 / (10 ** decimals)
+    return (value // factor) * factor
+
 def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1):
 	"""
 	Calculate MACD and determine buy/sell signals.

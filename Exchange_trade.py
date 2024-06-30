@@ -9,6 +9,7 @@ import math
 import Sharing_data
 from datetime import timedelta
 import asyncio
+from Trading_tools import round_down
 
 class Exchange(object):
 
@@ -171,15 +172,44 @@ class Exchange(object):
 					Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}")
 				return df, updated
 
+	def get_open_orders(self, symbol='BTC/USDT', market_type='spot'):
+		# Check open orders
+		try:
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+			open_orders = exchange.fetch_open_orders(symbol=symbol)
+			#Sharing_data.append_to_file(f"Open orders: {open_orders}")
+			return open_orders
+		except ccxt.BaseError as e:
+			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}")
+
+	def get_position(self, symbol='BTC/USDT', market_type='spot'):
+		# Check open orders
+		try:
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+			open_orders = exchange.fetch_position(symbol=symbol)
+			#Sharing_data.append_to_file(f"Open position: {open_orders}")
+			return open_orders
+		except ccxt.BaseError as e:
+			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}")
+
+	def close_position(self, symbol='BTC/USDT', market_type='spot'):
+		try:
+			# close a positon using only symbol as input, no order id
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+			exchange.close_position(symbol = symbol)
+		except ccxt.BaseError as e:
+			Sharing_data.append_to_file(f"An error occurred while trying to close order: {str(e)}")
 
 	def fetch_market_data(self, symbol, market_type='spot'):
 		"""Fetch market data for the given symbol."""
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 		return exchange.market(symbol)
 
-	def place_order(self, symbol='BTC/USDT', percentage=100, order_side='buy', market_type='spot', order_type='market', leverage=None, reduceOnly=False, closeOrder=False):
+	def place_order(self, symbol='BTC/USDT', percentage=100, order_side='buy', market_type='spot', order_type='market', leverage=None):
 		#percentage shall be 1 to close futures position
 		
+		start_time = time.time()
+
 		if market_type == 'spot':
 			base_currency, quote_currency = symbol.split('/')
 		else:
@@ -187,10 +217,21 @@ class Exchange(object):
         
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+
+			# define action
+			match order_side:
+				case 'buy' | 'stop loss short' | 'take profit short' | 'close short':
+					side = 'buy'
+				case 'sell' | 'stop loss long' | 'take profit long' | 'close long':
+					side = 'sell'
+
+
 			# Fetch the available balance for the right currency
 			balance_currency = base_currency if order_side == 'sell' and market_type == 'spot' else quote_currency
 			balance_type = 'total' if market_type == 'futures' else 'free'
-			available_balance = self.fetch_balance(balance_currency, balance_type, market_type)
+			#available_balance = self.fetch_balance(balance_currency, balance_type, market_type)
+			balance_all = exchange.fetch_balance()
+			available_balance = balance_all[balance_type].get(balance_currency, None)
 
 			if available_balance is None:
 				Sharing_data.append_to_file("Could not fetch the available balance.")
@@ -206,8 +247,9 @@ class Exchange(object):
 
 			# Determine the number of decimal places from the precision value
 			precision_decimal_places = max(0, int(-math.log10(precision)))
+			quantity = 0
 
-			params = {'reduceOnly':reduceOnly}
+			params = {'reduceOnly':False}
 
 			price = None
 
@@ -225,34 +267,37 @@ class Exchange(object):
 					quantity = float(available_balance * (percentage / 100))
 
 				else:
-					Sharing_data.append_to_file("order_side must be 'buy' or 'sell'")
+					Sharing_data.append_to_file("side must be 'buy' or 'sell'")
 
 				# Ensure the quantity is within the allowed precision and limits
-				quantity = max(min_order_amount, round(quantity, precision_decimal_places))
+				quantity = max(min_order_amount, round_down(quantity, precision_decimal_places))
 
 			elif market_type == 'futures':
+				ticker = exchange.fetch_ticker(symbol)
 
 				if order_type == 'market':
 					# Fetch the ticker price to calculate max quantity
-					ticker = exchange.fetch_ticker(symbol)
 					price = ticker['last']
 				elif order_type == 'limit':
 					# Fetch the current order book
 					order_book = exchange.fetch_order_book(symbol)
-					if order_side == 'buy':
+					if order_side == 'buy' or order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long':
 						# Place a limit buy order slightly above the best bid
-						best_bid = order_book['bids'][0][0]
-						price = best_bid + price_adjustment
-					elif order_side == 'sell':
+						best_order_book = order_book['bids'][1][0]
+						best_order_book_ticker = float(ticker['info']['bestAskPrice'])
+						price = best_order_book + 1 * price_adjustment
+					elif order_side == 'sell' or order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long':
 						# Place a limit sell order slightly below the best ask
-						best_ask = order_book['asks'][0][0]
-						price = best_ask - price_adjustment
+						best_order_book = order_book['asks'][1][0]
+						best_order_book_ticker = float(ticker['info']['bestBidPrice'])
+						price = best_order_book - 1 * price_adjustment
             
 				if order_side == 'buy' or order_side == 'sell': 
 					# Calculate quantity based on the percentage of available balance
 					min_amount = price * multiplier
 					money_to_use = available_balance * (percentage / 100)
-					money_really_available = self.fetch_balance(balance_currency, 'free', market_type)
+					#money_really_available = self.fetch_balance(balance_currency, 'free', market_type)
+					money_really_available = balance_all['free'].get(balance_currency, None)
 					if money_really_available < money_to_use:
 						money_to_use = money_really_available
 					if leverage == None and min_amount > money_to_use:
@@ -263,47 +308,59 @@ class Exchange(object):
 					quantity = (money_to_use * leverage) / (min_amount)
 
 					# Ensure the quantity is within the allowed precision and limits
-					quantity = max(1, round(quantity, precision_decimal_places))
+					quantity = max(1, round_down(quantity, precision_decimal_places))
 
-					# Set leverage if provided and if market type is futures
-					if leverage is not None and market_type == 'futures':
-						params['leverage'] = leverage
+				# if there is already an open order, add quantity of order to close
+				open_order = self.get_position(symbol=symbol, market_type=market_type)
+				if open_order['contracts'] is not None:
+					if ((open_order['side'] == 'long' and order_side == 'sell') or (open_order['side'] == 'short' and order_side == 'buy')
+					or order_side == 'close long' or order_side == 'close short'):
+						quantity = quantity + open_order['contracts']
 
-					params['closeOrder'] = closeOrder
+				# Set leverage if provided and if market type is futures
+				if leverage is not None and market_type == 'futures':
+					params['leverage'] = leverage
 
-				else:
-					Sharing_data.append_to_file("order_side must be 'buy' or 'sell'")
+				if (order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long'
+				or order_side == 'close short' or order_side == 'stop loss short' or order_side == 'take profit short'):
+					#params['closeOrder'] = True
+					params['reduceOnly'] = True
 
-			
-
-			Sharing_data.append_to_file(f"{symbol} precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
-			Sharing_data.append_to_file(f"order is {order_type}, price is {price} and quantity is {quantity}")
+			Sharing_data.append_to_file(f"{symbol}: precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
+			Sharing_data.append_to_file(f"order is {order_type}, side was {order_side} so executed as {side}. Price is {price} quantity is {quantity} and leverage is {leverage}")
+			if order_type == 'limit':
+				Sharing_data.append_to_file(f"Order book price found was {best_order_book}. Best ticker was {best_order_book}. Last price was {ticker['last']}")
+				Sharing_data.append_to_file(f"Open order was {open_order['side']} for a size of {open_order['contracts']}")
 			Sharing_data.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
-
-			# Place a market buy order
-			order = exchange.create_order(symbol=symbol, type=order_type, side=order_side, price=price, amount=quantity, params=params)
-			Sharing_data.append_to_file(f"Order placed: {order}")
-			return order
+			if market_type == 'futures' and (order_side == 'buy' or order_side == 'sell'):
+				Sharing_data.append_to_file(f"Money really available for {balance_currency}: {money_really_available}")
+			# Place the order
+			order = exchange.create_order(symbol=symbol, type=order_type, side=side, price=price, amount=quantity, params=params)
+			Sharing_data.append_to_file(f"Order placed: {order['id']}")
+			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}")
+			return order['id']
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
 
-	def get_open_orders(self, symbol='BTC/USDT', market_type='spot'):
-		# Check open orders
+	def monitor_and_adjust_order(self, symbol='BTC/USDT', order=None, market_type='spot'):
+		"""
+		Monitor and adjust the limit order to keep it close to the market price.
+		"""
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
-			open_orders = self.exchange.fetch_open_orders(symbol=symbol)
-			Sharing_data.append_to_file(f"Open orders: {open_orders}")
-			return open_orders
-		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}")
 
-	def close_position(self, symbol='BTC/USDT', market_type='spot'):
-		try:
-			# close a positon using only symbol as input, no order id
-			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
-			exchange.close_position(symbol = symbol)
+			# Fetch the current order status
+			current_order = self.get_position(symbol=symbol, market_type=market_type)
+
+			if current_order['info']['isOpen'] == False:
+				return False
+			else:           
+				# Cancel the current order if not filled
+				exchange.cancel_order(order['id'], symbol)
+				Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
+				return True
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while trying to close order: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while monitoring order: {str(e)}")
 
 if __name__ == "__main__":
 	kucoin = Exchange(name='kucoin')

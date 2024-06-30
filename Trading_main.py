@@ -26,11 +26,11 @@ class Futures_bot(object):
 
 		#crypto
 		self.crypto = []
-		self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='1m', percentage = 20))
-		#self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='1m', percentage = 20))
-		#self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='1m', percentage = 20))
-		#self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20))
-		#self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='1m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='3m', percentage = 20))
 
 		self.macd_fast = 180 #standart 12
 		self.macd_slow = 390 #standart 26
@@ -54,8 +54,6 @@ class Futures_bot(object):
 		market_type_spot='spot'
 		order_type = 'limit'
 		Crypto.function=function #for streamlit app
-		#print("symbol:", Crypto.symbol_spot)
-		#print(f"df {Crypto.df}")
 
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
@@ -69,24 +67,17 @@ class Futures_bot(object):
 		#print(f"Crypto {Crypto.symbol_spot} time execution {time.time() - start_time}")
 
 		if signal_timedelta:
-			#print("symbol:", Crypto.symbol_spot)
-			#print(f"Crypto {Crypto.symbol_spot} Interval {Crypto.timeframe} reached, price udpated")
 			Crypto.df, updated = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			if updated:
 				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
 				if Crypto.df['Signal'].iloc[-1]:
 					Sharing_data.append_to_file(f"-----------------------------------------------")
 					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
-					#close open order order first (needed for buy, sell, stop loss or take profit)
-					#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-					side = 'sell' if Crypto.df['Signal'].iloc[-1] == 'buy' else 'sell'
-					self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=side, market_type=market_type, order_type=order_type, leverage=Crypto.leverage, reduceOnly=False, closeOrder=True)
-					if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
-						#self.kucoin.close_position(symbol=Crypto.symbol_futures, market_type=market_type)
-						self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage, reduceOnly=False, closeOrder=False)
+
+					self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=side, market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
 		return Crypto
 
-	def run_main(self):
+	def run_main(self, sleep_time=5):
 		start_time = time.time()
 		for crypto in self.crypto:
 			crypto = self.run_futures_trading_function(Crypto=crypto, function="Heikin")
@@ -99,7 +90,6 @@ if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
 	Sharing_data.append_to_file(f"Function Heikin Ashi price color change")
-	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	while True:
 		Bot.run_main()
 	
