@@ -219,10 +219,9 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			# define action
-			match order_side:
-				case 'buy' | 'stop loss short' | 'take profit short' | 'close short':
+			if order_side == 'buy' or order_side == 'stop loss short' or order_side == 'take profit short' or order_side == 'close short':
 					side = 'buy'
-				case 'sell' | 'stop loss long' | 'take profit long' | 'close long':
+			elif order_side =='sell' or order_side == 'stop loss long' or order_side == 'take profit long' or order_side == 'close long':
 					side = 'sell'
 
 
