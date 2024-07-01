@@ -74,7 +74,7 @@ class Futures_bot(object):
 					Sharing_data.append_to_file(f"-----------------------------------------------")
 					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
 
-					self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=side, market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
+					self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
 		return Crypto
 
 	def run_main(self, sleep_time=5):
