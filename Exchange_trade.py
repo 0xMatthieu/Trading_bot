@@ -291,7 +291,14 @@ class Exchange(object):
 						best_order_book_ticker = float(ticker['info']['bestBidPrice'])
 						price = best_order_book - 1 * price_adjustment
             
-				if order_side == 'buy' or order_side == 'sell': 
+				if order_side == 'buy' or order_side == 'sell':
+
+					##########
+					# TODO to improve but current solution to not block
+					# TODO calculate the position price and update money_really_available with the position still open, should fix it
+					self.close_position(symbol=symbol, market_type=market_type)
+
+					
 					# Calculate quantity based on the percentage of available balance
 					min_amount = price * multiplier
 					money_to_use = available_balance * (percentage / 100)
