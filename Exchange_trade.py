@@ -280,7 +280,7 @@ class Exchange(object):
 				elif order_type == 'limit':
 					# Fetch the current order book
 					order_book = exchange.fetch_order_book(symbol)
-					if order_side == 'buy' or order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long':
+					if order_side == 'buy' or order_side == 'close short' or order_side == 'stop loss short' or order_side == 'take profit short':
 						# Place a limit buy order slightly above the best bid
 						best_order_book = order_book['bids'][1][0]
 						best_order_book_ticker = float(ticker['info']['bestAskPrice'])
