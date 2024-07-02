@@ -148,18 +148,18 @@ class Exchange(object):
 			}
 			new_df = pd.DataFrame([ticker_data])
 			"""
-            if new_df is not None:  
-                if interval == None:
-                    df = new_df
-                    updated = True
-                else:
-                    interval = self.timeframe_to_int(interval=interval)
-                    signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
-                    # Get the latest timestamp from the provided DataFrame
-                    if signal:
-                        updated = True
-                        df = pd.concat([df, new_df], ignore_index=True)
-                        #Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
+			if new_df is not None:  
+				if interval == None:
+					df = new_df
+					updated = True
+				else:
+					interval = self.timeframe_to_int(interval=interval)
+					signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
+					# Get the latest timestamp from the provided DataFrame
+					if signal:
+						updated = True
+						df = pd.concat([df, new_df], ignore_index=True)
+					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
 			return df, updated
 
