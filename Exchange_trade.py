@@ -320,7 +320,8 @@ class Exchange(object):
 				open_order = self.get_position(symbol=symbol, market_type=market_type)
 				if open_order['contracts'] is not None:
 					if ((open_order['side'] == 'long' and order_side == 'sell') or (open_order['side'] == 'short' and order_side == 'buy')
-					or order_side == 'close long' or order_side == 'close short'):
+					or order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long'
+					or order_side == 'close short' or order_side == 'stop loss short' or order_side == 'take profit short'):
 						quantity = quantity + open_order['contracts']
 
 				# Set leverage if provided and if market type is futures
