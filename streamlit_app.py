@@ -78,6 +78,10 @@ tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
 #Sharing_data.append_to_file(f"Streamlit app init time execution {time.time() - start_time}")
 #print(f"Streamlit app init time execution {time.time() - start_time}")
 
+if tabs =='Resume':
+    with open('data/data.txt') as f:
+        st.download_button('Download data', f)  # Defaults to 'text/plain'
+
 while True:
 
     if tabs =='Resume':
