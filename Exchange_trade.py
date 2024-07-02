@@ -125,10 +125,9 @@ class Exchange(object):
 			return None
 		except Exception as e:
 			Sharing_data.append_to_file(f"An error occurred after fetching klines: {str(e)}")
-            return None
+			return None
 
-
-	def fetch_exchange_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
+    def fetch_exchange_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
 		"""Fetch ticker information for a specific symbol and append it to the provided DataFrame."""
 		try:
 			updated = False
