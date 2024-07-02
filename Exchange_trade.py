@@ -125,9 +125,10 @@ class Exchange(object):
 			return None
 		except Exception as e:
 			Sharing_data.append_to_file(f"An error occurred after fetching klines: {str(e)}")
+            return None
 
 
-	def fetch_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
+	def fetch_exchange_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
 		"""Fetch ticker information for a specific symbol and append it to the provided DataFrame."""
 		try:
 			updated = False
@@ -148,18 +149,18 @@ class Exchange(object):
 			}
 			new_df = pd.DataFrame([ticker_data])
 			"""
-
-			if interval == None:
-				df = new_df
-				updated = True
-			else:
-				interval = self.timeframe_to_int(interval=interval)
-				signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
-				# Get the latest timestamp from the provided DataFrame
-				if signal:
-					updated = True
-					df = pd.concat([df, new_df], ignore_index=True)
-					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
+            if new_df is not None:  
+                if interval == None:
+                    df = new_df
+                    updated = True
+                else:
+                    interval = self.timeframe_to_int(interval=interval)
+                    signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
+                    # Get the latest timestamp from the provided DataFrame
+                    if signal:
+                        updated = True
+                        df = pd.concat([df, new_df], ignore_index=True)
+                        #Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
 			return df, updated
 
@@ -255,7 +256,7 @@ class Exchange(object):
 			if market_type == 'spot':
 				if order_side == 'buy':
 					# Fetch the ticker price to calculate max quantity
-					ticker = exchange.fetch_ticker(symbol)
+					ticker = exchange.fetch_tickerfetch_ticker(symbol)
 					price = ticker['last']
 	                
 					# Calculate quantity based on the percentage of available balance

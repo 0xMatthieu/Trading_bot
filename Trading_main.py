@@ -67,7 +67,7 @@ class Futures_bot(object):
 		#print(f"Crypto {Crypto.symbol_spot} time execution {time.time() - start_time}")
 
 		if signal_timedelta:
-			Crypto.df, updated = self.kucoin.fetch_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
+			Crypto.df, updated = self.kucoin.fetch_exchange_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			if updated:
 				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
 				if Crypto.df['Signal'].iloc[-1]:
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 	
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
-	#Bot.kucoin.fetch_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')
+	#Bot.kucoin.fetch_exchange_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')
 	#Bot.kucoin.fetch_klines(symbol='ETHUSDTM', limit=200, market_type='futures')
 	#Bot.kucoin.place_market_order(symbol='ETH/USDT', percentage=50, order_type='buy', market_type='spot')
 	#Bot.kucoin.place_market_order(symbol='ETHUSDTM', percentage=25, order_type='buy', market_type='futures', leverage=None, reduceOnly=False)
