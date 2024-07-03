@@ -86,6 +86,8 @@ while True:
 
     if tabs =='Resume':
         if st.session_state.display_data:
+            with open(folder_path + crypto['symbol']+'.json') as f:
+                st.download_button('Download crypto data', f)  # Defaults to 'text/plain'
             Sharing_data.read_and_display_file()
             st.session_state.display_data = False
     else:
