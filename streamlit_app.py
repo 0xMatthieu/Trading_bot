@@ -31,7 +31,7 @@ def app_init():
         if filename.endswith('.json'):
             file_name_without_ext = filename[:-5]  # Remove the .json extension
             # Add the file name and init variable to the session state list
-            st.session_state['crypto_list'].append({'symbol': file_name_without_ext, 'init': False})
+            st.session_state['crypto_list'].append({'symbol': file_name_without_ext, 'init': False, 'download_btn':None})
     if 'tabs' not in st.session_state:
         st.session_state["tabs"] = [
             stx.TabBarItemData(id="Resume", title="Resume", description=""),
@@ -80,12 +80,12 @@ tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
 
 if tabs =='Resume':
     with open('data/data.txt') as f:
-        st.download_button('Download data', f)  # Defaults to 'text/plain'
+        data_btn = st.download_button('Download data', f)  # Defaults to 'text/plain'
 
 for crypto in st.session_state.crypto_list:
     if tabs ==crypto['symbol']:
         with open(folder_path + crypto['symbol']+'.json') as f:
-            st.download_button('Download crypto data', f)  # Defaults to 'text/plain'
+            crypto['download_btn'] = st.download_button('Download crypto data', f)  # Defaults to 'text/plain'
 
 while True:
 
