@@ -82,12 +82,15 @@ if tabs =='Resume':
     with open('data/data.txt') as f:
         st.download_button('Download data', f)  # Defaults to 'text/plain'
 
+for crypto in st.session_state.crypto_list:
+    if tabs ==crypto['symbol']:
+        with open(folder_path + crypto['symbol']+'.json') as f:
+            st.download_button('Download crypto data', f)  # Defaults to 'text/plain'
+
 while True:
 
     if tabs =='Resume':
         if st.session_state.display_data:
-            with open(folder_path + crypto['symbol']+'.json') as f:
-                st.download_button('Download crypto data', f)  # Defaults to 'text/plain'
             Sharing_data.read_and_display_file()
             st.session_state.display_data = False
     else:
