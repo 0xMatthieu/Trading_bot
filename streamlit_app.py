@@ -6,6 +6,7 @@ import Sharing_data
 import time
 import os
 import altair as alt
+import shutil 
 
 start_time = time.time()
 
@@ -79,13 +80,11 @@ tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
 #print(f"Streamlit app init time execution {time.time() - start_time}")
 
 if tabs =='Resume':
-    with open('data/data.txt') as f:
-        data_btn = st.download_button('Download data', f)  # Defaults to 'text/plain'
+    # Creating the ZIP file 
+    archived = shutil.make_archive('data/data', 'zip', 'data/')
+    with open('data/data.zip', 'rb') as f:
+        data_btn = st.download_button(label='Download data', data=f, file_name="data.zip", mime="application/zip")  # Defaults to 'text/plain'
 
-for crypto in st.session_state.crypto_list:
-    if tabs ==crypto['symbol']:
-        with open(folder_path + crypto['symbol']+'.json') as f:
-            crypto['download_btn'] = st.download_button('Download crypto data', f)  # Defaults to 'text/plain'
 
 while True:
 
