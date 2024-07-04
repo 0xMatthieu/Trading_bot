@@ -1,25 +1,4 @@
 Function Heikin Ashi price color change
 Crypto ETH/USDT dataframe created for function Heikin
-ETHUSDTM: precision is 1.0, min_order_amount is 1.0 and multiplier is 0.01
-order is limit, side was buy so executed as buy. Price is 3412.4500000000003 quantity is 1 and leverage is 2
-Order book price found was 3412.44. Best ticker was 3412.44. Last price was 3412.51
-Open order was None for a size of 0.0
-Available balance for USDT: 20.69906516
-Money really available for USDT: 20.69906516
-Order placed: 197009362642903040
-Order time execution was 3.238032102584839
-ETHUSDTM: precision is 1.0, min_order_amount is 1.0 and multiplier is 0.01
-order is limit, side was close long so executed as sell. Price is 3411.38 quantity is 1.0 and leverage is None
-Order book price found was 3411.37. Best ticker was 3411.37. Last price was 3411.44
-Open order was long for a size of 1.0
-Available balance for USDT: 20.69034026
-Order placed: 197009714825981952
-Order time execution was 1.506465196609497
-ETHUSDTM: precision is 1.0, min_order_amount is 1.0 and multiplier is 0.01
-order is limit, side was buy so executed as buy. Price is 3409.17 quantity is 1 and leverage is 2
-Order book price found was 3409.16. Best ticker was 3409.16. Last price was 3409.18
-Open order was None for a size of 0.0
-Available balance for USDT: 20.66157168
-Money really available for USDT: 20.66157168
-Order placed: 197009839338090496
-Order time execution was 1.4358808994293213
+An error occurred while fetching open orders: kucoin fetchPosition() is not supported yet
+An error occurred while fetching open orders: kucoin fetchPosition() is not supported yet

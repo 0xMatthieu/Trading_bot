@@ -172,11 +172,12 @@ class Exchange(object):
 					Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}")
 				return df, updated
 
-	def get_open_orders(self, symbol='BTC/USDT', market_type='spot'):
+	def get_open_orders(self, symbol='BTC/USDT', market_type='spot', stop_orders=False):
 		# Check open orders
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
-			open_orders = exchange.fetch_open_orders(symbol=symbol)
+			params = {'trigger':stop_orders}
+			open_orders = exchange.fetch_open_orders(symbol=symbol, params=params)
 			#Sharing_data.append_to_file(f"Open orders: {open_orders}")
 			return open_orders
 		except ccxt.BaseError as e:
@@ -190,7 +191,7 @@ class Exchange(object):
 			#Sharing_data.append_to_file(f"Open position: {open_orders}")
 			return open_orders
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching open positions: {str(e)}")
 
 	def close_position(self, symbol='BTC/USDT', market_type='spot'):
 		try:
@@ -204,6 +205,25 @@ class Exchange(object):
 		"""Fetch market data for the given symbol."""
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 		return exchange.market(symbol)
+
+	def place_stop_order(self, symbol='BTC/USDT', quantity=100, order_side='buy', market_type='spot', stop_order_type='take_profit', price=None):
+		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+
+		try:
+			if (order_side == 'buy' and stop_order_type == 'take_profit') or (order_side == 'sell' and stop_order_type == 'stop_loss'):
+				stop_order = 'up'
+			if (order_side == 'buy' and stop_order_type == 'stop_loss') or (order_side == 'sell' and stop_order_type == 'take_profit'):
+				stop_order = 'down'
+			else:
+				stop_order = None
+
+			params = {'stop':stop_order_type, 'stopPriceType':'MP', 'stopPrice':price}
+			# Place the order
+			order = exchange.create_order(symbol=symbol, amount=quantity, params=params)
+			Sharing_data.append_to_file(f"Order placed: {order['id']}")
+
+		except ccxt.BaseError as e:
+			Sharing_data.append_to_file(f"An error occurred while placing the stop order: {str(e)}")
 
 	def place_order(self, symbol='BTC/USDT', percentage=100, order_side='buy', market_type='spot', order_type='market', leverage=None):
 		#percentage shall be 1 to close futures position
@@ -349,15 +369,16 @@ class Exchange(object):
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
 
-	def monitor_and_adjust_order(self, symbol='BTC/USDT', order=None, market_type='spot'):
+	def monitor_and_adjust_orders(self, symbol='BTC/USDT', order=None, market_type='spot'):
 		"""
-		Monitor and adjust the limit order to keep it close to the market price.
+		Monitor and adjust the limit orders to updated stop loss and take profit
 		"""
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			# Fetch the current order status
-			current_order = self.get_position(symbol=symbol, market_type=market_type)
+			current_order = self.open_orders(symbol=symbol, market_type=market_type)
+			#qty = current_order['info']['currentQty']
 
 			if current_order['info']['isOpen'] == False:
 				return False
