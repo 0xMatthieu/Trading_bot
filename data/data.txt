@@ -1,4 +1,10 @@
 Function Heikin Ashi price color change
 Crypto ETH/USDT dataframe created for function Heikin
-An error occurred while fetching open orders: kucoin fetchPosition() is not supported yet
-An error occurred while fetching open orders: kucoin fetchPosition() is not supported yet
+Order 199331677607161857 canceled for adjustment.
+ETHUSDTM: stop_order_type is take_profit_long, params are {'stop': 'up', 'stopPriceType': 'MP', 'stopPrice': 3110} and quantity is 1.0
+Order placed: 199333576267882496
+Order time execution was 0.2687110900878906
+Order 199331678802497536 canceled for adjustment.
+ETHUSDTM: stop_order_type is stop_loss_long, params are {'stop': 'down', 'stopPriceType': 'MP', 'stopPrice': 2890} and quantity is 1.0
+Order placed: 199333578474094592
+Order time execution was 0.2669801712036133

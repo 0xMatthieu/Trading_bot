@@ -134,20 +134,6 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			new_df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=1, market_type=market_type)
-			"""
-			# Fetch current ticker data
-			ticker = exchange.fetch_ticker(symbol)
-			ticker_data = {
-				'timestamp': pd.to_datetime(ticker['timestamp']+self.adjust_timestamp_to_local_time, unit='ms'),
-				'open': ticker['open'],
-				'high': ticker['high'],
-				'low': ticker['low'],
-				'close': ticker['close'],
-				'last': ticker['last'],
-				'volume': ticker['baseVolume']
-			}
-			new_df = pd.DataFrame([ticker_data])
-			"""
 			if new_df is not None:  
 				if interval == None:
 					df = new_df
@@ -206,21 +192,49 @@ class Exchange(object):
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 		return exchange.market(symbol)
 
-	def place_stop_order(self, symbol='BTC/USDT', quantity=100, order_side='buy', market_type='spot', stop_order_type='take_profit', price=None):
+	def define_stop_order_type(self, stop_order_type=None, stop_order=None, order_side=None):
+		if stop_order_type is not None:
+			if stop_order_type == 'take_profit_long':
+				stop_order = 'up'
+				order_side = 'sell'
+			elif stop_order_type == 'stop_loss_long':
+				stop_order = 'down'
+				order_side = 'sell'
+			elif stop_order_type == 'take_profit_short':
+				stop_order = 'down'
+				order_side = 'buy'
+			elif stop_order_type == 'stop_loss_short':
+				stop_order = 'up'
+				order_side = 'buy'
+			else:
+				stop_order = None
+				order_side = None
+			return stop_order, order_side
+		elif stop_order is not None and order_side is not None:
+			if stop_order == 'up' and order_side == 'sell':
+				stop_order_type = 'take_profit_long'
+			elif stop_order == 'down' and order_side == 'sell':
+				stop_order_type = 'stop_loss_long'
+			elif stop_order == 'down' and order_side == 'buy':
+				stop_order_type = 'take_profit_short'
+			elif stop_order == 'up' and order_side == 'buy':
+				stop_order_type = 'stop_loss_short'
+			return stop_order_type
+
+
+	def place_stop_order(self, symbol='BTC/USDT', quantity=100, market_type='spot', stop_order_type='take_profit_long', price=None):
+		start_time = time.time()
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 		try:
-			if (order_side == 'buy' and stop_order_type == 'take_profit') or (order_side == 'sell' and stop_order_type == 'stop_loss'):
-				stop_order = 'up'
-			if (order_side == 'buy' and stop_order_type == 'stop_loss') or (order_side == 'sell' and stop_order_type == 'take_profit'):
-				stop_order = 'down'
-			else:
-				stop_order = None
+			stop_order, order_side = self.define_stop_order_type(stop_order_type=stop_order_type, stop_order=None, order_side=None)
 
-			params = {'stop':stop_order_type, 'stopPriceType':'MP', 'stopPrice':price}
+			params = {'stop':stop_order, 'stopPriceType':'MP', 'stopPrice':price}
 			# Place the order
-			order = exchange.create_order(symbol=symbol, amount=quantity, params=params)
+			Sharing_data.append_to_file(f"{symbol}: stop_order_type is {stop_order_type}, params are {params} and quantity is {quantity}") 
+			order = exchange.create_order(symbol=symbol, type='limit', side=order_side, price=price, amount=quantity, params=params)
 			Sharing_data.append_to_file(f"Order placed: {order['id']}")
+			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}")
 
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the stop order: {str(e)}")
@@ -239,9 +253,9 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			# define action
-			if order_side == 'buy' or order_side == 'stop loss short' or order_side == 'take profit short' or order_side == 'close short':
+			if order_side == 'buy' or order_side == 'stop_loss_short' or order_side == 'take_profit_short' or order_side == 'close_short':
 					side = 'buy'
-			elif order_side =='sell' or order_side == 'stop loss long' or order_side == 'take profit long' or order_side == 'close long':
+			elif order_side =='sell' or order_side == 'stop_loss_long' or order_side == 'take_profit_long' or order_side == 'close_long':
 					side = 'sell'
 
 
@@ -300,12 +314,12 @@ class Exchange(object):
 				elif order_type == 'limit':
 					# Fetch the current order book
 					order_book = exchange.fetch_order_book(symbol)
-					if order_side == 'buy' or order_side == 'close short' or order_side == 'stop loss short' or order_side == 'take profit short':
+					if order_side == 'buy' or order_side == 'close_short' or order_side == 'stop_loss_short' or order_side == 'take_profit_short':
 						# Place a limit buy order slightly above the best bid
 						best_order_book = order_book['bids'][1][0]
 						best_order_book_ticker = float(ticker['info']['bestAskPrice'])
 						price = best_order_book + 1 * price_adjustment
-					elif order_side == 'sell' or order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long':
+					elif order_side == 'sell' or order_side == 'close_long' or order_side == 'stop_loss_long' or order_side == 'take_profit_long':
 						# Place a limit sell order slightly below the best ask
 						best_order_book = order_book['asks'][1][0]
 						best_order_book_ticker = float(ticker['info']['bestBidPrice'])
@@ -317,12 +331,12 @@ class Exchange(object):
 					# TODO to improve but current solution to not block
 					# TODO calculate the position price and update money_really_available with the position still open, should fix it
 					self.close_position(symbol=symbol, market_type=market_type)
+					##########
 
 					
 					# Calculate quantity based on the percentage of available balance
 					min_amount = price * multiplier
 					money_to_use = available_balance * (percentage / 100)
-					#money_really_available = self.fetch_balance(balance_currency, 'free', market_type)
 					money_really_available = balance_all['free'].get(balance_currency, None)
 					if money_really_available < money_to_use:
 						money_to_use = money_really_available
@@ -340,16 +354,16 @@ class Exchange(object):
 				open_order = self.get_position(symbol=symbol, market_type=market_type)
 				if open_order['contracts'] is not None:
 					if ((open_order['side'] == 'long' and order_side == 'sell') or (open_order['side'] == 'short' and order_side == 'buy')
-					or order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long'
-					or order_side == 'close short' or order_side == 'stop loss short' or order_side == 'take profit short'):
+					or order_side == 'close_long' or order_side == 'stop_loss_long' or order_side == 'take_profit_long'
+					or order_side == 'close_short' or order_side == 'stop_loss_short' or order_side == 'take_profit_short'):
 						quantity = quantity + open_order['contracts']
 
 				# Set leverage if provided and if market type is futures
 				if leverage is not None and market_type == 'futures':
 					params['leverage'] = leverage
 
-				if (order_side == 'close long' or order_side == 'stop loss long' or order_side == 'take profit long'
-				or order_side == 'close short' or order_side == 'stop loss short' or order_side == 'take profit short'):
+				if (order_side == 'close_long' or order_side == 'stop_loss_long' or order_side == 'take_profit_long'
+				or order_side == 'close_short' or order_side == 'stop_loss_short' or order_side == 'take_profit_short'):
 					#params['closeOrder'] = True
 					params['reduceOnly'] = True
 
@@ -369,26 +383,72 @@ class Exchange(object):
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
 
-	def monitor_and_adjust_orders(self, symbol='BTC/USDT', order=None, market_type='spot'):
+	def create_stop_orders(self, symbol='BTC/USDT', trend=None, stop_loss_long_price=None, take_profit_long_price=None, 
+		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot'):
 		"""
-		Monitor and adjust the limit orders to updated stop loss and take profit
+		Create both take profit and stop loss stop orders 
 		"""
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
 			# Fetch the current order status
-			current_order = self.open_orders(symbol=symbol, market_type=market_type)
-			#qty = current_order['info']['currentQty']
+			orders = self.get_open_orders(symbol=symbol, market_type=market_type, stop_orders=True)
 
-			if current_order['info']['isOpen'] == False:
-				return False
-			else:           
+			for order in orders:    
 				# Cancel the current order if not filled
-				exchange.cancel_order(order['id'], symbol)
 				Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
-				return True
+				exchange.cancel_order(order['id'], symbol)
+
+			order = self.get_position(symbol=symbol, market_type=market_type)
+			quantity = order['info']['currentQty']
+			
+			if trend == 'buy': # means long
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='take_profit_long', price=take_profit_long_price)
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='stop_loss_long', price=stop_loss_long_price)
+			elif trend == 'sell': # means short
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='take_profit_short', price=take_profit_short_price)
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='stop_loss_short', price=stop_loss_short_price)
+
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while monitoring order: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while creating stop orders: {str(e)}")
+
+	def monitor_and_adjust_stop_orders(self, symbol='BTC/USDT', stop_loss_long_price=None, take_profit_long_price=None, 
+		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot'):
+		"""
+		Monitor and adjust the stop orders to update stop loss and take profit
+		"""
+		try:
+			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
+
+			# Fetch the current order status
+			orders = self.get_open_orders(symbol=symbol, market_type=market_type, stop_orders=True)
+
+			for order in orders:
+				order_side = order['info']['side']
+				stop_order = order['info']['stop']
+				quantity = order['remaining']
+				current_price = order['price']
+
+				stop_order_type = self.define_stop_order_type(stop_order_type=None, stop_order=stop_order, order_side=order_side)
+
+				# compare price set with price calculated, if different: cancel order and create a new one
+				if stop_order_type == 'take_profit_long':
+					price = take_profit_long_price
+				elif stop_order_type == 'take_profit_short':
+					price = take_profit_short_price
+				if stop_order_type == 'stop_loss_long':
+					price = stop_loss_long_price
+				elif stop_order_type == 'stop_loss_short':
+					price = stop_loss_short_price
+
+				if current_price != price:     
+					# Cancel the current order if not filled
+					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
+					exchange.cancel_order(order['id'], symbol)
+					self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type=stop_order_type, price=price)
+
+		except ccxt.BaseError as e:
+			Sharing_data.append_to_file(f"An error occurred while monitoring stop orders: {str(e)}")
 
 if __name__ == "__main__":
 	kucoin = Exchange(name='kucoin')

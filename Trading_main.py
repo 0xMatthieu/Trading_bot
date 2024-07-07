@@ -70,11 +70,17 @@ class Futures_bot(object):
 			Crypto.df, updated = self.kucoin.fetch_exchange_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			if updated:
 				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
+				self.kucoin.monitor_and_adjust_stop_orders(symbol=symbol, stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
+					take_profit_long_price=Crypto.df['Take_Profit_Long'].iloc[-1], stop_loss_short_price=Crypto.df['Stop_Loss_Short'].iloc[-1], 
+					take_profit_short_price=Crypto.df['Take_Profit_Short'].iloc[-1],  market_type='spot')
 				if Crypto.df['Signal'].iloc[-1]:
 					Sharing_data.append_to_file(f"-----------------------------------------------")
 					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
-
-					self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
+					if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
+						self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
+						self.kucoin.create_stop_orders(symbol=symbol, trend=Crypto.df['Trend'].iloc[-1], stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
+							take_profit_long_price=Crypto.df['Take_Profit_Long'].iloc[-1], stop_loss_short_price=Crypto.df['Stop_Loss_Short'].iloc[-1], 
+							take_profit_short_price=Crypto.df['Take_Profit_Short'].iloc[-1],  market_type='spot')
 		return Crypto
 
 	def run_main(self, sleep_time=5):
