@@ -394,10 +394,11 @@ class Exchange(object):
 			# Fetch the current order status
 			orders = self.get_open_orders(symbol=symbol, market_type=market_type, stop_orders=True)
 
-			for order in orders:    
-				# Cancel the current order if not filled
-				Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
-				exchange.cancel_order(order['id'], symbol)
+			if orders: #means not empty
+				for order in orders:    
+					# Cancel the current order if not filled
+					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
+					exchange.cancel_order(order['id'], symbol)
 
 			order = self.get_position(symbol=symbol, market_type=market_type)
 			quantity = order['info']['currentQty']
@@ -422,6 +423,9 @@ class Exchange(object):
 
 			# Fetch the current order status
 			orders = self.get_open_orders(symbol=symbol, market_type=market_type, stop_orders=True)
+
+			if not orders:
+				return None	#means no open order, empty list
 
 			for order in orders:
 				order_side = order['info']['side']
