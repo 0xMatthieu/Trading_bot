@@ -23,6 +23,8 @@ class Futures_bot(object):
 	def __init__(self):
 		self.kucoin = Exchange(name='kucoin')
 		self.binance = Exchange(name='binance')
+		self.kucoin.load_market(market_type='spot')
+		self.kucoin.load_market(market_type='futures')
 
 		#crypto
 		self.crypto = []
