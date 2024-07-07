@@ -379,12 +379,12 @@ class Exchange(object):
 			order = exchange.create_order(symbol=symbol, type=order_type, side=side, price=price, amount=quantity, params=params)
 			Sharing_data.append_to_file(f"Order placed: {order['id']}")
 			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}")
-			return order['id']
+			return quantity
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
 
 	def create_stop_orders(self, symbol='BTC/USDT', trend=None, stop_loss_long_price=None, take_profit_long_price=None, 
-		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot'):
+		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot', quantity=None):
 		"""
 		Create both take profit and stop loss stop orders 
 		"""
@@ -399,9 +399,6 @@ class Exchange(object):
 					# Cancel the current order if not filled
 					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
 					exchange.cancel_order(order['id'], symbol)
-
-			order = self.get_position(symbol=symbol, market_type=market_type)
-			quantity = order['info']['currentQty']
 			
 			if trend == 'buy': # means long
 				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='take_profit_long', price=take_profit_long_price)
