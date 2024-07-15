@@ -4,11 +4,13 @@ __pycache__/
 *$py.class
 test.py
 
+
 # C extensions
 *.so
 
 .streamlit/secrets.toml
 #_debug.txt
+data/model/
 
 # Distribution / packaging
 .Python

@@ -3,6 +3,7 @@ import Trading_tools
 import Sharing_data
 import pandas as pd
 import time
+import ml_prediction
 
 class Crypto(object):
 	def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20):
@@ -15,6 +16,7 @@ class Crypto(object):
 		# data sharing
 		self.folder_path = 'data/'
 		self.json_file = self.folder_path + symbol_spot.replace('/', '_') + '.json'
+		self.model_file = self.folder_path + 'model/' + symbol_spot.replace('/', '_') + '_transformer_model.keras'
 		self.function = None
 
 
@@ -100,9 +102,27 @@ if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
 	Sharing_data.append_to_file(f"Function Heikin Ashi price color change")
-	while True:
-		Bot.run_main()
-	
+	#while True:
+	#	Bot.run_main()
+
+	Sharing_data.append_to_file(f"Get last klines")
+	Bot.crypto[0].df = Bot.binance.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].timeframe, since=None, limit=2000, market_type='spot')
+	Bot.crypto[0].df = Trading_tools.calculate_heikin_ashi(Bot.crypto[0].df)
+	Sharing_data.append_to_file(f"Train model")
+	scaled_features, Bot.crypto[0].df = ml_prediction.prepare_Heikin_Ashi_data(df=Bot.crypto[0].df)
+
+	X, y = [], []
+	sequence_length = 3
+
+	labels = Bot.crypto[0].df['Label'].values
+
+	for i in range(sequence_length, len(scaled_features)):
+		X.append(scaled_features[i-sequence_length:i])
+		y.append(labels[i])
+	X, y = np.array(X), np.array(y)
+	#ml_prediction.train_Heikin_Ashi_model(Bot.crypto[0].df, sequence_length=3, model_file=Bot.crypto[0].model_file)
+
+	#ml_prediction.predict_next_Heikin_Ashi_candle(Bot.crypto[0].df, sequence_length=3, model_file=Bot.crypto[0].model_file)
 	
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')

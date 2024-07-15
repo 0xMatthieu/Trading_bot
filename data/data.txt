@@ -1,2 +1,3 @@
 Function Heikin Ashi price color change
-Crypto ETH/USDT dataframe created for function Heikin
+Get last klines
+Train model
