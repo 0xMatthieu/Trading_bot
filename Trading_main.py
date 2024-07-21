@@ -3,7 +3,7 @@ import Trading_tools
 import Sharing_data
 import pandas as pd
 import time
-import ml_prediction
+#import ml_prediction
 
 class Crypto(object):
 	def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20):
@@ -105,6 +105,7 @@ if __name__ == "__main__":
 	#while True:
 	#	Bot.run_main()
 
+	"""
 	Sharing_data.append_to_file(f"Get last klines")
 	Bot.crypto[0].df = Bot.binance.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].timeframe, since=None, limit=2000, market_type='spot')
 	Bot.crypto[0].df = Trading_tools.calculate_heikin_ashi(Bot.crypto[0].df)
@@ -120,6 +121,9 @@ if __name__ == "__main__":
 		X.append(scaled_features[i-sequence_length:i])
 		y.append(labels[i])
 	X, y = np.array(X), np.array(y)
+
+	"""
+
 	#ml_prediction.train_Heikin_Ashi_model(Bot.crypto[0].df, sequence_length=3, model_file=Bot.crypto[0].model_file)
 
 	#ml_prediction.predict_next_Heikin_Ashi_candle(Bot.crypto[0].df, sequence_length=3, model_file=Bot.crypto[0].model_file)
