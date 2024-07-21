@@ -93,7 +93,7 @@ def heikin_ashi_strategy(df, start=1):
 	ha_df['Trend'] = None
 	
     
-	for i in range(start, len(ha_df)):
+	for i in range(start, len(ha_df)):	# -1 needed cause klines function returns the last candle which just started and is not complete. this candle cannot be taken
 		if ha_df['Down_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'green':
 			ha_df.iloc[i, ha_df.columns.get_loc('Long_Condition')] = True
 		if ha_df['Up_Count'][i-1] >= 4 and ha_df['HA_Color'][i] == 'red':
