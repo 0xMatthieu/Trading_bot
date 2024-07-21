@@ -133,19 +133,25 @@ class Exchange(object):
 			updated = False
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
-			new_df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=1, market_type=market_type)
-			if new_df is not None:  
-				if interval == None:
-					df = new_df
+			 
+			if interval == None:
+				df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=1, market_type=market_type)
+				updated = True
+			else:
+				interval = self.timeframe_to_int(interval=interval)
+				signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
+				# Get the latest timestamp from the provided DataFrame
+				if signal:
 					updated = True
-				else:
-					interval = self.timeframe_to_int(interval=interval)
-					signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
-					# Get the latest timestamp from the provided DataFrame
-					if signal:
-						updated = True
-						df = pd.concat([df, new_df], ignore_index=True)
-					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
+					new_df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=2, market_type=market_type)
+					df.drop(df.tail(2).index,inplace=True)
+					df = pd.concat([df, new_df], ignore_index=True)
+				else:	#update last line only but doesn't return updated flag
+					updated = False
+					new_df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=1, market_type=market_type)
+					df.drop(df.tail(1).index,inplace=True)
+					df = pd.concat([df, new_df], ignore_index=True)
+				#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
 			return df, updated
 
@@ -421,7 +427,7 @@ class Exchange(object):
 			# Fetch the current order status
 			orders = self.get_open_orders(symbol=symbol, market_type=market_type, stop_orders=True)
 
-			if not orders:
+			if not orders or len(orders) < 2:
 				return None	#means no open order, empty list
 
 			for order in orders:
