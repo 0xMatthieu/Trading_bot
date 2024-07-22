@@ -103,7 +103,11 @@ if __name__ == "__main__":
 	while True:
 		Bot.run_main()
 	
-	
+	Bot.crypto[0].df
+	#Bot.crypto[0]=Bot.update_crypto_dataframe(Crypto=Bot.crypto[0], function="Heikin", start=1)
+	Bot.crypto[0].df, updated = Bot.kucoin.fetch_exchange_ticker(symbol=Bot.crypto[0].symbol_spot, df=Bot.crypto[0].df, interval=Bot.crypto[0].timeframe, market_type='spot')
+	Bot.crypto[0].df
+	new_df = Bot.kucoin.futures_exchange.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].df, since=None, limit=2, market_type='spot')
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	#Bot.kucoin.fetch_exchange_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')

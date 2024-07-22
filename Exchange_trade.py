@@ -143,13 +143,15 @@ class Exchange(object):
 				else:
 					interval = self.timeframe_to_int(interval=interval)
 					signal = self.calculate_time_diff_signal(interval=interval, df=df, ticker_data=new_df.iloc[-1])
-					df.drop(df.tail(2).index,inplace=True)
-					df = pd.concat([df, new_df], ignore_index=True)
+					
 					# Get the latest timestamp from the provided DataFrame
 					if signal:
+						df.drop(df.tail(len(new_df)-1).index,inplace=True)
 						updated = True
 					else:	#update last line only but doesn't return updated flag
+						df.drop(df.tail(len(new_df)).index,inplace=True)
 						updated = False
+					df = pd.concat([df, new_df], ignore_index=True)
 					#Sharing_data.append_to_file(f"Data appended to DataFrame for symbol: {symbol}")
 
 			return df, updated
