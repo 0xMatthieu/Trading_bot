@@ -34,9 +34,9 @@ class Futures_bot(object):
 		self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20, function="MACD"))
 		#self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='3m', percentage = 20))
 
-		self.macd_fast = 180 #standart 12, binance 180
-		self.macd_slow = 390 #standart 26, binance 390
-		self.macd_signal = 135 #standart 9, binance 135
+		self.macd_fast = 60 #standart 12, binance 180
+		self.macd_slow = 130 #standart 26, binance 390
+		self.macd_signal = 45 #standart 9, binance 135
 
 		self.life_data = pd.Timestamp.now()
 
