@@ -1,6 +1,7 @@
 from flask import Flask, request, abort
 import subprocess
 import os
+import time
 
 app = Flask(__name__)
 
@@ -39,6 +40,7 @@ def github_webhook():
                 
                 # Restart the streamlit app
                 subprocess.call(['pkill', '-f', 'streamlit'])
+                time.sleep(3)
                 subprocess.Popen(['python3.8', '-m', 'streamlit', 'run', 'streamlit_app.py'], cwd=repo_dir)
                 
                 # Restart the main_threading.py
