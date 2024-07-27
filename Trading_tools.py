@@ -64,10 +64,10 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1, stop
 		df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df['Stop_Loss_Short'][i-1]
 
 		if df['Trend'][i] == 'buy' and i < len(df)-1:	# needed cause last candle is retrieved with incomplete value
-			if df[column][i] > df[column][i-1]:
+			if df[column][i] > df[column][i-1] and df['Stop_Loss_Long'][i-1] < df[column][i] * (1-stop_loss):
 				df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df[column][i] * (1-stop_loss)
 		elif df['Trend'][i] == 'sell' and i < len(df)-1:	# needed cause last candle is retrieved with incomplete value
-			if df[column][i] < df[column][i-1]:
+			if df[column][i] < df[column][i-1] and df['Stop_Loss_Short'][i-1] > df[column][i] * (1+stop_loss):
 				df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df[column][i] * (1+stop_loss)
 
 

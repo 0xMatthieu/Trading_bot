@@ -3,6 +3,7 @@ import streamlit as st
 import json
 import os
 from datetime import timedelta
+import time
 
 # Function to erase content and start with a fresh new file
 def erase_file_data(file_path="data/data.txt"):
@@ -13,6 +14,7 @@ def erase_file_data(file_path="data/data.txt"):
 # Function to append a string input to a text file if the input is not None
 def append_to_file(input_string, file_path="data/data.txt"):
 	if input_string:
+		input_string = f"{time.time()}: {input_string}"
 		print(input_string)
 		with open(file_path, "a") as file:
 			file.write(input_string + "\n")
