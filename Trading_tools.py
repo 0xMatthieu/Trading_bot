@@ -7,9 +7,8 @@ def round_down(value, decimals):
     factor = 1 / (10 ** decimals)
     return (value // factor) * factor
 
-def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1):
-	stop_loss = 0.04
-	take_profit = 0.08
+def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1, stop_loss = 0.01, take_profit = 0.02):
+
 	"""
 	Calculate MACD and determine buy/sell signals.
 
