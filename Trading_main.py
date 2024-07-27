@@ -5,7 +5,7 @@ import pandas as pd
 import time
 
 class Crypto(object):
-	def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20):
+	def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20, function="MACD"):
 		self.symbol_spot = symbol_spot
 		self.symbol_futures = symbol_futures
 		self.df = pd.DataFrame()
@@ -15,7 +15,7 @@ class Crypto(object):
 		# data sharing
 		self.folder_path = 'data/'
 		self.json_file = self.folder_path + symbol_spot.replace('/', '_') + '.json'
-		self.function = None
+		self.function = function
 
 
 class Futures_bot(object):
@@ -28,20 +28,22 @@ class Futures_bot(object):
 
 		#crypto
 		self.crypto = []
-		self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		#self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin"))
 		#self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='3m', percentage = 20))
 		#self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='3m', percentage = 20))
-		#self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20, function="MACD"))
 		#self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='3m', percentage = 20))
 
-		self.macd_fast = 180 #standart 12
-		self.macd_slow = 390 #standart 26
-		self.macd_signal = 135 #standart 9
+		self.macd_fast = 180 #standart 12, binance 180
+		self.macd_slow = 390 #standart 26, binance 390
+		self.macd_signal = 135 #standart 9, binance 135
 
 		self.life_data = pd.Timestamp.now()
 
 	def update_crypto_dataframe(self, Crypto=None, function=None, start=1):
 		if function == "MACD":
+			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='close', start=start)
+		elif function == "MACD_Heikin":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
 			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close', start=start)
 		elif function == "Heikin":
@@ -55,7 +57,6 @@ class Futures_bot(object):
 		market_type='futures'
 		market_type_spot='spot'
 		order_type = 'limit'
-		Crypto.function=function #for streamlit app
 
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
@@ -90,7 +91,7 @@ class Futures_bot(object):
 	def run_main(self, sleep_time=5):
 		start_time = time.time()
 		for crypto in self.crypto:
-			crypto = self.run_futures_trading_function(Crypto=crypto, function="Heikin")
+			crypto = self.run_futures_trading_function(Crypto=crypto, function=crypto.function)
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
 		self.life_data = Sharing_data.life_data(life_data=self.life_data)
 
@@ -99,7 +100,7 @@ class Futures_bot(object):
 if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
-	Sharing_data.append_to_file(f"Function Heikin Ashi price color change")
+	Sharing_data.append_to_file(f"Function Heikin Ashi and MACD")
 	while True:
 		Bot.run_main()
 	
@@ -107,7 +108,10 @@ if __name__ == "__main__":
 	#Bot.crypto[0]=Bot.update_crypto_dataframe(Crypto=Bot.crypto[0], function="Heikin", start=1)
 	Bot.crypto[0].df, updated = Bot.kucoin.fetch_exchange_ticker(symbol=Bot.crypto[0].symbol_spot, df=Bot.crypto[0].df, interval=Bot.crypto[0].timeframe, market_type='spot')
 	Bot.crypto[0].df
-	new_df = Bot.kucoin.futures_exchange.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].df, since=None, limit=2, market_type='spot')
+	new_df = Bot.kucoin.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].timeframe, since=None, limit=2, market_type='spot')
+	df = pd.concat([Bot.crypto[0].df, new_df], ignore_index=True)
+	df.drop(df.tail(2).index,inplace=True)
+	df = pd.concat([Bot.crypto[0].df, new_df], ignore_index=True)
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	#Bot.kucoin.fetch_exchange_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')

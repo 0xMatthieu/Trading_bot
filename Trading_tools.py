@@ -8,6 +8,8 @@ def round_down(value, decimals):
     return (value // factor) * factor
 
 def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1):
+	stop_loss = 0.04
+	take_profit = 0.08
 	"""
 	Calculate MACD and determine buy/sell signals.
 
@@ -40,12 +42,41 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1):
 	df[hist_column_name] = macd[f'MACDh_{fast}_{slow}_{signal}']
 
 	df['Signal'] = None
+	df['Trend'] = None
+	df['Stop_Loss_Long'] = None
+	df['Stop_Loss_Short'] = None
+	df['Take_Profit_Long'] = df[column] * (1+take_profit)
+	df['Take_Profit_Short'] = df[column] * (1-take_profit)
 	
 	for i in range(start, len(df)):
 		if df[hist_column_name].iloc[i] > 0 and df[hist_column_name].iloc[i-1] <= 0:
 			df.iloc[i, df.columns.get_loc('Signal')] = 'buy'
 		elif df[hist_column_name].iloc[i] < 0 and df[hist_column_name].iloc[i-1] >= 0:
 			df.iloc[i, df.columns.get_loc('Signal')] = 'sell'
+
+		#trend
+		if df['Signal'][i] == 'buy' or df['Signal'][i] == 'sell':
+			df.iloc[i, df.columns.get_loc('Trend')] = df['Signal'][i]
+		elif df['Signal'][i] == None:
+			df.iloc[i, df.columns.get_loc('Trend')] = df['Trend'][i-1]
+
+		df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df['Stop_Loss_Long'][i-1]
+		df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df['Stop_Loss_Short'][i-1]
+
+		if df['Trend'][i] == 'buy':
+			if df[column][i] > df[column][i-1]:
+				df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df[column][i] * (1-stop_loss)
+		elif df['Trend'][i] == 'sell':
+			if df[column][i] < df[column][i-1]:
+				df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df[column][i] * (1+stop_loss)
+
+
+		if df['Signal'][i] == 'buy':
+			df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df[column][i] * (1-stop_loss)
+		elif df['Signal'][i] == 'sell':
+			df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df[column][i] * (1+stop_loss)
+    
+
 
 	# Determine the current trend
 	#trend = 'buy' if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] else 'sell'
@@ -100,9 +131,9 @@ def heikin_ashi_strategy(df, start=1):
 			ha_df.iloc[i, ha_df.columns.get_loc('Short_Condition')] = True
 
 		#trend
-		if ha_df['Signal'][i-1] == 'buy' or ha_df['Signal'][i-1] == 'sell':
-			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Signal'][i-1]
-		elif ha_df['Signal'][i-1] == None:
+		if ha_df['Signal'][i] == 'buy' or ha_df['Signal'][i] == 'sell':
+			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Signal'][i]
+		elif ha_df['Signal'][i] == None:
 			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Trend'][i-1]
 
 		if ha_df['Trend'][i] == 'buy': 

@@ -1,2 +1,2 @@
-Function Heikin Ashi price color change
-Crypto ETH/USDT dataframe created for function Heikin
+Function Heikin Ashi and MACD
+Crypto WIF/USDT dataframe created for function MACD
