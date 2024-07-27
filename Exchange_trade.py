@@ -233,6 +233,9 @@ class Exchange(object):
 		start_time = time.time()
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
+		if price is None:
+			return None
+
 		try:
 			stop_order, order_side = self.define_stop_order_type(stop_order_type=stop_order_type, stop_order=None, order_side=None)
 
@@ -425,11 +428,14 @@ class Exchange(object):
 		try:
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
+			# check if there is an open position 
+			open_position = self.get_position(symbol=symbol, market_type=market_type)
+
 			# Fetch the current order status
 			orders = self.get_open_orders(symbol=symbol, market_type=market_type, stop_orders=True)
 
-			if not orders or len(orders) < 2:
-				return None	#means no open order, empty list
+			if not orders or not open_position:
+				return None	#means no open order or position has been closed,, empty list
 
 			for order in orders:
 				order_side = order['info']['side']

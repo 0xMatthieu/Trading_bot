@@ -44,8 +44,8 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1, stop
 	df['Trend'] = None
 	df['Stop_Loss_Long'] = None
 	df['Stop_Loss_Short'] = None
-	df['Take_Profit_Long'] = df[column] * (1+take_profit)
-	df['Take_Profit_Short'] = df[column] * (1-take_profit)
+	df['Take_Profit_Long'] = None # no take profit, act as trailing stop 	df[column] * (1+take_profit)
+	df['Take_Profit_Short'] = None # no take profit, act as trailing stop 	df[column] * (1-take_profit)
 	
 	for i in range(start, len(df)):
 		if df[hist_column_name].iloc[i] > 0 and df[hist_column_name].iloc[i-1] <= 0:
