@@ -3,6 +3,11 @@ import streamlit as st
 import json
 import os
 from datetime import timedelta
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='data/log.log', encoding='utf-8', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 # Function to erase content and start with a fresh new file
 def erase_file_data(file_path="data/data.txt"):
@@ -11,17 +16,18 @@ def erase_file_data(file_path="data/data.txt"):
         pass
 
 # Function to append a string input to a text file if the input is not None
-def append_to_file(input_string, file_path="data/data.txt"):
-	if input_string:
+def append_to_file(input_string, file_path="data/data.txt", level=logging.DEBUG):
+	if input_string and level >= logger.level:
 		input_string = f"{pd.Timestamp.now()}: {input_string}"
 		print(input_string)
+		logger.log(level, input_string)
 		with open(file_path, "a") as file:
 			file.write(input_string + "\n")
 
-def life_data(life_data=None, file_path="data/data.txt", interval=10):
+def life_data(life_data=None, file_path="data/data.txt", interval=10, level=logging.DEBUG):
 	time_diff = pd.Timestamp.now() - life_data
 	if time_diff >= timedelta(minutes=interval):
-		append_to_file(input_string=f"app is still running at {pd.Timestamp.now()}", file_path=file_path)
+		append_to_file(input_string=f"app is still running at {pd.Timestamp.now()}", file_path=file_path, level=level)
 		life_data = pd.Timestamp.now()
 	return life_data
 

@@ -3,6 +3,7 @@ import Trading_tools
 import Sharing_data
 import pandas as pd
 import time
+import logging
 
 class Crypto(object):
 	def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20, function="MACD"):
@@ -28,15 +29,15 @@ class Futures_bot(object):
 
 		#crypto
 		self.crypto = []
-		#self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin"))
+		self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin"))
 		#self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='3m', percentage = 20))
 		#self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='3m', percentage = 20))
 		self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20, function="MACD"))
 		#self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='3m', percentage = 20))
 
-		self.macd_fast = 60 #standart 12, binance 180
-		self.macd_slow = 130 #standart 26, binance 390
-		self.macd_signal = 45 #standart 9, binance 135
+		self.macd_fast = 180 #standart 12, binance 180
+		self.macd_slow = 390 #standart 26, binance 390
+		self.macd_signal = 135 #standart 9, binance 135
 
 		self.life_data = pd.Timestamp.now()
 
@@ -48,7 +49,7 @@ class Futures_bot(object):
 			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close', start=start, stop_loss = 0.01, take_profit = 0.02)
 		elif function == "Heikin":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start)
+			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 		return Crypto
 
@@ -63,7 +64,7 @@ class Futures_bot(object):
 			Crypto.df = self.binance.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=1000, market_type=market_type_spot)
 			Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
 			Crypto.df['Quantity'] = 0
-			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function}")
+			Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function}", level=logging.CRITICAL)
 
 		interval = self.kucoin.timeframe_to_int(interval=Crypto.timeframe)
 		signal_timedelta = self.kucoin.calculate_time_diff_signal(interval=interval, df=Crypto.df, ticker_data=None)
@@ -78,8 +79,8 @@ class Futures_bot(object):
 					take_profit_long_price=Crypto.df['Take_Profit_Long'].iloc[-1], stop_loss_short_price=Crypto.df['Stop_Loss_Short'].iloc[-1], 
 					take_profit_short_price=Crypto.df['Take_Profit_Short'].iloc[-1],  market_type=market_type)
 				if Crypto.df['Signal'].iloc[-1]:
-					Sharing_data.append_to_file(f"-----------------------------------------------")
-					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}")
+					Sharing_data.append_to_file(f"-----------------------------------------------", level=logging.CRITICAL)
+					Sharing_data.append_to_file(f"signal {Crypto.df['Signal'].iloc[-1]} on {Crypto.symbol_spot} at time {Crypto.df['timestamp'].max()}", level=logging.CRITICAL)
 					if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
 						Crypto.df.iloc[-1, Crypto.df.columns.get_loc('Quantity')] = self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, 
 							order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
@@ -93,14 +94,14 @@ class Futures_bot(object):
 		for crypto in self.crypto:
 			crypto = self.run_futures_trading_function(Crypto=crypto, function=crypto.function)
 		#print(f"Main crypto algo time execution {time.time() - start_time}")
-		self.life_data = Sharing_data.life_data(life_data=self.life_data)
+		self.life_data = Sharing_data.life_data(life_data=self.life_data, level=logging.DEBUG)
 
 
 
 if __name__ == "__main__":
 	Bot = Futures_bot()
 	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
-	Sharing_data.append_to_file(f"Function Heikin Ashi and MACD")
+	Sharing_data.append_to_file(f"Function Heikin Ashi and MACD", level=logging.CRITICAL)
 	while True:
 		Bot.run_main()
 	

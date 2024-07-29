@@ -1,6 +1,7 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
+import logging
 import ccxt
 from streamlit import secrets
 import time
@@ -47,7 +48,7 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			exchange.load_markets()
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred: {str(e)}", level=logging.CRITICAL)
 		
 	def get_spot_fees(self):
 		try:
@@ -55,7 +56,7 @@ class Exchange(object):
 			trading_fees = self.exchange.fetch_trading_fees()
 			return trading_fees
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching trading fees: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching trading fees: {str(e)}", level=logging.CRITICAL)
 			return None
 
 	def fetch_balance(self, currency='USDT', account='free', market_type='spot'):
@@ -66,10 +67,10 @@ class Exchange(object):
 			balance_all = exchange.fetch_balance()
 			balance = balance_all[account].get(currency, None)
 
-			Sharing_data.append_to_file(f"Balance: {balance} {currency}")
+			Sharing_data.append_to_file(f"Balance: {balance} {currency}", level=logging.DEBUG)
 			return balance
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred: {str(e)}", level=logging.CRITICAL)
 
 	def timeframe_to_int(self, interval=None):
 		# If interval is provided, it must be at least 1 minute and df must be provided
@@ -84,14 +85,14 @@ class Exchange(object):
 			raise ValueError("Invalid interval format")
 
 		if interval < 1:
-			Sharing_data.append_to_file("Error: Interval must be at least 1 minute.")
+			Sharing_data.append_to_file("Error: Interval must be at least 1 minute.", level=logging.CRITICAL)
 			return None
 
 		return interval
 
 	def calculate_time_diff_signal(self, interval=None, df=None, ticker_data=None):
 		if df is None:
-			Sharing_data.append_to_file("Error: DataFrame must be provided when using an interval.")
+			Sharing_data.append_to_file("Error: DataFrame must be provided when using an interval.", level=logging.CRITICAL)
 			return None
 
 		# Get the latest timestamp from the provided DataFrame
@@ -121,10 +122,10 @@ class Exchange(object):
 			df['timestamp'] = pd.to_datetime(df['timestamp']+self.adjust_timestamp_to_local_time, unit='ms')
 			return df
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching klines: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching klines: {str(e)}", level=logging.CRITICAL)
 			return None
 		except Exception as e:
-			Sharing_data.append_to_file(f"An error occurred after fetching klines: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred after fetching klines: {str(e)}", level=logging.CRITICAL)
 			return None
 
 	def fetch_exchange_ticker(self, symbol='BTC/USDT', df=None, interval=None, market_type='spot'):
@@ -157,12 +158,12 @@ class Exchange(object):
 			return df, updated
 
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching the ticker: {str(e)}", level=logging.CRITICAL)
 			return df, updated
 
 		except Exception as e:
 				if not new_df.empty:	#known issue when using ohlcv, no need to provide feedback
-					Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}")
+					Sharing_data.append_to_file(f"An error occurred after fetching ticker : {str(e)}", level=logging.CRITICAL)
 				return df, updated
 
 	def get_open_orders(self, symbol='BTC/USDT', market_type='spot', stop_orders=False):
@@ -174,7 +175,7 @@ class Exchange(object):
 			#Sharing_data.append_to_file(f"Open orders: {open_orders}")
 			return open_orders
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching open orders: {str(e)}", level=logging.CRITICAL)
 
 	def get_position(self, symbol='BTC/USDT', market_type='spot'):
 		# Check open orders
@@ -184,7 +185,7 @@ class Exchange(object):
 			#Sharing_data.append_to_file(f"Open position: {open_orders}")
 			return open_orders
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while fetching open positions: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while fetching open positions: {str(e)}", level=logging.CRITICAL)
 
 	def close_position(self, symbol='BTC/USDT', market_type='spot'):
 		try:
@@ -192,7 +193,7 @@ class Exchange(object):
 			exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 			exchange.close_position(symbol = symbol)
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while trying to close order: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while trying to close order: {str(e)}", level=logging.CRITICAL)
 
 	def fetch_market_data(self, symbol, market_type='spot'):
 		"""Fetch market data for the given symbol."""
@@ -241,13 +242,13 @@ class Exchange(object):
 
 			params = {'stop':stop_order, 'stopPriceType':'MP', 'stopPrice':price}
 			# Place the order
-			Sharing_data.append_to_file(f"{symbol}: stop_order_type is {stop_order_type}, params are {params} and quantity is {quantity}") 
+			Sharing_data.append_to_file(f"{symbol}: stop_order_type is {stop_order_type}, params are {params} and quantity is {quantity}", level=logging.INFO) 
 			order = exchange.create_order(symbol=symbol, type='limit', side=order_side, price=price, amount=quantity, params=params)
-			Sharing_data.append_to_file(f"Order placed: {order['id']}")
-			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}")
+			Sharing_data.append_to_file(f"Order placed: {order['id']}", level=logging.DEBUG)
+			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}", level=logging.DEBUG)
 
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while placing the stop order: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while placing the stop order: {str(e)}", level=logging.CRITICAL)
 
 	def place_order(self, symbol='BTC/USDT', percentage=100, order_side='buy', market_type='spot', order_type='market', leverage=None):
 		#percentage shall be 1 to close futures position
@@ -277,7 +278,7 @@ class Exchange(object):
 			available_balance = balance_all[balance_type].get(balance_currency, None)
 
 			if available_balance is None:
-				Sharing_data.append_to_file("Could not fetch the available balance.")
+				Sharing_data.append_to_file("Could not fetch the available balance.", level=logging.CRITICAL)
 				return
 
 			# Fetch market data to get the precision and limits
@@ -310,7 +311,7 @@ class Exchange(object):
 					quantity = float(available_balance * (percentage / 100))
 
 				else:
-					Sharing_data.append_to_file("side must be 'buy' or 'sell'")
+					Sharing_data.append_to_file("side must be 'buy' or 'sell'", level=logging.CRITICAL)
 
 				# Ensure the quantity is within the allowed precision and limits
 				quantity = max(min_order_amount, round_down(quantity, precision_decimal_places))
@@ -377,21 +378,21 @@ class Exchange(object):
 					#params['closeOrder'] = True
 					params['reduceOnly'] = True
 
-			Sharing_data.append_to_file(f"{symbol}: precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}") 
-			Sharing_data.append_to_file(f"order is {order_type}, side was {order_side} so executed as {side}. Price is {price} quantity is {quantity} and leverage is {leverage}")
+			Sharing_data.append_to_file(f"{symbol}: precision is {precision}, min_order_amount is {min_order_amount} and multiplier is {multiplier}", level=logging.INFO) 
+			Sharing_data.append_to_file(f"order is {order_type}, side was {order_side} so executed as {side}. Price is {price} quantity is {quantity} and leverage is {leverage}", level=logging.INFO)
 			if order_type == 'limit':
-				Sharing_data.append_to_file(f"Order book price found was {best_order_book}. Best ticker was {best_order_book}. Last price was {ticker['last']}")
-				Sharing_data.append_to_file(f"Open order was {open_order['side']} for a size of {open_order['contracts']}")
-			Sharing_data.append_to_file(f"Available balance for {balance_currency}: {available_balance}")
+				Sharing_data.append_to_file(f"Order book price found was {best_order_book}. Best ticker was {best_order_book}. Last price was {ticker['last']}", level=logging.INFO)
+				Sharing_data.append_to_file(f"Open order was {open_order['side']} for a size of {open_order['contracts']}", level=logging.INFO)
+			Sharing_data.append_to_file(f"Available balance for {balance_currency}: {available_balance}", level=logging.INFO)
 			if market_type == 'futures' and (order_side == 'buy' or order_side == 'sell'):
-				Sharing_data.append_to_file(f"Money really available for {balance_currency}: {money_really_available}")
+				Sharing_data.append_to_file(f"Money really available for {balance_currency}: {money_really_available}", level=logging.INFO)
 			# Place the order
 			order = exchange.create_order(symbol=symbol, type=order_type, side=side, price=price, amount=quantity, params=params)
-			Sharing_data.append_to_file(f"Order placed: {order['id']}")
-			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}")
+			Sharing_data.append_to_file(f"Order placed: {order['id']}", level=logging.INFO)
+			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}", level=logging.INFO)
 			return quantity
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}", level=logging.CRITICAL)
 
 	def create_stop_orders(self, symbol='BTC/USDT', signal=None, stop_loss_long_price=None, take_profit_long_price=None, 
 		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot', quantity=None):
@@ -407,7 +408,7 @@ class Exchange(object):
 			if orders: #means not empty
 				for order in orders:    
 					# Cancel the current order if not filled
-					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
+					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.", level=logging.DEBUG)
 					exchange.cancel_order(order['id'], symbol)
 			
 			if signal == 'buy': # means long
@@ -418,7 +419,7 @@ class Exchange(object):
 				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='stop_loss_short', price=stop_loss_short_price)
 
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while creating stop orders: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while creating stop orders: {str(e)}", level=logging.CRITICAL)
 
 	def monitor_and_adjust_stop_orders(self, symbol='BTC/USDT', stop_loss_long_price=None, take_profit_long_price=None, 
 		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot'):
@@ -457,12 +458,12 @@ class Exchange(object):
 
 				if current_price != price:     
 					# Cancel the current order if not filled
-					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.")
+					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.", level=logging.DEBUG)
 					exchange.cancel_order(order['id'], symbol)
 					self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type=stop_order_type, price=price)
 
 		except ccxt.BaseError as e:
-			Sharing_data.append_to_file(f"An error occurred while monitoring stop orders: {str(e)}")
+			Sharing_data.append_to_file(f"An error occurred while monitoring stop orders: {str(e)}", level=logging.CRITICAL)
 
 if __name__ == "__main__":
 	kucoin = Exchange(name='kucoin')
