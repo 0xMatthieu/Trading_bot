@@ -6,7 +6,7 @@ from datetime import timedelta
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='data/log.log', encoding='utf-8', level=logging.INFO)
+logging.basicConfig(filename='data/log.log', level=logging.INFO)
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 # Function to erase content and start with a fresh new file
