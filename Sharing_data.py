@@ -5,9 +5,15 @@ import os
 from datetime import timedelta
 import logging
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(filename='data/log.log', level=logging.INFO)
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logger = None
+
+def create_logger():
+	level=logging.INFO
+	log_filename = "data/log.log"
+	logging.basicConfig(filename=log_filename, level=level)
+	logger = logging.getLogger()
+	logger.setLevel(level)
+	return logger
 
 # Function to erase content and start with a fresh new file
 def erase_file_data(file_path="data/data.txt"):
@@ -98,6 +104,7 @@ def read_json(filename):
 	return pd.DataFrame(data)
 
 def erase_folder_content(folder_path='data/'):
+	global logger
 	"""
 	Erase all content within the specified folder.
 
@@ -117,3 +124,5 @@ def erase_folder_content(folder_path='data/'):
 				shutil.rmtree(file_path)  # Remove the directory and its contents
 		except Exception as e:
 			print(f"Failed to delete {file_path}. Reason: {e}")
+
+	logger = create_logger()

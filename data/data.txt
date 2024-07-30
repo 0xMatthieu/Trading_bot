@@ -1,3 +1,3 @@
-2024-07-29 23:30:26.711986: Function Heikin Ashi and MACD
-2024-07-29 23:30:32.445770: Crypto ETH/USDT dataframe created for function Heikin
-2024-07-29 23:30:33.671641: Crypto WIF/USDT dataframe created for function MACD
+2024-07-30 23:03:25.015988: Function Heikin Ashi and MACD
+2024-07-30 23:03:30.581833: Crypto ETH/USDT dataframe created for function Heikin
+2024-07-30 23:03:32.232588: Crypto WIF/USDT dataframe created for function MACD

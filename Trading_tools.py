@@ -142,7 +142,7 @@ def heikin_ashi_strategy(df, start=1, stop_loss = 0.01, take_profit = 0.02):
 			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Trend'][i-1]
 
 		ha_df = update_stop_loss_trailing_stop(df=ha_df, i=i, column='HA_Close', stop_loss=stop_loss)
-
+		"""
 		if ha_df['Trend'][i] == 'buy': 
 			if ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1]:
 				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'stop_loss_long'	# Close long position
@@ -157,11 +157,11 @@ def heikin_ashi_strategy(df, start=1, stop_loss = 0.01, take_profit = 0.02):
 			elif ha_df['HA_Close'][i] <= ha_df['Take_Profit_Short'][i-1]:
 				ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'take_profit_short'	# Close short position
 				ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = None
-
+		"""
 		# signal is done at end of function to be sure to not modify signal
-		if ha_df['Long_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Long'][i]):
+		if ha_df['Long_Condition'][i]:
 			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'buy'
-		elif ha_df['Short_Condition'][i] and not pd.isna(ha_df['Stop_Loss_Short'][i]):
+		elif ha_df['Short_Condition'][i]:
 			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'sell'
     
 	return ha_df
