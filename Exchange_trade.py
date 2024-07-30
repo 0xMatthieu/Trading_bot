@@ -442,7 +442,7 @@ class Exchange(object):
 				order_side = order['info']['side']
 				stop_order = order['info']['stop']
 				quantity = order['remaining']
-				current_price = order['price']
+				order_price = order['price']
 
 				stop_order_type = self.define_stop_order_type(stop_order_type=None, stop_order=stop_order, order_side=order_side)
 
@@ -456,9 +456,9 @@ class Exchange(object):
 				elif stop_order_type == 'stop_loss_short':
 					price = stop_loss_short_price
 
-				if current_price != price:     
+				if order_price != price:     
 					# Cancel the current order if not filled
-					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment.", level=logging.DEBUG)
+					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment. order price is {order_price} while current price is {price}", level=logging.DEBUG)
 					exchange.cancel_order(order['id'], symbol)
 					self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type=stop_order_type, price=price)
 
