@@ -7,7 +7,17 @@ def round_down(value, decimals):
     factor = 1 / (10 ** decimals)
     return (value // factor) * factor
 
+def calculate_stop_loss_at_signal(df, i, column, stop_loss):
+	if df['Signal'][i] == 'buy':
+		df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df[column][i] * (1-stop_loss)
+	elif df['Signal'][i] == 'sell':
+		df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df[column][i] * (1+stop_loss)
+	return df
+
 def update_stop_loss_trailing_stop(df, i, column, stop_loss):
+	df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df['Stop_Loss_Long'][i-1]
+	df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df['Stop_Loss_Short'][i-1]
+
 	if df['Trend'][i] == 'buy' and i < len(df)-1:	# needed cause last candle is retrieved with incomplete value
 		if df[column][i] > df[column][i-1]:	# if price increased as expected in buy trend
 			if df['Stop_Loss_Long'][i-1] is not None and df['Stop_Loss_Long'][i-1] < df[column][i] * (1-stop_loss):	# stop loss can only increase, not decrease
@@ -72,16 +82,9 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1, stop
 			df.iloc[i, df.columns.get_loc('Trend')] = df['Trend'][i-1]
 
 		# stop loss
-		df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df['Stop_Loss_Long'][i-1]
-		df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df['Stop_Loss_Short'][i-1]
-
 		df = update_stop_loss_trailing_stop(df=df, i=i, column=column, stop_loss=stop_loss)
+		df = calculate_stop_loss_at_signal(df=df, i=i, column=column, stop_loss=stop_loss)
     	
-		if df['Signal'][i] == 'buy':
-			df.iloc[i, df.columns.get_loc('Stop_Loss_Long')] = df[column][i] * (1-stop_loss)
-		elif df['Signal'][i] == 'sell':
-			df.iloc[i, df.columns.get_loc('Stop_Loss_Short')] = df[column][i] * (1+stop_loss)
-
 
 	# Determine the current trend
 	#trend = 'buy' if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] else 'sell'
@@ -141,7 +144,6 @@ def heikin_ashi_strategy(df, start=1, stop_loss = 0.01, take_profit = 0.02):
 		elif ha_df['Signal'][i] == None:
 			ha_df.iloc[i, ha_df.columns.get_loc('Trend')] = ha_df['Trend'][i-1]
 
-		ha_df = update_stop_loss_trailing_stop(df=ha_df, i=i, column='HA_Close', stop_loss=stop_loss)
 		"""
 		if ha_df['Trend'][i] == 'buy': 
 			if ha_df['HA_Low'][i] <= ha_df['Stop_Loss_Long'][i-1]:
@@ -163,5 +165,9 @@ def heikin_ashi_strategy(df, start=1, stop_loss = 0.01, take_profit = 0.02):
 			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'buy'
 		elif ha_df['Short_Condition'][i]:
 			ha_df.iloc[i, ha_df.columns.get_loc('Signal')] = 'sell'
+
+		# stop loss
+		ha_df = update_stop_loss_trailing_stop(df=ha_df, i=i, column='HA_Close', stop_loss=stop_loss)
+		ha_df = calculate_stop_loss_at_signal(df=ha_df, i=i, column='HA_Close', stop_loss=stop_loss)
     
 	return ha_df

@@ -8,7 +8,7 @@ import logging
 logger = None
 
 def create_logger():
-	level=logging.INFO
+	level=logging.DEBUG		#to improve
 	log_filename = "data/log.log"
 	logging.basicConfig(filename=log_filename, level=level)
 	logger = logging.getLogger()
