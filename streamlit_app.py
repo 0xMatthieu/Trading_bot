@@ -80,10 +80,11 @@ tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
 #print(f"Streamlit app init time execution {time.time() - start_time}")
 
 if tabs =='Resume':
-    # Creating the ZIP file 
-    archived = shutil.make_archive('data/data', 'zip', 'data/')
-    with open('data/data.zip', 'rb') as f:
-        data_btn = st.download_button(label='Download data', data=f, file_name="data.zip", mime="application/zip")  # Defaults to 'text/plain'
+    if st.button(f'Get data', key=f'get_data'):
+        # Creating the ZIP file 
+        archived = shutil.make_archive('data/data', 'zip', 'data/')
+        with open('data/data.zip', 'rb') as f:
+            data_btn = st.download_button(label='Download data', data=f, file_name="data.zip", mime="application/zip")  # Defaults to 'text/plain'
 
 
 while True:
