@@ -29,11 +29,11 @@ class Futures_bot(object):
 
 		#crypto
 		self.crypto = []
-		self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 50, function="Heikin"))
-		#self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='3m', percentage = 20))
-		self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='3m', percentage = 50))
-		#self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20, function="MACD"))
-		#self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='3m', percentage = 20))
+		self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin"))
+		self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin")))
+		self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin"))
+		self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1m', percentage = 20, function="Heikin"))
+		self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='3m', percentage = 20, function="Heikin")))
 
 		self.macd_fast = 180 #standart 12, binance 180
 		self.macd_slow = 390 #standart 26, binance 390
