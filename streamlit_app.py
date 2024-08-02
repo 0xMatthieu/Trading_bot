@@ -36,7 +36,7 @@ def app_init():
     if 'tabs' not in st.session_state:
         st.session_state["tabs"] = [
             stx.TabBarItemData(id="Resume", title="Resume", description=""),
-            stx.TabBarItemData(id="Help", title="Help", description="")]
+            stx.TabBarItemData(id="Download", title="Help", description="")]
         for crypto in st.session_state.crypto_list:
             new_tab = stx.TabBarItemData(id=f"{crypto['symbol']}", title=f"{crypto['symbol']}", description="")
             st.session_state["tabs"].append(new_tab)
@@ -79,12 +79,11 @@ tabs = stx.tab_bar(st.session_state["tabs"], default="Resume")
 #Sharing_data.append_to_file(f"Streamlit app init time execution {time.time() - start_time}")
 #print(f"Streamlit app init time execution {time.time() - start_time}")
 
-if tabs =='Resume':
-    if st.button(f'Get data', key=f'get_data'):
-        # Creating the ZIP file 
-        archived = shutil.make_archive('data/data', 'zip', 'data/')
-        with open('data/data.zip', 'rb') as f:
-            data_btn = st.download_button(label='Download data', data=f, file_name="data.zip", mime="application/zip")  # Defaults to 'text/plain'
+if tabs =='Download':
+    # Creating the ZIP file 
+    archived = shutil.make_archive('data/data', 'zip', 'data/')
+    with open('data/data.zip', 'rb') as f:
+        data_btn = st.download_button(label='Download data', data=f, file_name="data.zip", mime="application/zip")  # Defaults to 'text/plain'
 
 
 while True:
