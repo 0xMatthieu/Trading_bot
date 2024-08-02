@@ -36,7 +36,7 @@ def app_init():
     if 'tabs' not in st.session_state:
         st.session_state["tabs"] = [
             stx.TabBarItemData(id="Resume", title="Resume", description=""),
-            stx.TabBarItemData(id="Download", title="Help", description="")]
+            stx.TabBarItemData(id="Download", title="Download", description="")]
         for crypto in st.session_state.crypto_list:
             new_tab = stx.TabBarItemData(id=f"{crypto['symbol']}", title=f"{crypto['symbol']}", description="")
             st.session_state["tabs"].append(new_tab)

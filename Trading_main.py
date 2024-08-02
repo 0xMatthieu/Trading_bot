@@ -57,7 +57,7 @@ class Futures_bot(object):
 		start_time = time.time()
 		market_type='futures'
 		market_type_spot='spot'
-		order_type = 'limit'
+		order_type = 'market'
 
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)
@@ -75,7 +75,7 @@ class Futures_bot(object):
 			Crypto.df, updated = self.kucoin.fetch_exchange_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
 			if updated:
 				Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
-				self.kucoin.monitor_and_adjust_stop_orders(symbol=Crypto.symbol_futures, stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
+				self.kucoin.monitor_and_adjust_stop_orders(symbol=Crypto.symbol_futures, order_type=order_type, stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
 					take_profit_long_price=Crypto.df['Take_Profit_Long'].iloc[-1], stop_loss_short_price=Crypto.df['Stop_Loss_Short'].iloc[-1], 
 					take_profit_short_price=Crypto.df['Take_Profit_Short'].iloc[-1],  market_type=market_type)
 				if Crypto.df['Signal'].iloc[-1]:
@@ -84,7 +84,7 @@ class Futures_bot(object):
 					if Crypto.df['Signal'].iloc[-1] == 'buy' or Crypto.df['Signal'].iloc[-1] == 'sell':
 						Crypto.df.iloc[-1, Crypto.df.columns.get_loc('Quantity')] = self.kucoin.place_order(symbol=Crypto.symbol_futures, percentage=Crypto.percentage, 
 							order_side=Crypto.df['Signal'].iloc[-1], market_type=market_type, order_type=order_type, leverage=Crypto.leverage)
-						self.kucoin.create_stop_orders(symbol=Crypto.symbol_futures, signal=Crypto.df['Signal'].iloc[-1], stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
+						self.kucoin.create_stop_orders(symbol=Crypto.symbol_futures, signal=Crypto.df['Signal'].iloc[-1], order_type=order_type, stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
 							take_profit_long_price=None, stop_loss_short_price=Crypto.df['Stop_Loss_Short'].iloc[-1], 
 							take_profit_short_price=None,  market_type=market_type, quantity=Crypto.df['Quantity'].iloc[-1])
 		return Crypto

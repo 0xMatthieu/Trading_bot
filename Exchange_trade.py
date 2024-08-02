@@ -230,7 +230,7 @@ class Exchange(object):
 			return stop_order_type
 
 
-	def place_stop_order(self, symbol='BTC/USDT', quantity=100, market_type='spot', stop_order_type='take_profit_long', price=None):
+	def place_stop_order(self, symbol='BTC/USDT', quantity=100, market_type='spot', order_type='market', stop_order_type='take_profit_long', price=None):
 		start_time = time.time()
 		exchange = self.spot_exchange if market_type == 'spot' else self.futures_exchange
 
@@ -240,7 +240,10 @@ class Exchange(object):
 		try:
 			stop_order, order_side = self.define_stop_order_type(stop_order_type=stop_order_type, stop_order=None, order_side=None)
 
-			params = {'stop':stop_order, 'stopPriceType':'MP', 'stopPrice':price}
+			if order_type == 'market':
+				params = {}
+			elif order_type == 'limit':
+				params = {'stop':stop_order, 'stopPriceType':'MP', 'stopPrice':price}
 			# Place the order
 			Sharing_data.append_to_file(f"{symbol}: stop_order_type is {stop_order_type}, params are {params} and quantity is {quantity}", level=logging.INFO) 
 			order = exchange.create_order(symbol=symbol, type='limit', side=order_side, price=price, amount=quantity, params=params)
@@ -394,7 +397,7 @@ class Exchange(object):
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while placing the order: {str(e)}", level=logging.CRITICAL)
 
-	def create_stop_orders(self, symbol='BTC/USDT', signal=None, stop_loss_long_price=None, take_profit_long_price=None, 
+	def create_stop_orders(self, symbol='BTC/USDT', signal=None, order_type='market', stop_loss_long_price=None, take_profit_long_price=None, 
 		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot', quantity=None):
 		"""
 		Create both take profit and stop loss stop orders 
@@ -412,16 +415,16 @@ class Exchange(object):
 					exchange.cancel_order(order['id'], symbol)
 			
 			if signal == 'buy': # means long
-				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='take_profit_long', price=take_profit_long_price)
-				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='stop_loss_long', price=stop_loss_long_price)
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, order_type=order_type, stop_order_type='take_profit_long', price=take_profit_long_price)
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, order_type=order_type, stop_order_type='stop_loss_long', price=stop_loss_long_price)
 			elif signal == 'sell': # means short
-				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='take_profit_short', price=take_profit_short_price)
-				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type='stop_loss_short', price=stop_loss_short_price)
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, order_type=order_type, stop_order_type='take_profit_short', price=take_profit_short_price)
+				self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, order_type=order_type, stop_order_type='stop_loss_short', price=stop_loss_short_price)
 
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while creating stop orders: {str(e)}", level=logging.CRITICAL)
 
-	def monitor_and_adjust_stop_orders(self, symbol='BTC/USDT', stop_loss_long_price=None, take_profit_long_price=None, 
+	def monitor_and_adjust_stop_orders(self, symbol='BTC/USDT', order_type='market', stop_loss_long_price=None, take_profit_long_price=None, 
 		stop_loss_short_price=None, take_profit_short_price=None, market_type='spot'):
 		"""
 		Monitor and adjust the stop orders to update stop loss and take profit
@@ -460,7 +463,7 @@ class Exchange(object):
 					# Cancel the current order if not filled
 					Sharing_data.append_to_file(f"Order {order['id']} canceled for adjustment. order price is {order_price} while current price is {price}", level=logging.DEBUG)
 					exchange.cancel_order(order['id'], symbol)
-					self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, stop_order_type=stop_order_type, price=price)
+					self.place_stop_order(symbol=symbol, quantity=quantity, market_type=market_type, order_type=order_type, stop_order_type=stop_order_type, price=price)
 
 		except ccxt.BaseError as e:
 			Sharing_data.append_to_file(f"An error occurred while monitoring stop orders: {str(e)}", level=logging.CRITICAL)
