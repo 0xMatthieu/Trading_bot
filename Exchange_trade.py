@@ -241,7 +241,7 @@ class Exchange(object):
 			stop_order, order_side = self.define_stop_order_type(stop_order_type=stop_order_type, stop_order=None, order_side=None)
 
 			if order_type == 'market':
-				params = {}
+				params = {'stopPrice':price}
 			elif order_type == 'limit':
 				params = {'stop':stop_order, 'stopPriceType':'MP', 'stopPrice':price}
 			# Place the order
