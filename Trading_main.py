@@ -57,7 +57,7 @@ class Futures_bot(object):
 		start_time = time.time()
 		market_type='futures'
 		market_type_spot='spot'
-		order_type = 'market'
+		order_type = 'market' #or 'limit'
 
 		if Crypto.df.empty:
 			Sharing_data.erase_json_content(filename=Crypto.json_file)

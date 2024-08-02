@@ -245,7 +245,7 @@ class Exchange(object):
 			elif order_type == 'limit':
 				params = {'stop':stop_order, 'stopPriceType':'MP', 'stopPrice':price}
 			# Place the order
-			Sharing_data.append_to_file(f"{symbol}: stop_order_type is {stop_order_type}, params are {params} and quantity is {quantity}", level=logging.INFO) 
+			Sharing_data.append_to_file(f"{symbol}: order_type is {order_type}, stop_order_type is {stop_order_type}, params are {params} and quantity is {quantity}", level=logging.INFO) 
 			order = exchange.create_order(symbol=symbol, type='limit', side=order_side, price=price, amount=quantity, params=params)
 			Sharing_data.append_to_file(f"Order placed: {order['id']}", level=logging.DEBUG)
 			Sharing_data.append_to_file(f"Order time execution was {time.time() - start_time}", level=logging.DEBUG)
