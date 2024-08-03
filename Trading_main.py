@@ -49,7 +49,7 @@ class Futures_bot(object):
 			Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close', start=start, stop_loss = 0.02, take_profit = 0.02)
 		elif function == "Heikin":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
+			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.03, take_profit = 0.02)
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 		return Crypto
 
