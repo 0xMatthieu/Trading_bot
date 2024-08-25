@@ -11,6 +11,7 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import ModelCheckpoint
 import Sharing_data
+from Trading_main import Futures_bot
 
 def prepare_Heikin_Ashi_data(df):
     # Label the data (1 if the next candle is green, 0 if red)
@@ -94,3 +95,28 @@ def predict_next_Heikin_Ashi_candle(df, sequence_length=3, model_file=None):
     probability_red, probability_green = predicted_probabilities[0]
     Sharing_data.append_to_file("Probability of next Heikin-Ashi candle being red:", probability_red)
     Sharing_data.append_to_file("Probability of next Heikin-Ashi candle being green:", probability_green)
+
+if __name__ == "__main__":
+	Bot = Futures_bot()
+	Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
+	Sharing_data.append_to_file(f"Function Heikin Ashi price color change")
+
+	Sharing_data.append_to_file(f"Get last klines")
+	Bot.crypto[0].df = Bot.binance.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].timeframe, since=None, limit=2000, market_type='spot')
+	Bot.crypto[0].df = Trading_tools.calculate_heikin_ashi(Bot.crypto[0].df)
+	Sharing_data.append_to_file(f"Train model")
+	scaled_features, Bot.crypto[0].df = ml_prediction.prepare_Heikin_Ashi_data(df=Bot.crypto[0].df)
+
+	X, y = [], []
+	sequence_length = 3
+
+	labels = Bot.crypto[0].df['Label'].values
+
+	for i in range(sequence_length, len(scaled_features)):
+		X.append(scaled_features[i-sequence_length:i])
+		y.append(labels[i])
+	X, y = np.array(X), np.array(y)
+
+	#ml_prediction.train_Heikin_Ashi_model(Bot.crypto[0].df, sequence_length=3, model_file=Bot.crypto[0].model_file)
+
+	#ml_prediction.predict_next_Heikin_Ashi_candle(Bot.crypto[0].df, sequence_length=3, model_file=Bot.crypto[0].model_file)
