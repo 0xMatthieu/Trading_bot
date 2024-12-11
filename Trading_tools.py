@@ -171,3 +171,49 @@ def heikin_ashi_strategy(df, start=1, stop_loss = 0.01, take_profit = 0.02):
 		ha_df = calculate_stop_loss_at_signal(df=ha_df, i=i, column='HA_Close', stop_loss=stop_loss)
     
 	return ha_df
+
+# Function to calculate bullish and bearish order blocks
+def calculate_order_blocks(data, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss = 0.01, take_profit = 0.02):
+    ob_period = periods + 1
+    data["abs_move"] = (
+        abs(data["close"].shift(-ob_period) - data["close"]) / data["close"] * 100
+    )
+    data["rel_move"] = data["abs_move"] >= threshold
+    
+    # Bullish OB Identification
+    data["bullish_OB"] = False
+    for i in range(len(data) - periods - 1):
+        if (
+            data["close"].iloc[i] < data["open"].iloc[i]  # Red candle
+            and all(data["close"].iloc[i + j + 1] > data["open"].iloc[i + j + 1] for j in range(periods))  # Subsequent green candles
+            and data["rel_move"].iloc[i]
+        ):
+            data.loc[i, "bullish_OB"] = True
+    
+    # Bearish OB Identification
+    data["bearish_OB"] = False
+    for i in range(len(data) - periods - 1):
+        if (
+            data["close"].iloc[i] > data["open"].iloc[i]  # Green candle
+            and all(data["close"].iloc[i + j + 1] < data["open"].iloc[i + j + 1] for j in range(periods))  # Subsequent red candles
+            and data["rel_move"].iloc[i]
+        ):
+            data.loc[i, "bearish_OB"] = True
+    
+    data['Signal'] = None
+	data['Stop_Loss_Long'] = None
+	data['Stop_Loss_Short'] = None
+	data['Take_Profit_Long'] = None # no take profit, act as trailing stop 	df[column] * (1+take_profit)
+	data['Take_Profit_Short'] = None # no take profit, act as trailing stop 	df[column] * (1-take_profit)
+    
+    for i in range(start, len(data)):
+    if data[hist_column_name].iloc[i] == "bullish_OB":
+        data.iloc[i, data.columns.get_loc('Signal')] = 'buy'
+    elif data[hist_column_name].iloc[i] == "bearish_OB"::
+        data.iloc[i, data.columns.get_loc('Signal')] = 'sell'
+
+    # stop loss
+    data = update_stop_loss_trailing_stop(df=data, i=i, column=column, stop_loss=stop_loss)
+    data = calculate_stop_loss_at_signal(df=data, i=i, column=column, stop_loss=stop_loss)
+
+    return data

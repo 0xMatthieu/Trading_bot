@@ -50,6 +50,9 @@ class Futures_bot(object):
 		elif function == "Heikin":
 			Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
 			Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
+        elif function == "Order block":
+			Crypto.df = Trading_tools.calculate_order_blocks(data=Crypto.df, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss = 0.01, take_profit = 0.02)
+		
 		Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
 		return Crypto
 
@@ -105,14 +108,14 @@ if __name__ == "__main__":
 	while True:
 		Bot.run_main()
 	
-	Bot.crypto[0].df
+	#Bot.crypto[0].df
 	#Bot.crypto[0]=Bot.update_crypto_dataframe(Crypto=Bot.crypto[0], function="Heikin", start=1)
-	Bot.crypto[0].df, updated = Bot.kucoin.fetch_exchange_ticker(symbol=Bot.crypto[0].symbol_spot, df=Bot.crypto[0].df, interval=Bot.crypto[0].timeframe, market_type='spot')
-	Bot.crypto[0].df
-	new_df = Bot.kucoin.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].timeframe, since=None, limit=2, market_type='spot')
-	df = pd.concat([Bot.crypto[0].df, new_df], ignore_index=True)
-	df.drop(df.tail(2).index,inplace=True)
-	df = pd.concat([Bot.crypto[0].df, new_df], ignore_index=True)
+	#Bot.crypto[0].df, updated = Bot.kucoin.fetch_exchange_ticker(symbol=Bot.crypto[0].symbol_spot, df=Bot.crypto[0].df, interval=Bot.crypto[0].timeframe, market_type='spot')
+	#Bot.crypto[0].df
+	#new_df = Bot.kucoin.fetch_klines(symbol=Bot.crypto[0].symbol_spot, timeframe=Bot.crypto[0].timeframe, since=None, limit=2, market_type='spot')
+	#df = pd.concat([Bot.crypto[0].df, new_df], ignore_index=True)
+	#df.drop(df.tail(2).index,inplace=True)
+	#df = pd.concat([Bot.crypto[0].df, new_df], ignore_index=True)
 	#Bot.kucoin.fetch_balance(currency='USDT', account='free', market_type='futures')
 	#Bot.kucoin.fetch_market_data(symbol='ETHUSDTM', market_type='futures')
 	#Bot.kucoin.fetch_exchange_ticker(symbol='ETHUSDTM', interval='1m', market_type='futures')
