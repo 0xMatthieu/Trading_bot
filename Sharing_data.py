@@ -4,6 +4,7 @@ import json
 import os
 from datetime import timedelta
 import logging
+import shutil
 
 logger = None
 

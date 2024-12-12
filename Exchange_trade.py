@@ -15,7 +15,7 @@ from Trading_tools import round_down
 class Exchange(object):
 
 	def __init__(self, name='kucoin' ):
-		self.adjust_timestamp_to_local_time = 2*60*60*1000	#currently +2hours UTC
+		self.adjust_timestamp_to_local_time = 1*60*60*1000	#currently +2hours UTC
 
 		if name == 'kucoin':
 			api_key = secrets['api_key_kucoin']
