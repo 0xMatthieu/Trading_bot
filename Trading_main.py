@@ -28,31 +28,24 @@ class Futures_bot(object):
 
         #crypto
         self.crypto = []
-        self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='5m', percentage = 20, function="Order_block"))
-        self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='5m', percentage = 20, function="Order_block"))
-        self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='5m', percentage = 20, function="Order_block"))
-        self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='5m', percentage = 20, function="Order_block"))
-        self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='5m', percentage = 20, function="Order_block"))
-
-        self.macd_fast = 180 #standart 12, binance 180
-        self.macd_slow = 390 #standart 26, binance 390
-        self.macd_signal = 135 #standart 9, binance 135
+        self.crypto.append(Crypto(symbol_spot='ETH/USDT', symbol_futures='ETHUSDTM', leverage=None, timeframe='1h', percentage = 20, function="FVG"))
+        #self.crypto.append(Crypto(symbol_spot='PYTH/USDT', symbol_futures='PYTHUSDTM', leverage=None, timeframe='1h', percentage = 20, function="Order_block"))
+        #self.crypto.append(Crypto(symbol_spot='TAO/USDT', symbol_futures='TAOUSDTM', leverage=None, timeframe='1h', percentage = 20, function="Order_block"))
+        #self.crypto.append(Crypto(symbol_spot='WIF/USDT', symbol_futures='WIFUSDTM', leverage=None, timeframe='1h', percentage = 20, function="Order_block"))
+        #self.crypto.append(Crypto(symbol_spot='ONDO/USDT', symbol_futures='ONDOUSDTM', leverage=None, timeframe='1h', percentage = 20, function="Order_block"))
         self.limit_create = 50
 
         self.life_data = pd.Timestamp.now()
 
     def update_crypto_dataframe(self, Crypto=None, function=None, start=1):
-        if function == "MACD":
-            Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='close', start=start, stop_loss = 0.02, take_profit = 0.02)
-        elif function == "MACD_Heikin":
-            Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-            Crypto.df = Trading_tools.calculate_macd(Crypto.df, fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal, column='HA_Close', start=start, stop_loss = 0.02, take_profit = 0.02)
-        elif function == "Heikin":
+        if function == "Heikin":
             Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
             Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
         elif function == "Order_block":
             Crypto.df = Trading_tools.calculate_order_blocks(data=Crypto.df, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss = 0.005, take_profit = None)
-        
+        elif function == "FVG":
+            Crypto.df = Trading_tools.find_fvg(df=Crypto.df)
+
         Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
         return Crypto
 
@@ -65,7 +58,7 @@ class Futures_bot(object):
         if Crypto.df.empty:
             Sharing_data.erase_json_content(filename=Crypto.json_file)
             Crypto.df = self.kucoin.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=self.limit_create, market_type=market_type_spot)
-            Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function)
+            Crypto.df = self.update_crypto_dataframe(Crypto=Crypto, function=function)
             Crypto.df['Quantity'] = 0
             Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function}", level=logging.CRITICAL)
 
@@ -103,9 +96,9 @@ class Futures_bot(object):
 
 
 if __name__ == "__main__":
-    Bot = Futures_bot()
-    Sharing_data.erase_folder_content(folder_path=Bot.crypto[0].folder_path)
+    Sharing_data.erase_folder_content(folder_path='data/')
     Sharing_data.append_to_file(f"Function order block", level=logging.CRITICAL)
+    Bot = Futures_bot()
     while True:
         Bot.run_main()
     
