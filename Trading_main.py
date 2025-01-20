@@ -4,6 +4,8 @@ import Sharing_data
 import pandas as pd
 import time
 import logging
+import os
+import json
 
 class Crypto(object):
     def __init__(self, symbol_spot=None, symbol_futures=None, leverage = None, timeframe = '1m', percentage = 20, function="MACD"):
@@ -37,7 +39,27 @@ class Futures_bot(object):
 
         self.life_data = pd.Timestamp.now()
 
-    def update_crypto_dataframe(self, Crypto=None, function=None, start=1):
+    def fetch_and_store_historical_data(self, symbol='BTC/USDT', timeframe='1h', limit=1000, market_type='spot'):
+        file_path = f"data/{symbol.replace('/', '_')}_{timeframe}.json"
+        if not os.path.exists(file_path):
+            df = self.kucoin.fetch_klines(symbol=symbol, timeframe=timeframe, since=None, limit=limit, market_type=market_type)
+            df.to_json(file_path, orient='records', date_format='iso')
+        else:
+            df = pd.read_json(file_path, orient='records', convert_dates=False)
+        return df
+
+    def backtest_strategy(self, symbol='BTC/USDT', timeframes=['1h', '4h', '1d'], function="FVG"):
+        results = {}
+        for timeframe in timeframes:
+            df = self.fetch_and_store_historical_data(symbol=symbol, timeframe=timeframe)
+            crypto = Crypto(symbol_spot=symbol, symbol_futures=symbol.replace('/', '') + 'M', timeframe=timeframe, function=function)
+            crypto.df = df
+            crypto = self.update_crypto_dataframe(Crypto=crypto, function=function)
+            results[timeframe] = self.evaluate_strategy_performance(crypto.df)
+        return results
+
+    def evaluate_strategy_performance(self, df):
+        return {"total_returns": 0, "win_loss_ratio": 0}
         if function == "Heikin":
             Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
             Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
@@ -99,7 +121,9 @@ if __name__ == "__main__":
     Sharing_data.erase_folder_content(folder_path='data/')
     Sharing_data.append_to_file(f"Function order block", level=logging.CRITICAL)
     Bot = Futures_bot()
-    while True:
+    # Run backtest
+    backtest_results = Bot.backtest_strategy()
+    print(backtest_results)
         Bot.run_main()
     
     #Bot.crypto[0].df
