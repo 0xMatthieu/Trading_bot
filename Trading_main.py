@@ -124,7 +124,7 @@ if __name__ == "__main__":
     # Run backtest
     backtest_results = Bot.backtest_strategy()
     print(backtest_results)
-        Bot.run_main()
+    Bot.run_main()
     
     #Bot.crypto[0].df
     #Bot.crypto[0]=Bot.update_crypto_dataframe(Crypto=Bot.crypto[0], function="Order_block", start=1)
