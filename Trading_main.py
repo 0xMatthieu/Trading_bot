@@ -58,8 +58,7 @@ class Futures_bot(object):
             results[timeframe] = self.evaluate_strategy_performance(crypto.df)
         return results
 
-    def evaluate_strategy_performance(self, df):
-        return {"total_returns": 0, "win_loss_ratio": 0}
+    def evaluate_strategy_performance(self, df, function, start=1):
         if function == "Heikin":
             Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
             Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
