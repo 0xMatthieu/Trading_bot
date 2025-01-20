@@ -21,6 +21,60 @@ class Crypto(object):
         self.function = function
 
 
+def update_crypto_dataframe(Crypto=None, function=None, start=1):
+    if function == "Heikin":
+        Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
+        Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss=0.01, take_profit=0.02)
+    elif function == "Order_block":
+        Crypto.df = Trading_tools.calculate_order_blocks(data=Crypto.df, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss=0.005, take_profit=None)
+    elif function == "FVG":
+        Crypto.df = Trading_tools.find_fvg(df=Crypto.df)
+
+    Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
+    return Crypto
+
+
+def evaluate_strategy_performance(df, start=1):
+    initial_balance = 10000  # Starting balance for the simulation
+    balance = initial_balance
+    position = None
+    entry_price = 0
+    pnl = 0
+
+    for i in range(start, len(df)):
+        if df['Signal'].iloc[i] == 'buy' and position is None:
+            # Enter a long position
+            position = 'long'
+            entry_price = df['close'].iloc[i]
+            print(f"Entering long at {entry_price}")
+
+        elif df['Signal'].iloc[i] == 'sell' and position is None:
+            # Enter a short position
+            position = 'short'
+            entry_price = df['close'].iloc[i]
+            print(f"Entering short at {entry_price}")
+
+        elif position == 'long' and (df['Signal'].iloc[i] == 'sell' or df['close'].iloc[i] <= df['Stop_Loss_Long'].iloc[i]):
+            # Exit long position
+            exit_price = df['close'].iloc[i]
+            trade_pnl = (exit_price - entry_price) * 100 / entry_price
+            pnl += trade_pnl
+            balance += balance * trade_pnl / 100
+            print(f"Exiting long at {exit_price}, PnL: {trade_pnl}%")
+            position = None
+
+        elif position == 'short' and (df['Signal'].iloc[i] == 'buy' or df['close'].iloc[i] >= df['Stop_Loss_Short'].iloc[i]):
+            # Exit short position
+            exit_price = df['close'].iloc[i]
+            trade_pnl = (entry_price - exit_price) * 100 / entry_price
+            pnl += trade_pnl
+            balance += balance * trade_pnl / 100
+            print(f"Exiting short at {exit_price}, PnL: {trade_pnl}%")
+            position = None
+
+    return {"total_pnl": pnl, "final_balance": balance, "return_percentage": (balance - initial_balance) * 100 / initial_balance}
+
+
 class FuturesBot(object):
 
     def __init__(self):
@@ -39,18 +93,6 @@ class FuturesBot(object):
 
         self.life_data = pd.Timestamp.now()
 
-    def update_crypto_dataframe(self, Crypto=None, function=None, start=1):
-        if function == "Heikin":
-            Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-            Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss=0.01, take_profit=0.02)
-        elif function == "Order_block":
-            Crypto.df = Trading_tools.calculate_order_blocks(data=Crypto.df, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss=0.005, take_profit=None)
-        elif function == "FVG":
-            Crypto.df = Trading_tools.find_fvg(df=Crypto.df)
-
-        Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
-        return Crypto
-
     def fetch_and_store_historical_data(self, symbol='BTC/USDT', timeframe='1h', limit=1000, market_type='spot'):
         file_path = f"data/{symbol.replace('/', '_')}_{timeframe}.json"
         if not os.path.exists(file_path):
@@ -66,49 +108,9 @@ class FuturesBot(object):
             df = self.fetch_and_store_historical_data(symbol=symbol, timeframe=timeframe)
             crypto = Crypto(symbol_spot=symbol, symbol_futures=symbol.replace('/', '') + 'M', timeframe=timeframe, function=function)
             crypto.df = df
-            crypto = self.update_crypto_dataframe(Crypto=crypto, function=function)
-            results[timeframe] = self.evaluate_strategy_performance(crypto.df)
+            crypto = update_crypto_dataframe(Crypto=crypto, function=function)
+            results[timeframe] = evaluate_strategy_performance(crypto.df)
         return results
-
-    def evaluate_strategy_performance(self, df, function, start=1):
-        initial_balance = 10000  # Starting balance for the simulation
-        balance = initial_balance
-        position = None
-        entry_price = 0
-        pnl = 0
-
-        for i in range(start, len(df)):
-            if df['Signal'].iloc[i] == 'buy' and position is None:
-                # Enter a long position
-                position = 'long'
-                entry_price = df['close'].iloc[i]
-                print(f"Entering long at {entry_price}")
-
-            elif df['Signal'].iloc[i] == 'sell' and position is None:
-                # Enter a short position
-                position = 'short'
-                entry_price = df['close'].iloc[i]
-                print(f"Entering short at {entry_price}")
-
-            elif position == 'long' and (df['Signal'].iloc[i] == 'sell' or df['close'].iloc[i] <= df['Stop_Loss_Long'].iloc[i]):
-                # Exit long position
-                exit_price = df['close'].iloc[i]
-                trade_pnl = (exit_price - entry_price) * 100 / entry_price
-                pnl += trade_pnl
-                balance += balance * trade_pnl / 100
-                print(f"Exiting long at {exit_price}, PnL: {trade_pnl}%")
-                position = None
-
-            elif position == 'short' and (df['Signal'].iloc[i] == 'buy' or df['close'].iloc[i] >= df['Stop_Loss_Short'].iloc[i]):
-                # Exit short position
-                exit_price = df['close'].iloc[i]
-                trade_pnl = (entry_price - exit_price) * 100 / entry_price
-                pnl += trade_pnl
-                balance += balance * trade_pnl / 100
-                print(f"Exiting short at {exit_price}, PnL: {trade_pnl}%")
-                position = None
-
-        return {"total_pnl": pnl, "final_balance": balance, "return_percentage": (balance - initial_balance) * 100 / initial_balance}
 
     def run_futures_trading_function(self, Crypto=None, function=None):
         start_time = time.time()
@@ -119,7 +121,7 @@ class FuturesBot(object):
         if Crypto.df.empty:
             Sharing_data.erase_json_content(filename=Crypto.json_file)
             Crypto.df = self.kucoin.fetch_klines(symbol=Crypto.symbol_spot, timeframe=Crypto.timeframe, since=None, limit=self.limit_create, market_type=market_type_spot)
-            Crypto.df = self.update_crypto_dataframe(Crypto=Crypto, function=function)
+            Crypto.df = update_crypto_dataframe(Crypto=Crypto, function=function)
             Crypto.df['Quantity'] = 0
             Sharing_data.append_to_file(f"Crypto {Crypto.symbol_spot} dataframe created for function {Crypto.function}", level=logging.CRITICAL)
 
@@ -131,7 +133,7 @@ class FuturesBot(object):
         if signal_timedelta:
             Crypto.df, updated = self.kucoin.fetch_exchange_ticker(symbol=Crypto.symbol_spot, df=Crypto.df, interval=Crypto.timeframe, market_type=market_type_spot)
             if updated:
-                Crypto = self.update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
+                Crypto = update_crypto_dataframe(Crypto=Crypto, function=function, start=1)
                 self.kucoin.monitor_and_adjust_stop_orders(symbol=Crypto.symbol_futures, stop_loss_long_price=Crypto.df['Stop_Loss_Long'].iloc[-1], 
                     take_profit_long_price=Crypto.df['Take_Profit_Long'].iloc[-1], stop_loss_short_price=Crypto.df['Stop_Loss_Short'].iloc[-1], 
                     take_profit_short_price=Crypto.df['Take_Profit_Short'].iloc[-1],  market_type=market_type)
@@ -161,9 +163,9 @@ if __name__ == "__main__":
     Sharing_data.append_to_file(f"Function order block", level=logging.CRITICAL)
     Bot = FuturesBot()
     # Run backtest
-    backtest_results = Bot.backtest_strategy()
+    backtest_results = Bot.backtest_strategy(symbol='BTC/USDT', timeframes=['1h'], function="Heikin")
     print(backtest_results)
-    Bot.run_main()
+    #Bot.run_main()
     
     #Bot.crypto[0].df
     #Bot.crypto[0]=Bot.update_crypto_dataframe(Crypto=Bot.crypto[0], function="Order_block", start=1)
