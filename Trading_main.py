@@ -71,16 +71,44 @@ class FuturesBot(object):
         return results
 
     def evaluate_strategy_performance(self, df, function, start=1):
-        if function == "Heikin":
-            Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
-            Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss = 0.01, take_profit = 0.02)
-        elif function == "Order_block":
-            Crypto.df = Trading_tools.calculate_order_blocks(data=Crypto.df, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss = 0.005, take_profit = None)
-        elif function == "FVG":
-            Crypto.df = Trading_tools.find_fvg(df=Crypto.df)
+    initial_balance = 10000  # Starting balance for the simulation
+    balance = initial_balance
+    position = None
+    entry_price = 0
+    pnl = 0
 
-        Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
-        return Crypto
+    for i in range(start, len(df)):
+        if df['Signal'].iloc[i] == 'buy' and position is None:
+            # Enter a long position
+            position = 'long'
+            entry_price = df['close'].iloc[i]
+            print(f"Entering long at {entry_price}")
+
+        elif df['Signal'].iloc[i] == 'sell' and position is None:
+            # Enter a short position
+            position = 'short'
+            entry_price = df['close'].iloc[i]
+            print(f"Entering short at {entry_price}")
+
+        elif position == 'long' and (df['Signal'].iloc[i] == 'sell' or df['close'].iloc[i] <= df['Stop_Loss_Long'].iloc[i]):
+            # Exit long position
+            exit_price = df['close'].iloc[i]
+            trade_pnl = (exit_price - entry_price) * 100 / entry_price
+            pnl += trade_pnl
+            balance += balance * trade_pnl / 100
+            print(f"Exiting long at {exit_price}, PnL: {trade_pnl}%")
+            position = None
+
+        elif position == 'short' and (df['Signal'].iloc[i] == 'buy' or df['close'].iloc[i] >= df['Stop_Loss_Short'].iloc[i]):
+            # Exit short position
+            exit_price = df['close'].iloc[i]
+            trade_pnl = (entry_price - exit_price) * 100 / entry_price
+            pnl += trade_pnl
+            balance += balance * trade_pnl / 100
+            print(f"Exiting short at {exit_price}, PnL: {trade_pnl}%")
+            position = None
+
+    return {"total_pnl": pnl, "final_balance": balance, "return_percentage": (balance - initial_balance) * 100 / initial_balance}
 
     def run_futures_trading_function(self, Crypto=None, function=None):
         start_time = time.time()
