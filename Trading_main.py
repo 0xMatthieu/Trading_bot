@@ -71,11 +71,11 @@ class FuturesBot(object):
         return results
 
     def evaluate_strategy_performance(self, df, function, start=1):
-    initial_balance = 10000  # Starting balance for the simulation
-    balance = initial_balance
-    position = None
-    entry_price = 0
-    pnl = 0
+        initial_balance = 10000  # Starting balance for the simulation
+        balance = initial_balance
+        position = None
+        entry_price = 0
+        pnl = 0
 
     for i in range(start, len(df)):
         if df['Signal'].iloc[i] == 'buy' and position is None:
