@@ -21,7 +21,7 @@ class Crypto(object):
         self.function = function
 
 
-class Futures_bot(object):
+class FuturesBot(object):
 
     def __init__(self):
         self.kucoin = Exchange(name='kucoin')
@@ -119,7 +119,7 @@ class Futures_bot(object):
 if __name__ == "__main__":
     Sharing_data.erase_folder_content(folder_path='data/')
     Sharing_data.append_to_file(f"Function order block", level=logging.CRITICAL)
-    Bot = Futures_bot()
+    Bot = FuturesBot()
     # Run backtest
     backtest_results = Bot.backtest_strategy()
     print(backtest_results)
