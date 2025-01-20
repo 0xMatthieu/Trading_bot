@@ -39,7 +39,17 @@ class FuturesBot(object):
 
         self.life_data = pd.Timestamp.now()
 
-    def fetch_and_store_historical_data(self, symbol='BTC/USDT', timeframe='1h', limit=1000, market_type='spot'):
+    def update_crypto_dataframe(self, Crypto=None, function=None, start=1):
+        if function == "Heikin":
+            Crypto.df = Trading_tools.calculate_heikin_ashi(Crypto.df)
+            Crypto.df = Trading_tools.heikin_ashi_strategy(Crypto.df, start=start, stop_loss=0.01, take_profit=0.02)
+        elif function == "Order_block":
+            Crypto.df = Trading_tools.calculate_order_blocks(data=Crypto.df, periods=5, threshold=0.0, use_wicks=False, start=1, stop_loss=0.005, take_profit=None)
+        elif function == "FVG":
+            Crypto.df = Trading_tools.find_fvg(df=Crypto.df)
+
+        Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
+        return Crypto
         file_path = f"data/{symbol.replace('/', '_')}_{timeframe}.json"
         if not os.path.exists(file_path):
             df = self.kucoin.fetch_klines(symbol=symbol, timeframe=timeframe, since=None, limit=limit, market_type=market_type)
