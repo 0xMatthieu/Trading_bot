@@ -50,6 +50,8 @@ class FuturesBot(object):
 
         Sharing_data.append_to_json(df=Crypto.df, filename=Crypto.json_file)
         return Crypto
+
+    def fetch_and_store_historical_data(self, symbol='BTC/USDT', timeframe='1h', limit=1000, market_type='spot'):
         file_path = f"data/{symbol.replace('/', '_')}_{timeframe}.json"
         if not os.path.exists(file_path):
             df = self.kucoin.fetch_klines(symbol=symbol, timeframe=timeframe, since=None, limit=limit, market_type=market_type)
