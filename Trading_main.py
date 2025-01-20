@@ -77,38 +77,38 @@ class FuturesBot(object):
         entry_price = 0
         pnl = 0
 
-    for i in range(start, len(df)):
-        if df['Signal'].iloc[i] == 'buy' and position is None:
-            # Enter a long position
-            position = 'long'
-            entry_price = df['close'].iloc[i]
-            print(f"Entering long at {entry_price}")
+        for i in range(start, len(df)):
+            if df['Signal'].iloc[i] == 'buy' and position is None:
+                # Enter a long position
+                position = 'long'
+                entry_price = df['close'].iloc[i]
+                print(f"Entering long at {entry_price}")
 
-        elif df['Signal'].iloc[i] == 'sell' and position is None:
-            # Enter a short position
-            position = 'short'
-            entry_price = df['close'].iloc[i]
-            print(f"Entering short at {entry_price}")
+            elif df['Signal'].iloc[i] == 'sell' and position is None:
+                # Enter a short position
+                position = 'short'
+                entry_price = df['close'].iloc[i]
+                print(f"Entering short at {entry_price}")
 
-        elif position == 'long' and (df['Signal'].iloc[i] == 'sell' or df['close'].iloc[i] <= df['Stop_Loss_Long'].iloc[i]):
-            # Exit long position
-            exit_price = df['close'].iloc[i]
-            trade_pnl = (exit_price - entry_price) * 100 / entry_price
-            pnl += trade_pnl
-            balance += balance * trade_pnl / 100
-            print(f"Exiting long at {exit_price}, PnL: {trade_pnl}%")
-            position = None
+            elif position == 'long' and (df['Signal'].iloc[i] == 'sell' or df['close'].iloc[i] <= df['Stop_Loss_Long'].iloc[i]):
+                # Exit long position
+                exit_price = df['close'].iloc[i]
+                trade_pnl = (exit_price - entry_price) * 100 / entry_price
+                pnl += trade_pnl
+                balance += balance * trade_pnl / 100
+                print(f"Exiting long at {exit_price}, PnL: {trade_pnl}%")
+                position = None
 
-        elif position == 'short' and (df['Signal'].iloc[i] == 'buy' or df['close'].iloc[i] >= df['Stop_Loss_Short'].iloc[i]):
-            # Exit short position
-            exit_price = df['close'].iloc[i]
-            trade_pnl = (entry_price - exit_price) * 100 / entry_price
-            pnl += trade_pnl
-            balance += balance * trade_pnl / 100
-            print(f"Exiting short at {exit_price}, PnL: {trade_pnl}%")
-            position = None
+            elif position == 'short' and (df['Signal'].iloc[i] == 'buy' or df['close'].iloc[i] >= df['Stop_Loss_Short'].iloc[i]):
+                # Exit short position
+                exit_price = df['close'].iloc[i]
+                trade_pnl = (entry_price - exit_price) * 100 / entry_price
+                pnl += trade_pnl
+                balance += balance * trade_pnl / 100
+                print(f"Exiting short at {exit_price}, PnL: {trade_pnl}%")
+                position = None
 
-    return {"total_pnl": pnl, "final_balance": balance, "return_percentage": (balance - initial_balance) * 100 / initial_balance}
+        return {"total_pnl": pnl, "final_balance": balance, "return_percentage": (balance - initial_balance) * 100 / initial_balance}
 
     def run_futures_trading_function(self, Crypto=None, function=None):
         start_time = time.time()
