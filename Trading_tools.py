@@ -224,3 +224,63 @@ def calculate_order_blocks(data, periods=5, threshold=0.0, use_wicks=False, star
     data = calculate_stop_loss_at_signal(df=data, i=i, column="close", stop_loss=stop_loss)
 
     return data
+
+def find_fvg(df, start=1, stop_loss_percent=0.01):
+    """
+    Identify Fair Value Gaps (FVGs) and generate trading signals.
+    FVG is defined as a 3-candle pattern where:
+    - Bullish FVG: High of first candle < Low of third candle
+    - Bearish FVG: Low of first candle > High of third candle
+    
+    Signals are placed at 50% of FVG range with stop loss below/above the FVG.
+    """
+    df = df.copy()
+    
+    # Initialize columns
+    df['FVG_Bullish'] = False
+    df['FVG_Bearish'] = False
+    df['Signal'] = None
+    df['Trend'] = None
+    df['Stop_Loss_Long'] = None
+    df['Stop_Loss_Short'] = None
+    df['Take_Profit_Long'] = None
+    df['Take_Profit_Short'] = None
+    
+    for i in range(start, len(df)):
+        # Check for Bullish FVG (current candle is third in pattern)
+        if i >= 2:
+            prev2_high = df['high'].iloc[i-2]
+            prev1_low = df['low'].iloc[i-1]
+            current_low = df['low'].iloc[i]
+            
+            # Bullish FVG condition
+            if prev2_high < current_low:
+                df.loc[i, 'FVG_Bullish'] = True
+                # Calculate 50% entry point and stop loss
+                fvg_low = min(df['low'].iloc[i-2], df['low'].iloc[i-1])
+                entry_price = (fvg_low + df['high'].iloc[i]) / 2
+                df.loc[i, 'Signal'] = 'buy'
+                df.loc[i, 'Stop_Loss_Long'] = fvg_low * (1 - stop_loss_percent)
+                
+        # Check for Bearish FVG (current candle is third in pattern)
+        if i >= 2:
+            prev2_low = df['low'].iloc[i-2]
+            prev1_high = df['high'].iloc[i-1]
+            current_high = df['high'].iloc[i]
+            
+            # Bearish FVG condition
+            if prev2_low > current_high:
+                df.loc[i, 'FVG_Bearish'] = True
+                # Calculate 50% entry point and stop loss
+                fvg_high = max(df['high'].iloc[i-2], df['high'].iloc[i-1])
+                entry_price = (fvg_high + df['low'].iloc[i]) / 2
+                df.loc[i, 'Signal'] = 'sell'
+                df.loc[i, 'Stop_Loss_Short'] = fvg_high * (1 + stop_loss_percent)
+        
+        # Update trend
+        if df['Signal'].iloc[i] in ['buy', 'sell']:
+            df.loc[i, 'Trend'] = df['Signal'].iloc[i]
+        else:
+            df.loc[i, 'Trend'] = df['Trend'].iloc[i-1] if i > 0 else None
+
+    return df
