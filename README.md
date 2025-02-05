@@ -13,17 +13,19 @@ A simple bot using ccxt library to trade on centralized exchanges (CEX) such as 
 
 ## Repository Map
 
-└── Trading_bot/
-    ├── .gitignore
-    ├── LICENSE
-    ├── README.md
-    ├── requirements.txt
-    ├── Exchange_trade.py
-    ├── Sharing_data.py
-    ├── Trading_main.py
-    ├── Trading_tools.py
-    ├── streamlit_app.py
-    └── webhook_receiver.py
+```
+Trading_bot/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── Exchange_trade.py
+├── Sharing_data.py
+├── Trading_main.py
+├── Trading_tools.py
+├── streamlit_app.py
+└── webhook_receiver.py
+```
 
 ## Example Usage
 
@@ -33,7 +35,8 @@ A simple bot using ccxt library to trade on centralized exchanges (CEX) such as 
 - Launch the trading dashboard:
   streamlit run streamlit_app.py
 
-- Auto-deploy code updates via webhook on push.
+- Launch the webhook receiver (main file for auto-deploy):
+  python webhook_receiver.py
 
 ## Getting Started
 
