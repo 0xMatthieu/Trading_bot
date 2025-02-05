@@ -1,23 +1,39 @@
 # Trading_bot
 
-A simple bot using ccxt library to trade on centralized exchanges (CEX) such as Binance and KuCoin.
-The aim is to test different trading strategies automatically.
+A simple bot using ccxt library to trade on centralized exchanges (CEX) such as Binance and KuCoin. The aim is to test different trading strategies automatically.
 
 ## Project Structure
 
-- Exchange_trade.py: Contains the Exchange class interacting with CEX APIs.
-- Sharing_data.py: Provides data sharing utilities such as logging and file management.
-- Trading_main.py: Implements the core trading logic and strategy evaluation.
-- Trading_tools.py: Offers helper functions for technical analysis and trading strategies.
-- streamlit_app.py: A Streamlit-based web dashboard for visualizing trading performance.
-- webhook_receiver.py: Handles incoming webhook requests for auto-updates.
+- Exchange_trade.py: Contains the Exchange class and helper functions to connect and interact with CEX APIs via ccxt. This module handles market data, trading orders, and risk management.
+- Sharing_data.py: Provides utilities for logging, file operations, and JSON handling to share data between modules.
+- Trading_main.py: Implements the main trading logic, including backtesting and live trading process orchestration.
+- Trading_tools.py: Offers various technical analysis tools, such as MACD, Heikin Ashi calculations, order block identification, and Fair Value Gap (FVG) detection.
+- streamlit_app.py: A web dashboard built with Streamlit for visualizing trading performance, data analytics, and real-time monitoring.
+- webhook_receiver.py: A Flask-based webhook handler to automatically deploy code updates upon new commits.
 
-## Additional Files
+## Repository Map
 
-- .gitignore: Specifies files and directories to be ignored by git.
-- LICENSE: Contains the licensing information.
-- README.md: This file.
-- requirements.txt: Lists the project's dependencies.
+└── Trading_bot/
+    ├── .gitignore
+    ├── LICENSE
+    ├── README.md
+    ├── requirements.txt
+    ├── Exchange_trade.py
+    ├── Sharing_data.py
+    ├── Trading_main.py
+    ├── Trading_tools.py
+    ├── streamlit_app.py
+    └── webhook_receiver.py
+
+## Example Usage
+
+- Run simulation/backtesting:
+  python Trading_main.py
+
+- Launch the trading dashboard:
+  streamlit run streamlit_app.py
+
+- Auto-deploy code updates via webhook on push.
 
 ## Getting Started
 
