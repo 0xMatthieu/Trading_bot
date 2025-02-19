@@ -90,6 +90,23 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1, stop
     #trend = 'buy' if df[macd_column_name].iloc[0] > df[signal_column_name].iloc[0] else 'sell'
 
     return df
+
+def calculate_ema(df, periods=[20, 50, 100], column='close'):
+    """
+    Calculate Exponential Moving Averages (EMA) for given periods.
+    
+    Parameters:
+    - df: DataFrame with price data
+    - periods: List of EMA periods to calculate (default: [20, 50, 100])
+    - column: Column name to use for calculations (default: 'close')
+    
+    Returns:
+    - DataFrame with new columns for each EMA period (e.g., 'EMA_20')
+    """
+    for period in periods:
+        ema_name = f'EMA_{period}'
+        df[ema_name] = ta.ema(df[column], length=period)
+    return df
     
 def calculate_heikin_ashi(df):
     ha_df = df.copy()
