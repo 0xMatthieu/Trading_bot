@@ -19,10 +19,10 @@ def process_symbol_data(symbol: str) -> dict:
     for file in matched_files:
         with open(file, 'r', encoding='utf-8') as f:
             contents[file] = f.read()
-    prompt = f\"\"\"Analyze the following data files and output a structured summary.
+    prompt = f"""Analyze the following data files and output a structured summary.
 Return a JSON with keys 'symbol', 'summary', and 'data_count'.
 
-Data: {json.dumps(contents)}\"\"\"
+Data: {json.dumps(contents)}"""
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
