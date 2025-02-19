@@ -51,3 +51,13 @@ Trading_bot/
 3. Start the Streamlit app:
    streamlit run streamlit_app.py
 
+## Module Details
+
+- **Exchange_trade.py**: Implements the Exchange class to manage connections to centralized exchanges. It handles market data fetching, order execution, balance management, and error handling via the ccxt library.
+- **Sharing_data.py**: Contains logging, data persistence, and file management utilities. Nearly all modules use this to record key events, share JSON data, and maintain logs.
+- **Trading_tools.py**: Provides technical analysis functions—including MACD, EMA, Heikin Ashi, order block, and Fair Value Gap (FVG) calculations—to generate reliable trading signals.
+- **Trading_main.py**: Orchestrates the trading process by combining market data (from Exchange_trade.py), trading signals (via Trading_tools.py), and order management. It manages both backtesting and live trading routines.
+- **Trading_ai.py**: Integrates with the OpenAI API to analyze historical market data stored as JSON in the data folder, returning structured JSON output that can inform trading decisions.
+- **streamlit_app.py**: Offers a real-time web dashboard built with Streamlit where trading performance, data analytics, and system logs are visualized.
+- **webhook_receiver.py**: Listens for GitHub webhook events and automates deployment updates. It pulls the latest commits and restarts the Streamlit app and trading scripts accordingly.
+
