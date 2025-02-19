@@ -91,7 +91,7 @@ def calculate_macd(df, fast=12, slow=26, signal=9, column='close', start=1, stop
 
     return df
 
-def calculate_ema(df, periods=[20, 50, 100], column='close'):
+def calculate_ema(df, periods=None, column='close'):
     """
     Calculate Exponential Moving Averages (EMA) for given periods.
     
@@ -103,6 +103,8 @@ def calculate_ema(df, periods=[20, 50, 100], column='close'):
     Returns:
     - DataFrame with new columns for each EMA period (e.g., 'EMA_20')
     """
+    if periods is None:
+        periods = [20, 50, 100]
     for period in periods:
         ema_name = f'EMA_{period}'
         df[ema_name] = ta.ema(df[column], length=period)

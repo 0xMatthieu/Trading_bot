@@ -3,7 +3,8 @@ extra_streamlit_components
 pandas
 ccxt
 numpy
-pandas_ta
+pandas_ta @ git+https://github.com/twopirllc/pandas-ta.git@development
 flask
 numpy
 altair
+openai

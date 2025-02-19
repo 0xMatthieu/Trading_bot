@@ -32,6 +32,8 @@ class Exchange(object):
 				'secret': api_secret,
 				'password': api_passphrase,  # KuCoin Futures requires a password (passphrase)
 			})
+			self.load_market(market_type='spot')
+			self.load_market(market_type='futures')
 		elif name == 'binance':
 			api_key = secrets['api_key_binance']
 			api_secret = secrets['api_secret_binance']
@@ -41,6 +43,7 @@ class Exchange(object):
 				'secret': api_secret,
 			})
 			#futures not available for binance
+			self.load_market(market_type='spot')
 
 	def load_market(self, market_type='spot'):
 		# solve some connection bug
@@ -137,7 +140,7 @@ class Exchange(object):
 			new_df = self.fetch_klines(symbol=symbol, timeframe=interval, since=None, limit=2, market_type=market_type)
 			if new_df is not None: 
 			 
-				if interval == None:
+				if interval is None:
 					df = new_df
 					df.drop(df.head(1).index,inplace=True) # drop first n rows to keep only last value
 					updated = True
