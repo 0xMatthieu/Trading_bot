@@ -10,6 +10,7 @@ A simple bot using ccxt library to trade on centralized exchanges (CEX) such as 
 - Trading_tools.py: Offers various technical analysis tools, such as MACD, Heikin Ashi calculations, order block identification, and Fair Value Gap (FVG) detection.
 - streamlit_app.py: A web dashboard built with Streamlit for visualizing trading performance, data analytics, and real-time monitoring.
 - webhook_receiver.py: A Flask-based webhook handler to automatically deploy code updates upon new commits.
+- Trading_ai.py: Provides AI-based analysis of market data using the OpenAI API to process and return structured JSON from files in the data folder.
 
 ## Repository Map
 
@@ -24,6 +25,7 @@ Trading_bot/
 ├── Trading_main.py
 ├── Trading_tools.py
 ├── streamlit_app.py
+├── Trading_ai.py
 └── webhook_receiver.py
 ```
 
