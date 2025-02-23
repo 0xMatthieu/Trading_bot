@@ -5,21 +5,24 @@ import glob
 import json
 from streamlit import secrets
 from openai import OpenAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # Initialize the OpenAI API key
 client = OpenAI(api_key = secrets['OPENAI_API_KEY'])
 
 class Order(BaseModel):
-    id: int
-    symbol: str
-    side: str
-    type: str
-    opened_at : str
-    at_price : int
-    stop_loss : int
-    take_profit : int
+    id: int = Field(..., description="Unique id of the trade, shall be always greater than the previous one")
+    symbol: str = Field(..., description="The crypto symbol. It is available in the data given in the prompt. Example BTC/USDT")
+    side: str = Field(..., description="Only 2 values possible, short or long")
+    type: str = Field(..., description="The order type can be limit or market")
+    opened_at : str = Field(..., description="The current time")
+    at_price : int = Field(..., description="The price to open the trade, market price or limit price")
+    stop_loss : int = Field(..., description="Trade stop loss")
+    take_profit : int = Field(..., description="Trade take profit")
 
+class CurrencyOrderList(BaseModel):
+    symbol: str = Field(..., description="The crypto symbol. It is available in the data given in the prompt. Example BTC/USDT")
+    orders: list[Order] = Field(..., description="List of orders to take")
 
 def process_symbol_data(symbol: str) -> dict:
     """
@@ -35,7 +38,7 @@ def process_symbol_data(symbol: str) -> dict:
     for file in matched_files:
         with open(file, 'r', encoding='utf-8') as f:
             contents[file] = f.read()
-    prompt = f"""Analyze the following data files and output a structured summary.
+    prompt = f"""Analyze the following data files and output orders you would take.
 Data: {json.dumps(contents)}"""
 
     # Instantiate the new client (make sure your OPENAI_API_KEY is set in the environment)
@@ -48,27 +51,15 @@ Data: {json.dumps(contents)}"""
             {
                 "role": "system",
                 "content": (
-                    "You are a trading assistant. "
-                    "Your role is to define the position which should be taken based on the following graphic. "
-                    "Feel free to use whatever you want, do not hesitate to think about your analysis 5 times to improve your understanding. "
-                    "Output answers only in valid JSON. "
-                    "If you decide to open a position, answer with a JSON object like that:\n\n"
-                    '{'
-                    ' "id": 1,'
-                    ' "symbol": "BTC/USDT",'
-                    ' "type" : "limit"'
-                    ' "side": "Long",'
-                    ' "opened_at": "19/02/2025 - 13:55",'
-                    ' "at_price": 95535,'
-                    ' "stop_loss": 94000,'
-                    ' "take_profit": 99000'
-                    '}'
+                    """You are a trading assistant.
+                    Your role is to define the position which should be taken based on the following graphic. You can provide up to 3 orders
+                    Feel free to use whatever you want, do not hesitate to think about your analysis 5 times to improve the outcome. """
                 )
             },
             {"role": "user", "content": prompt},
 
         ],
-        response_format=Order,
+        response_format=CurrencyOrderList,
     )
 
     response_text = response.choices[0].message.parsed
@@ -82,12 +73,12 @@ if __name__ == "__main__":
     exchange = Exchange(name='kucoin')
     timeframes = ['1h', '4h', '1d', '1w', '1M']
     symbol = 'BTC/USDT'
-    """
+
     for timeframe in timeframes:
         df = fetch_and_store_historical_data(exchange=exchange, symbol=symbol, timeframe=timeframe, limit=100, market_type='spot', erase=True)
         df = Trading_tools.calculate_ema(df)
         file_path = f"data/{symbol.replace('/', '_')}_{timeframe}.json"
         df.to_json(file_path, orient='records', date_format='iso')
-    """
+
     answer = process_symbol_data(symbol=symbol)
     print(answer)
